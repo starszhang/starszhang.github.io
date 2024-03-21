@@ -29,7 +29,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/.com//Blog/source_posts/%E6%96%87%E4%BB%B6IO/%E8%BF%9B%E7%A8%8B%E6%8F%8F%E8%BF%B0%E7%AC%A6%E8%A1%A8.png">
 <meta property="article:published_time" content="2024-03-18T07:38:24.000Z">
-<meta property="article:modified_time" content="2024-03-19T10:54:29.533Z">
+<meta property="article:modified_time" content="2024-03-20T02:40:47.864Z">
 <meta property="article:author" content="stars zhang">
 <meta property="article:tag" content="文件IO">
 <meta name="twitter:card" content="summary">
@@ -198,7 +198,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-03-19 18:54:29" itemprop="dateModified" datetime="2024-03-19T18:54:29+08:00">2024-03-19</time>
+                <time title="修改时间：2024-03-20 10:40:47" itemprop="dateModified" datetime="2024-03-20T10:40:47+08:00">2024-03-20</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -296,10 +296,20 @@
 </li>
 <li><pre><code class="c">lseek(fd, 0, SEEK_SET); //将文件指针移动到头部
 lseek(fd, 0, SEEK_CUR); //得到当前文件指针的位置
-lseek(fd, 0, SEEK_END); //得到文件的总大小
+lseek(fd, 0, SEEK_END); //得到文件的总大小5. 复制与重定向
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"># 5. 复制与重定向</span><br><span class="line"></span><br><span class="line">## 5.1 dup函数</span><br><span class="line"></span><br><span class="line">dup函数的作用是复制一个现有的文件描述符，使多个文件描述符指向同一个文件。函数原型：</span><br><span class="line"></span><br><span class="line">```c</span><br><span class="line">#include &lt;unisted.h&gt;</span><br><span class="line">int dup(int oldfd);</span><br></pre></td></tr></table></figure>
 </code></pre>
 </li>
 </ul>
+<p>参数oldfd是被复制的文件描述符</p>
+<p>函数调用成功后返回新的文件描述符，且是当前可用文件描述符中的最小数值；调用失败则返回-1</p>
+<p>被复制出的新文件描述符是独立于旧的文件描述符的，二者没有连带关系。也就是说当旧的文件描述符被关闭了，复制出的新文件描述符还是可以继续使用的。</p>
+<h2 id="5-2-dup2函数"><a href="#5-2-dup2函数" class="headerlink" title="5.2 dup2函数"></a>5.2 dup2函数</h2><p>dup2函数可以进行文件描述符的复制，也可以进行文件描述符的重定向。重定向指的是断开文件描述符和当前文件的关联关系，与新的文件建立关联关系。</p>
+<p>函数原型：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unisted.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">dup2</span><span class="params">(<span class="type">int</span> oldfd, <span class="type">int</span> newfd)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>作用是复制参数 <code>oldfd</code> 所指向的文件描述符，创建一个新的文件描述符，新的文件描述符的值是参数 <code>newfd</code>。如果 <code>newfd</code> 已经是一个打开的文件描述符，<code>dup2()</code> 会先关闭它。</p>
+<p><code>dup2()</code> 调用成功返回新的文件描述符，该文件描述符与 <code>newfd</code> 相同；调用失败则返回-1</p>
 
     </div>
 
@@ -383,7 +393,7 @@ lseek(fd, 0, SEEK_END); //得到文件的总大小
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6"><span class="nav-number">1.</span> <span class="nav-text">1. 文件描述符</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-open-close"><span class="nav-number">2.</span> <span class="nav-text">2. open&#x2F;close</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-open%E5%87%BD%E6%95%B0"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 open函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-close%E5%87%BD%E6%95%B0"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 close函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 文件操作</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-read-write"><span class="nav-number">3.</span> <span class="nav-text">3. read&#x2F;write</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-read%E5%87%BD%E6%95%B0"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 read函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-write%E5%87%BD%E6%95%B0"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 write函数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-Iseek"><span class="nav-number">4.</span> <span class="nav-text">4. Iseek</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6"><span class="nav-number">1.</span> <span class="nav-text">1. 文件描述符</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-open-close"><span class="nav-number">2.</span> <span class="nav-text">2. open&#x2F;close</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-open%E5%87%BD%E6%95%B0"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 open函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-close%E5%87%BD%E6%95%B0"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 close函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 文件操作</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-read-write"><span class="nav-number">3.</span> <span class="nav-text">3. read&#x2F;write</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-read%E5%87%BD%E6%95%B0"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 read函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-write%E5%87%BD%E6%95%B0"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 write函数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-Iseek"><span class="nav-number">4.</span> <span class="nav-text">4. Iseek</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#5-2-dup2%E5%87%BD%E6%95%B0"><span class="nav-number">4.1.</span> <span class="nav-text">5.2 dup2函数</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -397,7 +407,7 @@ lseek(fd, 0, SEEK_END); //得到文件的总大小
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-count">7</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -410,7 +420,7 @@ lseek(fd, 0, SEEK_END); //得到文件的总大小
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

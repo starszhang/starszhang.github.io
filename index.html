@@ -162,6 +162,117 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/03/21/%E8%BF%9B%E7%A8%8B%E6%8E%A7%E5%88%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="stars zhang">
+      <meta itemprop="description" content="永远迎着光走">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="stars">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/03/21/%E8%BF%9B%E7%A8%8B%E6%8E%A7%E5%88%B6/" class="post-title-link" itemprop="url">进程控制</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-03-21 18:27:10 / 修改时间：20:45:17" itemprop="dateCreated datePublished" datetime="2024-03-21T18:27:10+08:00">2024-03-21</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>进程是处于执行状态的程序以及相关资源的总称。</p>
+<p>启动一个进程就会</p>
+<h1 id="进程创建"><a href="#进程创建" class="headerlink" title="进程创建"></a>进程创建</h1><p>在Linux系统中，现有进程调用fork()就会创建一个子进程，fork()调用一次会返回两次，一次是向父进程返回子进程的进程ID，一次向子进程返回0。函数原型为：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="type">pid_t</span> <span class="title function_">fork</span><span class="params">(<span class="type">void</span>)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>在调用 <code>fork()</code> 后，操作系统会复制父进程的所有资源（包括内存、文件描述符、堆栈等），并将它们分配给新创建的子进程，子进程接着从 <code>fork()</code> 调用之后的位置继续执行。</p>
+<p>通过getpid()能查看当前进程ID，调用getppid查看父进程的ID</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="type">pid_t</span> <span class="title function_">getpid</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line"><span class="type">pid_t</span> <span class="title function_">getppid</span><span class="params">(<span class="type">void</span>)</span></span><br></pre></td></tr></table></figure>
+
+<p>Linux的fork()使用写时拷贝技术(copy on write–COW)实现，是一种推迟甚至免除复制数据的技术，父子进程共享同一段内存，只有在需要写入的时候才会执行复制数据的操作。通过这种方式能够减少内存复制的开销，特别是在多个进程之间共享大块内存时，可以显著减少内存占用和提高性能。</p>
+<h1 id="exec函数"><a href="#exec函数" class="headerlink" title="exec函数"></a>exec函数</h1><p>一般进程在创建完毕后会调用exec()读取一个可执行文件并将其载入地址空间开始运行，此时该进程的代码段、数据段、堆栈等完全替换为新程序，进程ID保持不变。</p>
+<p>exec函数共有7中不同的变体，分别是<code>execl</code>、<code>execv</code>、<code>execle</code>、<code>execve</code>、<code>execlp</code>、<code>execvp</code>、<code>fexecve</code>。它们的主要区别在于传递参数的方式以及如何指定环境变量。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">execl</span><span class="params">(<span class="type">const</span> <span class="type">char</span> *path, <span class="type">const</span> <span class="type">char</span> *arg, ... <span class="comment">/* (char  *) NULL */</span>)</span>;</span><br><span class="line"><span class="type">int</span> <span class="title function_">execlp</span><span class="params">(<span class="type">const</span> <span class="type">char</span> *file, <span class="type">const</span> <span class="type">char</span> *arg, ... <span class="comment">/* (char  *) NULL */</span>)</span>;</span><br><span class="line"><span class="type">int</span> <span class="title function_">execle</span><span class="params">(<span class="type">const</span> <span class="type">char</span> *path, <span class="type">const</span> <span class="type">char</span> *arg, ...</span></span><br><span class="line"><span class="params">           					<span class="comment">/*, (char *) NULL, char * const envp[] */</span>)</span>;</span><br><span class="line"><span class="type">int</span> <span class="title function_">execv</span><span class="params">(<span class="type">const</span> <span class="type">char</span> *path, <span class="type">char</span> *<span class="type">const</span> argv[])</span>;</span><br><span class="line"><span class="type">int</span> <span class="title function_">execvp</span><span class="params">(<span class="type">const</span> <span class="type">char</span> *file, <span class="type">char</span> *<span class="type">const</span> argv[])</span>;</span><br><span class="line"><span class="type">int</span> <span class="title function_">execvpe</span><span class="params">(<span class="type">const</span> <span class="type">char</span> *file, <span class="type">char</span> *<span class="type">const</span> argv[], <span class="type">char</span> *<span class="type">const</span> envp[])</span>;</span><br></pre></td></tr></table></figure>
+
+<h1 id="进程终止"><a href="#进程终止" class="headerlink" title="进程终止"></a>进程终止</h1><p>进程的常见终止方式：</p>
+<ul>
+<li>main函数中执行return语句</li>
+<li>调用exit()或_exit()</li>
+</ul>
+<p>函数的参数相当于退出码, 如果参数值为 0 程序退出之后的状态码就是0, 如果是100退出的状态码就是100。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="type">void</span> <span class="title function_">exit</span><span class="params">(<span class="type">int</span> status)</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="type">void</span> _<span class="title function_">exit</span><span class="params">(<span class="type">int</span> status)</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="进程控制"><a href="#进程控制" class="headerlink" title="进程控制"></a>进程控制</h1><h2 id="孤儿进程"><a href="#孤儿进程" class="headerlink" title="孤儿进程"></a>孤儿进程</h2><p>在一个启动的进程中创建子进程，这时候父子进程同时运行，当父进程结束或者被终止时，而子进程还在继续执行，这种情况下子进程被称为孤儿进程。</p>
+<p>这种情况下，操作系统会将该子进程的父进程设置为init进程（在Linux系统中通常为进程ID为1的init进程）。init进程会接管孤儿进程并负责它的管理。</p>
+<p>那么系统为什么要接管这个孤儿进程呢？在子进程退出的时候, 进程中的用户区可以自己释放, 但是进程内核区的PCB资源自己无法释放，必须要由父进程来释放子进程的PCB资源。</p>
+<h2 id="僵尸进程"><a href="#僵尸进程" class="headerlink" title="僵尸进程"></a>僵尸进程</h2><p>僵尸进程指已经终止执行的子进程，但是其父进程还未对其进行善后处理（即收回其占用的系统资源和进程表中的条目），僵尸进程仍然在进程表中存在，但是它已经停止了执行，并且释放了大部分系统资源，仅保留一些基本信息，例如进程ID和终止状态。</p>
+<h2 id="进程回收"><a href="#进程回收" class="headerlink" title="进程回收"></a>进程回收</h2><p>要解决僵尸进程问题，父进程通常需要调用 <code>wait()</code> 或 <code>waitpid()</code> 等系统调用来等待子进程的终止，并获取其终止状态，然后将其彻底清理掉。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/wait.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">pid_t</span> <span class="title function_">wait</span><span class="params">(<span class="type">int</span> *status)</span>;</span><br><span class="line"><span class="type">pid_t</span> <span class="title function_">waitpid</span><span class="params">(<span class="type">pid_t</span> pid, <span class="type">int</span> *status, <span class="type">int</span> options)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>调用wait()会使进程发生阻塞，如果没有子进程退出, 函数会一直阻塞等待, 当检测到子进程退出了, 该函数阻塞解除回收子进程资源。调用一次只能回收一个子进程</p>
+<p>waitpid() 可以看做是 wait() 的升级版，通过该函数可以控制回收子进程资源的方式是阻塞还是非阻塞，另外还可以通过该函数进行精准打击，可以精确指定回收某个或者某一类或者是全部子进程资源。</p>
+<ul>
+<li><p>pid: </p>
+<ul>
+<li>-1时，同wait()一样</li>
+<li>0时，回收当前进程的所有子进程</li>
+<li>大于0时，指定回收ID为pid的子进程</li>
+</ul>
+</li>
+<li><p>status: NULL, 和wait的参数是一样的</p>
+</li>
+<li><p>options: 控制函数是阻塞还是非阻塞，0表示阻塞， <code>WNOHANG</code>表示非阻塞</p>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2024/03/19/%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -187,7 +298,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2024-03-19 19:06:45 / 修改时间：19:31:16" itemprop="dateCreated datePublished" datetime="2024-03-19T19:06:45+08:00">2024-03-19</time>
+              <time title="创建时间：2024-03-19 19:06:45 / 修改时间：20:12:48" itemprop="dateCreated datePublished" datetime="2024-03-19T19:06:45+08:00">2024-03-19</time>
             </span>
 
           
@@ -212,6 +323,11 @@
 <ul>
 <li>如果用户定义了有参构造函数，c++则不再提供默认无参构造，但是会提供默认拷贝构造</li>
 <li>如果用户定义了拷贝构造函数，c++则不再提供默认构造函数，需要用户定义普通构造函数</li>
+</ul>
+<h1 id="3-深拷贝与浅拷贝"><a href="#3-深拷贝与浅拷贝" class="headerlink" title="3. 深拷贝与浅拷贝"></a>3. 深拷贝与浅拷贝</h1><ul>
+<li>浅拷贝：在拷贝对象时只拷贝对象的指针，而没有拷贝指针所指向的动态分配的内存内容，<strong>新旧对象都指向同一块内存</strong>。造成的结果就是<strong>当其中一个对象的析构函数被调用时，会释放该内存，从而导致另一个对象访问无效内存</strong>，从而引发问题。</li>
+<li>深拷贝：在拷贝对象时，<strong>会复制对象所指向的动态分配的内存，而不只是复制指针本身</strong>。这样做可以确保每个对象都有其自己的一份独立的内存副本。</li>
+<li>总结：浅拷贝只是简单地复制指针，导致多个对象共享同一块内存，容易出现悬空指针或者资源释放问题。深拷贝会为新对象分配内存，并将原对象的数据复制到新内存中，确保每个对象都有独立的内存空间，从而避免了悬空指针或资源释放问题。</li>
 </ul>
 
       
@@ -332,7 +448,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-03-19 18:54:29" itemprop="dateModified" datetime="2024-03-19T18:54:29+08:00">2024-03-19</time>
+                <time title="修改时间：2024-03-20 10:40:47" itemprop="dateModified" datetime="2024-03-20T10:40:47+08:00">2024-03-20</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -430,10 +546,20 @@
 </li>
 <li><pre><code class="c">lseek(fd, 0, SEEK_SET); //将文件指针移动到头部
 lseek(fd, 0, SEEK_CUR); //得到当前文件指针的位置
-lseek(fd, 0, SEEK_END); //得到文件的总大小
+lseek(fd, 0, SEEK_END); //得到文件的总大小5. 复制与重定向
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"># 5. 复制与重定向</span><br><span class="line"></span><br><span class="line">## 5.1 dup函数</span><br><span class="line"></span><br><span class="line">dup函数的作用是复制一个现有的文件描述符，使多个文件描述符指向同一个文件。函数原型：</span><br><span class="line"></span><br><span class="line">```c</span><br><span class="line">#include &lt;unisted.h&gt;</span><br><span class="line">int dup(int oldfd);</span><br></pre></td></tr></table></figure>
 </code></pre>
 </li>
 </ul>
+<p>参数oldfd是被复制的文件描述符</p>
+<p>函数调用成功后返回新的文件描述符，且是当前可用文件描述符中的最小数值；调用失败则返回-1</p>
+<p>被复制出的新文件描述符是独立于旧的文件描述符的，二者没有连带关系。也就是说当旧的文件描述符被关闭了，复制出的新文件描述符还是可以继续使用的。</p>
+<h2 id="5-2-dup2函数"><a href="#5-2-dup2函数" class="headerlink" title="5.2 dup2函数"></a>5.2 dup2函数</h2><p>dup2函数可以进行文件描述符的复制，也可以进行文件描述符的重定向。重定向指的是断开文件描述符和当前文件的关联关系，与新的文件建立关联关系。</p>
+<p>函数原型：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unisted.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">dup2</span><span class="params">(<span class="type">int</span> oldfd, <span class="type">int</span> newfd)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>作用是复制参数 <code>oldfd</code> 所指向的文件描述符，创建一个新的文件描述符，新的文件描述符的值是参数 <code>newfd</code>。如果 <code>newfd</code> 已经是一个打开的文件描述符，<code>dup2()</code> 会先关闭它。</p>
+<p><code>dup2()</code> 调用成功返回新的文件描述符，该文件描述符与 <code>newfd</code> 相同；调用失败则返回-1</p>
 
       
     </div>
@@ -530,7 +656,7 @@ lseek(fd, 0, SEEK_END); //得到文件的总大小
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/03/18/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E4%B8%8E%E9%9D%A2%E5%90%91%E8%BF%87%E7%A8%8B%E7%9A%84%E5%8C%BA%E5%88%AB/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/03/18/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E4%B8%8E%E9%9D%A2%E5%90%91%E8%BF%87%E7%A8%8B/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -544,7 +670,7 @@ lseek(fd, 0, SEEK_END); //得到文件的总大小
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2024/03/18/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E4%B8%8E%E9%9D%A2%E5%90%91%E8%BF%87%E7%A8%8B%E7%9A%84%E5%8C%BA%E5%88%AB/" class="post-title-link" itemprop="url">面向对象与面向过程的区别</a>
+            <a href="/2024/03/18/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E4%B8%8E%E9%9D%A2%E5%90%91%E8%BF%87%E7%A8%8B/" class="post-title-link" itemprop="url">面向对象与面向过程的区别</a>
         </h2>
 
         <div class="post-meta">
@@ -736,7 +862,7 @@ lseek(fd, 0, SEEK_END); //得到文件的总大小
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-count">7</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -749,7 +875,7 @@ lseek(fd, 0, SEEK_END); //得到文件的总大小
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
