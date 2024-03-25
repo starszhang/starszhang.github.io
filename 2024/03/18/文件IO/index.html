@@ -29,7 +29,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/.com//Blog/source_posts/%E6%96%87%E4%BB%B6IO/%E8%BF%9B%E7%A8%8B%E6%8F%8F%E8%BF%B0%E7%AC%A6%E8%A1%A8.png">
 <meta property="article:published_time" content="2024-03-18T07:38:24.000Z">
-<meta property="article:modified_time" content="2024-03-20T02:40:47.864Z">
+<meta property="article:modified_time" content="2024-03-23T16:19:15.555Z">
 <meta property="article:author" content="stars zhang">
 <meta property="article:tag" content="文件IO">
 <meta name="twitter:card" content="summary">
@@ -198,7 +198,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-03-20 10:40:47" itemprop="dateModified" datetime="2024-03-20T10:40:47+08:00">2024-03-20</time>
+                <time title="修改时间：2024-03-24 00:19:15" itemprop="dateModified" datetime="2024-03-24T00:19:15+08:00">2024-03-24</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -229,7 +229,7 @@
 
 <p>成功时返回文件描述符整数，失败时返回-1；</p>
 <p><strong>path</strong>：是被打开或创建的文件名</p>
-<p><strong>flags</strong>：用于说明以何种方式打开指定文件</p>
+<p><strong>flags</strong>：用于说明以何种方式打开指定文件，由一个或多个标志位的按位或组合 </p>
 <p>必须指定的属性：（只能任选其一）</p>
 <ul>
 <li>O_RDONLY —— 只读打开</li>
@@ -246,7 +246,7 @@
 </ul>
 </li>
 </ul>
-<p><strong>mode</strong>：八进制的整数，创建文件时才需要指定该参数的值，用于指定新文件的权限。</p>
+<p><strong>mode</strong>：八进制的整数，<strong>创建文件时才需要指定该参数的值</strong>，用于指定新文件的权限。</p>
 <h2 id="2-2-close函数"><a href="#2-2-close函数" class="headerlink" title="2.2 close函数"></a>2.2 close函数</h2><p>通过close函数关闭一个打开文件，释放打开时分配的文件描述符。close()原型：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unisted&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">close</span><span class="params">(<span class="type">int</span> fd)</span></span><br></pre></td></tr></table></figure>
 
@@ -268,14 +268,14 @@
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unisted.h&gt;</span></span></span><br><span class="line"><span class="type">ssize_t</span> <span class="title function_">write</span><span class="params">(<span class="type">int</span> fd, <span class="type">const</span> <span class="type">void</span> *buf, <span class="type">size_t</span> count)</span></span><br></pre></td></tr></table></figure>
 
 <ul>
-<li><p>参数cout：往磁盘文件中写入的字节数，一般是buf的长度strlen(buf).</p>
+<li><p>参数cout：往磁盘文件中写入的字节数，一般是buf的长度sizeof(buf).</p>
 </li>
 <li><p>返回值：</p>
-<p>​           -1：写文件失败</p>
+<p>​      -1：写文件失败</p>
 <p>​     大于0：成功写入文件的字节数</p>
 </li>
 </ul>
-<h1 id="4-Iseek"><a href="#4-Iseek" class="headerlink" title="4. Iseek"></a>4. Iseek</h1><p>用于移动文件的指针。</p>
+<h1 id="4-Iseek函数"><a href="#4-Iseek函数" class="headerlink" title="4. Iseek函数"></a>4. Iseek函数</h1><p>用于移动文件的指针。</p>
 <p>每一个打开文件都有一个与其相关联的”当前文件偏移量“，即文件指针指向的位置，作用在于控制文件的读写位置</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unisted.h&gt;</span></span></span><br><span class="line"><span class="type">off_t</span> <span class="title function_">lseek</span><span class="params">(<span class="type">int</span> fd, <span class="type">off_t</span> offset, <span class="type">int</span> whence)</span>;</span><br></pre></td></tr></table></figure>
 
@@ -296,7 +296,7 @@
 </li>
 <li><pre><code class="c">lseek(fd, 0, SEEK_SET); //将文件指针移动到头部
 lseek(fd, 0, SEEK_CUR); //得到当前文件指针的位置
-lseek(fd, 0, SEEK_END); //得到文件的总大小5. 复制与重定向
+lseek(fd, 0, SEEK_END); //得到文件的总大小
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"># 5. 复制与重定向</span><br><span class="line"></span><br><span class="line">## 5.1 dup函数</span><br><span class="line"></span><br><span class="line">dup函数的作用是复制一个现有的文件描述符，使多个文件描述符指向同一个文件。函数原型：</span><br><span class="line"></span><br><span class="line">```c</span><br><span class="line">#include &lt;unisted.h&gt;</span><br><span class="line">int dup(int oldfd);</span><br></pre></td></tr></table></figure>
 </code></pre>
 </li>
@@ -310,6 +310,12 @@ lseek(fd, 0, SEEK_END); //得到文件的总大小5. 复制与重定向
 
 <p>作用是复制参数 <code>oldfd</code> 所指向的文件描述符，创建一个新的文件描述符，新的文件描述符的值是参数 <code>newfd</code>。如果 <code>newfd</code> 已经是一个打开的文件描述符，<code>dup2()</code> 会先关闭它。</p>
 <p><code>dup2()</code> 调用成功返回新的文件描述符，该文件描述符与 <code>newfd</code> 相同；调用失败则返回-1</p>
+<h1 id="6-fcntl函数"><a href="#6-fcntl函数" class="headerlink" title="6. fcntl函数"></a>6. fcntl函数</h1><p>fcntl()可以改变已打开文件的属性，函数原型：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">fcntl</span><span class="params">(<span class="type">int</span> fd, <span class="type">int</span> cmd, ... <span class="comment">/* arg */</span> )</span>;</span><br></pre></td></tr></table></figure>
+
+<p>参数<code>fd</code>表示已打开的文件描述符，<code>cmd</code> 是控制命令，指定了要对文件进行的操作，<code>arg</code> 是与控制命令相关的参数，类型和意义取决于具体的命令。将文件设置为非阻塞：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fcntl(fd, F_SETFL, fcntl(fd, F_GETFL) | O_NONBLOCK)</span><br></pre></td></tr></table></figure>
+
 
     </div>
 
@@ -393,7 +399,7 @@ lseek(fd, 0, SEEK_END); //得到文件的总大小5. 复制与重定向
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6"><span class="nav-number">1.</span> <span class="nav-text">1. 文件描述符</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-open-close"><span class="nav-number">2.</span> <span class="nav-text">2. open&#x2F;close</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-open%E5%87%BD%E6%95%B0"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 open函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-close%E5%87%BD%E6%95%B0"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 close函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 文件操作</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-read-write"><span class="nav-number">3.</span> <span class="nav-text">3. read&#x2F;write</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-read%E5%87%BD%E6%95%B0"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 read函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-write%E5%87%BD%E6%95%B0"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 write函数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-Iseek"><span class="nav-number">4.</span> <span class="nav-text">4. Iseek</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#5-2-dup2%E5%87%BD%E6%95%B0"><span class="nav-number">4.1.</span> <span class="nav-text">5.2 dup2函数</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6"><span class="nav-number">1.</span> <span class="nav-text">1. 文件描述符</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-open-close"><span class="nav-number">2.</span> <span class="nav-text">2. open&#x2F;close</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-open%E5%87%BD%E6%95%B0"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 open函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-close%E5%87%BD%E6%95%B0"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 close函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 文件操作</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-read-write"><span class="nav-number">3.</span> <span class="nav-text">3. read&#x2F;write</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-read%E5%87%BD%E6%95%B0"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 read函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-write%E5%87%BD%E6%95%B0"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 write函数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-Iseek%E5%87%BD%E6%95%B0"><span class="nav-number">4.</span> <span class="nav-text">4. Iseek函数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#5-2-dup2%E5%87%BD%E6%95%B0"><span class="nav-number">4.1.</span> <span class="nav-text">5.2 dup2函数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-fcntl%E5%87%BD%E6%95%B0"><span class="nav-number">5.</span> <span class="nav-text">6. fcntl函数</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -407,7 +413,7 @@ lseek(fd, 0, SEEK_END); //得到文件的总大小5. 复制与重定向
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-count">9</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -420,7 +426,7 @@ lseek(fd, 0, SEEK_END); //得到文件的总大小5. 复制与重定向
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
