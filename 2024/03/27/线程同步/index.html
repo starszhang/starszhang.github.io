@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="进程有自己的独立地址空间，因此进程之间重点关注通信。而对于线程来说，除了线程栈外其他数据都是共享的，如果同时读写数据可能造成数据不一致甚至程序崩溃的后果，因此线程之间重点关注同步。 线程同步是指在多线程编程中控制多个线程之间的执行顺序或共享资源访问的过程。在多线程环境中，由于线程的并发执行，可能会导致数据竞争、资源冲突等问题。 1. 竞争条件在多线程并发场景下指令执行的先后顺序由内核决定，同一个线">
+<meta property="og:type" content="article">
+<meta property="og:title" content="线程同步">
+<meta property="og:url" content="http://example.com/2024/03/27/%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5/index.html">
+<meta property="og:site_name" content="stars">
+<meta property="og:description" content="进程有自己的独立地址空间，因此进程之间重点关注通信。而对于线程来说，除了线程栈外其他数据都是共享的，如果同时读写数据可能造成数据不一致甚至程序崩溃的后果，因此线程之间重点关注同步。 线程同步是指在多线程编程中控制多个线程之间的执行顺序或共享资源访问的过程。在多线程环境中，由于线程的并发执行，可能会导致数据竞争、资源冲突等问题。 1. 竞争条件在多线程并发场景下指令执行的先后顺序由内核决定，同一个线">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-03-27T05:12:33.000Z">
+<meta property="article:modified_time" content="2024-03-27T07:08:44.864Z">
+<meta property="article:author" content="stars zhang">
+<meta property="article:tag" content="多线程">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2024/03/27/%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>线程同步 | stars</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">stars</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/03/27/%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="stars zhang">
+      <meta itemprop="description" content="永远迎着光走">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="stars">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          线程同步
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-03-27 13:12:33 / 修改时间：15:08:44" itemprop="dateCreated datePublished" datetime="2024-03-27T13:12:33+08:00">2024-03-27</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>进程有自己的独立地址空间，因此<strong>进程之间重点关注通信</strong>。而对于线程来说，除了线程栈外其他数据都是共享的，如果同时读写数据可能造成数据不一致甚至程序崩溃的后果，因此<strong>线程之间重点关注同步</strong>。</p>
+<p>线程同步是指在多线程编程中控制多个线程之间的执行顺序或共享资源访问的过程。在多线程环境中，由于线程的并发执行，可能会导致数据竞争、资源冲突等问题。</p>
+<h1 id="1-竞争条件"><a href="#1-竞争条件" class="headerlink" title="1. 竞争条件"></a>1. 竞争条件</h1><p>在多线程并发场景下指令执行的先后顺序由内核决定，同一个线程内部指令按照先后顺序执行，但不同线程之间的指令执行先后顺序是不一定的。如果执行结果依赖于不同线程执行的先后顺序，那么就会形成<strong>“竞争条件”</strong>，产生非预期的计算结果，导致程序崩溃等问题。</p>
+<p>最常见的解决竞争条件的方式是<strong>原子操作</strong>，其次便是<strong>线程同步</strong>。</p>
+<p>原子操作是指不可被中断的操作，在执行过程中不会被其他线程或进程干扰，要么全部执行成功，要么全部不执行，不会出现部分执行的情况。原子操作通常是基本的、不可分割的操作单元。</p>
+<p>原子操作通常由硬件或者操作系统提供支持，C++11引入了std::atomic模板类来支持原子操作。</p>
+<h1 id="2-线程同步"><a href="#2-线程同步" class="headerlink" title="2. 线程同步"></a>2. 线程同步</h1><p>常见的线程同步的方式有四种：互斥锁、读写锁、条件变量和信号量</p>
+<h2 id="2-1-互斥锁"><a href="#2-1-互斥锁" class="headerlink" title="2.1 互斥锁"></a>2.1 互斥锁</h2><p>互斥锁（又名互斥量）强调的是资源之间的访问互斥：每个线程在对共享资源操作前都会尝试先加锁，加锁成功才能操作，操作结束之后解锁。</p>
+<p>某个线程对互斥量加锁后，其他线程必须等待该线程释放锁才能继续访问共享资源。如果释放互斥锁时有多个线程阻塞，所有在该互斥锁上的阻塞线程都会变成可运行状态。第一个变成运行状态的线程可以对互斥量加锁，其余线程将会看到互斥量依然被锁住，只能回去再次等待它重新变为可用。</p>
+<p>mutex是睡眠等待（sleep waiting）类型的锁，<strong>当线程抢互斥锁失败的时候，线程会陷入休眠</strong>。优点就是节省CPU资源，缺点就是休眠唤醒会消耗一点时间。</p>
+<p>互斥锁的接口通常包括 <code>mutex_init()</code>、<code>mutex_lock()</code>、<code>mutex_unlock()</code> 和 <code>mutex_destroy()</code>。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;pthread.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 初始化互斥锁</span></span><br><span class="line"><span class="type">pthread_mutex_t</span> mutex;</span><br><span class="line">pthread_mutex_init(&amp;mutex, <span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 加锁</span></span><br><span class="line">pthread_mutex_lock(&amp;mutex);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 解锁</span></span><br><span class="line">pthread_mutex_unlock(&amp;mutex);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 销毁互斥锁</span></span><br><span class="line">pthread_mutex_destroy(&amp;mutex);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="2-2-读写锁"><a href="#2-2-读写锁" class="headerlink" title="2.2 读写锁"></a>2.2 读写锁</h2><p>读写锁和互斥量类似，是另一种实现线程同步的方式，但是它将操作分为读、写两种方式，可以多个线程同时占用读模式，但只允许一个线程写入。</p>
+<ul>
+<li>写独占：写锁占用时，其他线程加读锁或者写锁时都会阻塞（并非失败）</li>
+<li>读共享：读锁占用时，其他线程加写锁时会阻塞，加读锁会成功</li>
+</ul>
+<p>读写锁有两种策略：</p>
+<ul>
+<li>强读同步：读锁优先，只要写锁没有占用那么就可以加读锁</li>
+<li>强写同步：写锁优先，只能等到所有正在等待或者执行的写锁执行完成后才能加读锁</li>
+</ul>
+<p>大部分读写锁的实现都采用的是“强写同步”策略，对尝试加锁的操作进行排队，如果前面已经有尝试加写被锁阻塞住的话，后续加读锁也都会被阻塞住（尽管当前时刻是读锁占用的状态）。这样做的目的主要是为了避免“写饥饿”，在“多读少写”的情况下防止数据修改延迟过高。</p>
+<p>读写锁的接口通常包括 <code>rwlock_init()</code>、<code>rwlock_rdlock()</code>、<code>rwlock_wrlock()</code>、<code>rwlock_unlock()</code> 和 <code>rwlock_destroy()</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;pthread.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 初始化读写锁</span></span><br><span class="line"><span class="type">pthread_rwlock_t</span> rwlock;</span><br><span class="line">pthread_rwlock_init(&amp;rwlock, <span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 读取加锁</span></span><br><span class="line">pthread_rwlock_rdlock(&amp;rwlock);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 写入加锁</span></span><br><span class="line">pthread_rwlock_wrlock(&amp;rwlock);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 解锁</span></span><br><span class="line">pthread_rwlock_unlock(&amp;rwlock);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 销毁读写锁</span></span><br><span class="line">pthread_rwlock_destroy(&amp;rwlock);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="2-3-条件变量"><a href="#2-3-条件变量" class="headerlink" title="2.3 条件变量"></a>2.3 条件变量</h2><p>严格意义上来说，条件变量的主要作用不是处理线程同步, 而是进行线程的阻塞。如果在多线程程序中只使用条件变量无法实现线程的同步, 必须要配合互斥锁来使用。</p>
+<p>线程可以等待某个条件变量的发生，如果条件不满足，则线程会阻塞等待，并在条件满足时被唤醒。</p>
+<p>条件变量的接口通常包括 <code>cond_init()</code>、<code>cond_wait()</code>、<code>cond_signal()</code> 和 <code>cond_broadcast()</code>。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;pthread.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 初始化条件变量和关联的互斥锁</span></span><br><span class="line"><span class="type">pthread_cond_t</span> cond = PTHREAD_COND_INITIALIZER;</span><br><span class="line"><span class="type">pthread_mutex_t</span> mutex = PTHREAD_MUTEX_INITIALIZER;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 等待条件满足</span></span><br><span class="line">pthread_mutex_lock(&amp;mutex);</span><br><span class="line">pthread_cond_wait(&amp;cond, &amp;mutex);</span><br><span class="line">pthread_mutex_unlock(&amp;mutex);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 发送信号通知条件满足</span></span><br><span class="line">pthread_cond_signal(&amp;cond);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 广播通知条件满足</span></span><br><span class="line">pthread_cond_broadcast(&amp;cond);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="2-4-信号量"><a href="#2-4-信号量" class="headerlink" title="2.4 信号量"></a>2.4 信号量</h2><p>信号量是一种更为通用的同步原语，用来控制多个线程对共享资源的访问。</p>
+<p>信号量本质上是一个非负的整数计数器，表示可用资源的数量。当资源被占用时，计数器减少；当资源释放时，计数器增加。</p>
+<p>信号量提供了两种操作：P操作（等待信号量）和V操作（释放信号量），用于控制资源的访问和释放，也被称为PV原子操作：</p>
+<ul>
+<li>P操作：即信号量sem减一，若sem小于等于0则P操作被阻塞，直到sem变量大于0为止</li>
+<li>V操作：即信号量sem加一</li>
+</ul>
+<p>信号量的接口通常包括 <code>sem_init()</code>、<code>sem_wait()</code>、<code>sem_post()</code> 和 <code>sem_destroy()</code>。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;semaphore.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 初始化信号量</span></span><br><span class="line"><span class="type">sem_t</span> semaphore;</span><br><span class="line">sem_init(&amp;semaphore, <span class="number">0</span>, <span class="number">1</span>); <span class="comment">// 初始值为1，表示有一个资源可用</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 等待信号量</span></span><br><span class="line">sem_wait(&amp;semaphore);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 发送信号量</span></span><br><span class="line">sem_post(&amp;semaphore);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 销毁信号量</span></span><br><span class="line">sem_destroy(&amp;semaphore);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag"># 多线程</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/03/26/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="prev" title="多线程">
+      <i class="fa fa-chevron-left"></i> 多线程
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E7%AB%9E%E4%BA%89%E6%9D%A1%E4%BB%B6"><span class="nav-number">1.</span> <span class="nav-text">1. 竞争条件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5"><span class="nav-number">2.</span> <span class="nav-text">2. 线程同步</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E4%BA%92%E6%96%A5%E9%94%81"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 互斥锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E8%AF%BB%E5%86%99%E9%94%81"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 读写锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-%E6%9D%A1%E4%BB%B6%E5%8F%98%E9%87%8F"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 条件变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-4-%E4%BF%A1%E5%8F%B7%E9%87%8F"><span class="nav-number">2.4.</span> <span class="nav-text">2.4 信号量</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">stars zhang</p>
+  <div class="site-description" itemprop="description">永远迎着光走</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">stars zhang</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

@@ -162,6 +162,206 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/03/27/%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="stars zhang">
+      <meta itemprop="description" content="永远迎着光走">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="stars">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/03/27/%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5/" class="post-title-link" itemprop="url">线程同步</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-03-27 13:12:33 / 修改时间：15:08:44" itemprop="dateCreated datePublished" datetime="2024-03-27T13:12:33+08:00">2024-03-27</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>进程有自己的独立地址空间，因此<strong>进程之间重点关注通信</strong>。而对于线程来说，除了线程栈外其他数据都是共享的，如果同时读写数据可能造成数据不一致甚至程序崩溃的后果，因此<strong>线程之间重点关注同步</strong>。</p>
+<p>线程同步是指在多线程编程中控制多个线程之间的执行顺序或共享资源访问的过程。在多线程环境中，由于线程的并发执行，可能会导致数据竞争、资源冲突等问题。</p>
+<h1 id="1-竞争条件"><a href="#1-竞争条件" class="headerlink" title="1. 竞争条件"></a>1. 竞争条件</h1><p>在多线程并发场景下指令执行的先后顺序由内核决定，同一个线程内部指令按照先后顺序执行，但不同线程之间的指令执行先后顺序是不一定的。如果执行结果依赖于不同线程执行的先后顺序，那么就会形成<strong>“竞争条件”</strong>，产生非预期的计算结果，导致程序崩溃等问题。</p>
+<p>最常见的解决竞争条件的方式是<strong>原子操作</strong>，其次便是<strong>线程同步</strong>。</p>
+<p>原子操作是指不可被中断的操作，在执行过程中不会被其他线程或进程干扰，要么全部执行成功，要么全部不执行，不会出现部分执行的情况。原子操作通常是基本的、不可分割的操作单元。</p>
+<p>原子操作通常由硬件或者操作系统提供支持，C++11引入了std::atomic模板类来支持原子操作。</p>
+<h1 id="2-线程同步"><a href="#2-线程同步" class="headerlink" title="2. 线程同步"></a>2. 线程同步</h1><p>常见的线程同步的方式有四种：互斥锁、读写锁、条件变量和信号量</p>
+<h2 id="2-1-互斥锁"><a href="#2-1-互斥锁" class="headerlink" title="2.1 互斥锁"></a>2.1 互斥锁</h2><p>互斥锁（又名互斥量）强调的是资源之间的访问互斥：每个线程在对共享资源操作前都会尝试先加锁，加锁成功才能操作，操作结束之后解锁。</p>
+<p>某个线程对互斥量加锁后，其他线程必须等待该线程释放锁才能继续访问共享资源。如果释放互斥锁时有多个线程阻塞，所有在该互斥锁上的阻塞线程都会变成可运行状态。第一个变成运行状态的线程可以对互斥量加锁，其余线程将会看到互斥量依然被锁住，只能回去再次等待它重新变为可用。</p>
+<p>mutex是睡眠等待（sleep waiting）类型的锁，<strong>当线程抢互斥锁失败的时候，线程会陷入休眠</strong>。优点就是节省CPU资源，缺点就是休眠唤醒会消耗一点时间。</p>
+<p>互斥锁的接口通常包括 <code>mutex_init()</code>、<code>mutex_lock()</code>、<code>mutex_unlock()</code> 和 <code>mutex_destroy()</code>。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;pthread.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 初始化互斥锁</span></span><br><span class="line"><span class="type">pthread_mutex_t</span> mutex;</span><br><span class="line">pthread_mutex_init(&amp;mutex, <span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 加锁</span></span><br><span class="line">pthread_mutex_lock(&amp;mutex);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 解锁</span></span><br><span class="line">pthread_mutex_unlock(&amp;mutex);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 销毁互斥锁</span></span><br><span class="line">pthread_mutex_destroy(&amp;mutex);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="2-2-读写锁"><a href="#2-2-读写锁" class="headerlink" title="2.2 读写锁"></a>2.2 读写锁</h2><p>读写锁和互斥量类似，是另一种实现线程同步的方式，但是它将操作分为读、写两种方式，可以多个线程同时占用读模式，但只允许一个线程写入。</p>
+<ul>
+<li>写独占：写锁占用时，其他线程加读锁或者写锁时都会阻塞（并非失败）</li>
+<li>读共享：读锁占用时，其他线程加写锁时会阻塞，加读锁会成功</li>
+</ul>
+<p>读写锁有两种策略：</p>
+<ul>
+<li>强读同步：读锁优先，只要写锁没有占用那么就可以加读锁</li>
+<li>强写同步：写锁优先，只能等到所有正在等待或者执行的写锁执行完成后才能加读锁</li>
+</ul>
+<p>大部分读写锁的实现都采用的是“强写同步”策略，对尝试加锁的操作进行排队，如果前面已经有尝试加写被锁阻塞住的话，后续加读锁也都会被阻塞住（尽管当前时刻是读锁占用的状态）。这样做的目的主要是为了避免“写饥饿”，在“多读少写”的情况下防止数据修改延迟过高。</p>
+<p>读写锁的接口通常包括 <code>rwlock_init()</code>、<code>rwlock_rdlock()</code>、<code>rwlock_wrlock()</code>、<code>rwlock_unlock()</code> 和 <code>rwlock_destroy()</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;pthread.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 初始化读写锁</span></span><br><span class="line"><span class="type">pthread_rwlock_t</span> rwlock;</span><br><span class="line">pthread_rwlock_init(&amp;rwlock, <span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 读取加锁</span></span><br><span class="line">pthread_rwlock_rdlock(&amp;rwlock);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 写入加锁</span></span><br><span class="line">pthread_rwlock_wrlock(&amp;rwlock);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 解锁</span></span><br><span class="line">pthread_rwlock_unlock(&amp;rwlock);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 销毁读写锁</span></span><br><span class="line">pthread_rwlock_destroy(&amp;rwlock);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="2-3-条件变量"><a href="#2-3-条件变量" class="headerlink" title="2.3 条件变量"></a>2.3 条件变量</h2><p>严格意义上来说，条件变量的主要作用不是处理线程同步, 而是进行线程的阻塞。如果在多线程程序中只使用条件变量无法实现线程的同步, 必须要配合互斥锁来使用。</p>
+<p>线程可以等待某个条件变量的发生，如果条件不满足，则线程会阻塞等待，并在条件满足时被唤醒。</p>
+<p>条件变量的接口通常包括 <code>cond_init()</code>、<code>cond_wait()</code>、<code>cond_signal()</code> 和 <code>cond_broadcast()</code>。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;pthread.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 初始化条件变量和关联的互斥锁</span></span><br><span class="line"><span class="type">pthread_cond_t</span> cond = PTHREAD_COND_INITIALIZER;</span><br><span class="line"><span class="type">pthread_mutex_t</span> mutex = PTHREAD_MUTEX_INITIALIZER;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 等待条件满足</span></span><br><span class="line">pthread_mutex_lock(&amp;mutex);</span><br><span class="line">pthread_cond_wait(&amp;cond, &amp;mutex);</span><br><span class="line">pthread_mutex_unlock(&amp;mutex);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 发送信号通知条件满足</span></span><br><span class="line">pthread_cond_signal(&amp;cond);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 广播通知条件满足</span></span><br><span class="line">pthread_cond_broadcast(&amp;cond);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="2-4-信号量"><a href="#2-4-信号量" class="headerlink" title="2.4 信号量"></a>2.4 信号量</h2><p>信号量是一种更为通用的同步原语，用来控制多个线程对共享资源的访问。</p>
+<p>信号量本质上是一个非负的整数计数器，表示可用资源的数量。当资源被占用时，计数器减少；当资源释放时，计数器增加。</p>
+<p>信号量提供了两种操作：P操作（等待信号量）和V操作（释放信号量），用于控制资源的访问和释放，也被称为PV原子操作：</p>
+<ul>
+<li>P操作：即信号量sem减一，若sem小于等于0则P操作被阻塞，直到sem变量大于0为止</li>
+<li>V操作：即信号量sem加一</li>
+</ul>
+<p>信号量的接口通常包括 <code>sem_init()</code>、<code>sem_wait()</code>、<code>sem_post()</code> 和 <code>sem_destroy()</code>。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;semaphore.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 初始化信号量</span></span><br><span class="line"><span class="type">sem_t</span> semaphore;</span><br><span class="line">sem_init(&amp;semaphore, <span class="number">0</span>, <span class="number">1</span>); <span class="comment">// 初始值为1，表示有一个资源可用</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 等待信号量</span></span><br><span class="line">sem_wait(&amp;semaphore);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 发送信号量</span></span><br><span class="line">sem_post(&amp;semaphore);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 销毁信号量</span></span><br><span class="line">sem_destroy(&amp;semaphore);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/03/26/%E5%A4%9A%E7%BA%BF%E7%A8%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="stars zhang">
+      <meta itemprop="description" content="永远迎着光走">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="stars">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/03/26/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" class="post-title-link" itemprop="url">多线程</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-03-26 19:37:30 / 修改时间：20:43:59" itemprop="dateCreated datePublished" datetime="2024-03-26T19:37:30+08:00">2024-03-26</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>一个程序只有一个进程，但可以拥有至少一个线程（主线程），这些线程共同拥有进程的地址空间。</p>
+<p>C++11通过std::thread进行多线程编程</p>
+<h1 id="1-构造函数"><a href="#1-构造函数" class="headerlink" title="1. 构造函数"></a>1. 构造函数</h1><table>
+<thead>
+<tr>
+<th align="center">函数</th>
+<th align="center">类别</th>
+<th align="center">作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">thread() noexcept</td>
+<td align="center">默认构造函数</td>
+<td align="center">创建一个线程，但什么也不做</td>
+</tr>
+<tr>
+<td align="center">template&lt; class Function, class… Args &gt;<br>explicit thread( Function&amp;&amp; f, Args&amp;&amp;… args )</td>
+<td align="center">初始化构造函数</td>
+<td align="center">创建一个线程，以<code>args</code>为参数执行<code>fn</code>函数</td>
+</tr>
+<tr>
+<td align="center">thread( thread&amp;&amp; other ) noexcept</td>
+<td align="center">移动构造函数</td>
+<td align="center">将 other 的线程所有权转移给新的thread 对象</td>
+</tr>
+<tr>
+<td align="center">thread( const thread&amp; ) &#x3D; delete</td>
+<td align="center">复制构造函数</td>
+<td align="center">使用&#x3D;delete显示删除拷贝构造, 不允许线程对象之间的拷贝</td>
+</tr>
+</tbody></table>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2024/03/25/IO%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -185,8 +385,18 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2024-03-25 10:00:09" itemprop="dateCreated datePublished" datetime="2024-03-25T10:00:09+08:00">2024-03-25</time>
+              <time title="创建时间：2024-03-25 10:00:09 / 修改时间：10:45:14" itemprop="dateCreated datePublished" datetime="2024-03-25T10:00:09+08:00">2024-03-25</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
             </span>
 
           
@@ -200,7 +410,39 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          
+          <p>应用通常需要在多个文件描述符上阻塞：在键盘输入（stdin）、进程间通信以及很多文件之间协调I&#x2F;O 。在传统的IO模型中，每个IO操作都需要创建一个新的线程或进程来处理。如果不使用线程，而是独立处理每个文件描述，单个进程无法同时在多个文件描述符上阻塞。 </p>
+<p>I&#x2F;O多路复用支持一个线程同时监测多个文件描述符并且这个过程是阻塞的，当有IO操作可以进行时才唤醒线程进行处理，避免了频繁的线程创建和切换，提高了系统的效率。 </p>
+<p>多线程&#x2F;多进程并发和IO多路转接的并发处理流程进行对比（服务器端）：</p>
+<ul>
+<li><p>多线程&#x2F;多进程并发</p>
+<ul>
+<li>主线程&#x2F;父进程：调用 accept()监测客户端连接请求，如果没有新的客户端的连接请求，当前线程&#x2F;进程会阻塞；如果有新的客户端连接请求解除阻塞，建立连接</li>
+<li>子线程&#x2F;子进程：和建立连接的客户端通信。<ul>
+<li>调用 read() &#x2F; recv() 接收客户端发送的通信数据，如果没有通信数据，当前线程&#x2F;进程会阻塞，数据到达之后阻塞自动解除</li>
+<li>调用 write() &#x2F; send() 给客户端发送数据，如果写缓冲区已满，当前线程&#x2F;进程会阻塞，否则将待发送数据写入写缓冲区中</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>IO多路复用并发</p>
+<ul>
+<li><p>使用IO多路复用函数委托内核检测服务器端所有的文件描述符（通信和监听两类），检测过程会导致进程&#x2F;线程的阻塞，如果检测到已就绪的文件描述符阻塞解除，并将这些已就绪的文件描述符传出</p>
+</li>
+<li><p>根据类型对传出的所有已就绪文件描述符进行判断，并做出不同的处理</p>
+<ul>
+<li><p>监听的文件描述符：和客户端建立连接，此时调用accept()不会导致程序阻塞，因为监听的文件描述符是已就绪的（有新请求）</p>
+</li>
+<li><p>通信的文件描述符：调用通信函数和已建立连接的客户端通信，调用 read() &#x2F; recv() 不会阻塞程序，因为通信的文件描述符是就绪的，读缓冲区内已有数据；调用 write() &#x2F; send() 不会阻塞程序，因为通信的文件描述符是就绪的，写缓冲区不满，可以往里面写数据</p>
+</li>
+</ul>
+</li>
+<li><p>对这些文件描述符继续进行下一轮的检测</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>Linux提供了三种I&#x2F;O多路复用方案：select、poll和epoll </p>
+
       
     </div>
 
@@ -242,10 +484,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2024-03-22 15:45:58 / 修改时间：19:10:00" itemprop="dateCreated datePublished" datetime="2024-03-22T15:45:58+08:00">2024-03-22</time>
+              <time title="创建时间：2024-03-22 15:45:58" itemprop="dateCreated datePublished" datetime="2024-03-22T15:45:58+08:00">2024-03-22</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-03-25 15:01:11" itemprop="dateModified" datetime="2024-03-25T15:01:11+08:00">2024-03-25</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -267,7 +515,37 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          
+          <p>信号是一种软件中断，它提供了异步事件的处理机制。信号作为一种进程间通信（IPC）的基本形式，而一个进程可以给另一个进程发送信号。信号本质上是一个整数，不同的信号对应不同的值，由于信号的结构简单所以天生不能携带很大的信息量，但是信号在系统中的优先级是非常高的。</p>
+<p>每个信号都有一个以SIG为前缀的符号名称。信号的编号从1开始（通常是SIGHUP）线性增加。总共有大约31个<br>信号，但是大多数的程序只用到了它们中的一少部分。 </p>
+<p>信号有三种状态：产生、未决、递达</p>
+<p>产生：键盘输入, 函数调用, 执行shell命令, 对硬件进行非法访问都会产生信号</p>
+<p>未决：信号产生, 但还没有被处理</p>
+<p>递达：信号被处理后</p>
+<h1 id="信号相关函数"><a href="#信号相关函数" class="headerlink" title="信号相关函数"></a>信号相关函数</h1><p>**signal()**：该函数用于设置信号处理函数，其原型为：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;signal.h&gt;</span></span></span><br><span class="line"><span class="type">void</span> (*signal(<span class="type">int</span> signum, <span class="type">void</span> (*func)(<span class="type">int</span>)))(<span class="type">int</span>);</span><br></pre></td></tr></table></figure>
+
+<p>它接受两个参数，<code>signum</code> 表示要捕获的信号类型，<code>func</code> 表示信号处理函数的指针。当收到指定的信号时，系统将调用指定的处理函数。</p>
+<p>**kill()**：用于向指定的进程发送信号。其原型为：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">kill</span><span class="params">(<span class="type">pid_t</span> pid, <span class="type">int</span> sig)</span>;</span><br></pre></td></tr></table></figure>
+
+<p><code>pid</code> 参数指定了目标进程的进程ID，<code>sig</code> 参数指定了要发送的信号类型。</p>
+<p>**raise()**：用于向当前进程发送信号。其原型为：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">raise</span><span class="params">(<span class="type">int</span> sig)</span>;</span><br></pre></td></tr></table></figure>
+
+<p><code>sig</code> 参数指定了要发送的信号类型。</p>
+<p>**abort()**：给当前进程发送一个固定信号 (SIGABRT)，函数原型：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="type">void</span> <span class="title function_">abort</span><span class="params">(<span class="type">void</span>)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>调用 <code>abort()</code> 函数可以快速终止进程，并进行相应的清理工作</p>
+<p>**sigpending()**：用于获取当前进程挂起的信号集。其原型为：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">sigpending</span><span class="params">(<span class="type">sigset_t</span> *<span class="built_in">set</span>)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>它将当前未决的信号放入由 <code>set</code> 参数指向的信号集中</p>
+<p>**sigprocmask()**：用于检查或修改当前进程的信号屏蔽字。其原型为：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">sigprocmask</span><span class="params">(<span class="type">int</span> how, <span class="type">const</span> <span class="type">sigset_t</span> *<span class="built_in">set</span>, <span class="type">sigset_t</span> *oldset)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>通过 <code>sigprocmask()</code> 函数可以设置当前进程的信号屏蔽字，从而阻塞或解除阻塞特定的信号。</p>
+
       
     </div>
 
@@ -317,7 +595,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-03-24 11:19:08" itemprop="dateModified" datetime="2024-03-24T11:19:08+08:00">2024-03-24</time>
+                <time title="修改时间：2024-03-25 15:17:35" itemprop="dateModified" datetime="2024-03-25T15:17:35+08:00">2024-03-25</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -404,7 +682,31 @@
 <li><p>options: 控制函数是阻塞还是非阻塞，0表示阻塞， <code>WNOHANG</code>表示非阻塞</p>
 </li>
 </ul>
-<h1 id="进程间通信"><a href="#进程间通信" class="headerlink" title="进程间通信"></a>进程间通信</h1><p>Linux支持的进程间通信机制包括管道、命名管道、信号量、消息队列、共享内存和快速用户空间互斥 </p>
+<h1 id="6-进程间通信"><a href="#6-进程间通信" class="headerlink" title="6. 进程间通信"></a>6. 进程间通信</h1><p>Linux支持的进程间通信机制包括<strong>管道</strong>、<strong>命名管道</strong>、<strong>信号量</strong>、<strong>消息队列</strong>、<strong>共享内存</strong>、<strong>套接字</strong></p>
+<h2 id="6-1-管道"><a href="#6-1-管道" class="headerlink" title="6.1 管道"></a>6.1 管道</h2><p>管道是一种半双工的通信方式，分为<strong>匿名管道pipe</strong>和<strong>命名管道FIFO</strong>两种。匿名管道只存在于内存中，且只能用于具有<strong>亲缘关系的进程</strong>，通常用于父子进程之间。命名管道（FIFO）则是一种特殊的文件，可以用于不同进程之间的通信。</p>
+<p><code>pipe()</code> 系统调用创建一个管道，返回两个文件描述符，一个用于读取数据，另一个用于写入数据。通常与 <code>fork()</code> 系统调用一起使用，创建一个父子进程，然后使用 <code>dup()</code> 复制文件描述符以便父子进程可以在管道中进行通信，最后使用 <code>close()</code> 关闭不需要的文件描述符。</p>
+<p>使用 <code>mkfifo()</code> 创建一个命名管道，然后可以使用 <code>open()</code> 打开该命名管道，之后使用 <code>read()</code> 和 <code>write()</code> 进行数据的读写操作，最后使用 <code>close()</code> 关闭文件描述符。</p>
+<h2 id="6-2-消息队列"><a href="#6-2-消息队列" class="headerlink" title="6.2 消息队列"></a>6.2 消息队列</h2><p>消息队列是一种通过消息传递进行通信的机制，允许一个进程向队列发送消息，其他进程从队列中接收消息。</p>
+<p>使用 <code>msgget()</code> 创建或打开一个消息队列，然后使用 <code>msgsnd()</code> 发送消息到队列中，使用 <code>msgrcv()</code> 从队列中接收消息，使用 <code>msgctl()</code> 控制消息队列的属性。</p>
+<h2 id="6-3-信号量"><a href="#6-3-信号量" class="headerlink" title="6.3 信号量"></a>6.3 信号量</h2><p>信号量是一种用于进程间同步和互斥的机制，通常用于解决共享资源的访问问题</p>
+<p>使用 <code>semget()</code> 创建或打开一个信号量集，然后使用 <code>semop()</code> 对信号量进行操作，包括对信号量的增减、等待等操作，最后使用 <code>semctl()</code> 控制信号量集的属性。</p>
+<h2 id="6-4-共享内存"><a href="#6-4-共享内存" class="headerlink" title="6.4 共享内存"></a>6.4 共享内存</h2><p>共享内存是一种高效的进程间通信方式，允许多个进程直接访问同一块内存区域，从而实现数据共享。</p>
+<p>使用 <code>shmget()</code> 创建或打开一个共享内存段，然后使用 <code>shmat()</code> 将共享内存连接到当前进程的地址空间，之后可以直接在内存中进行读写操作，最后使用 <code>shmdt()</code> 断开共享内存的连接，使用 <code>shmctl()</code> 控制共享内存的属性。</p>
+<h2 id="6-5-套接字"><a href="#6-5-套接字" class="headerlink" title="6.5 套接字"></a>6.5 套接字</h2><p>套接字是一种在网络编程中常用的进程间通信方式，它允许不同主机上的进程进行通信</p>
+<p>使用 <code>socket()</code> 创建一个套接字，然后使用 <code>bind()</code> 绑定套接字到特定的地址和端口，使用 <code>listen()</code> 监听连接请求，使用 <code>accept()</code> 接受连接请求并创建新的套接字，然后使用 <code>connect()</code> 连接到远程主机的套接字，之后可以使用 <code>send()</code> 和 <code>recv()</code> 进行数据的发送和接收，最后使用 <code>close()</code> 关闭套接字。</p>
+<h1 id="7-守护进程"><a href="#7-守护进程" class="headerlink" title="7. 守护进程"></a>7. 守护进程</h1><p>守护进程（Daemon Process）是在后台运行的一种特殊类型的进程，它通常在系统启动时启动，并在整个系统运行期间持续执行，独立于控制终端并且周期性地执行某种任务或等待处理某些发生的事件。</p>
+<h2 id="如何创建守护进程"><a href="#如何创建守护进程" class="headerlink" title="如何创建守护进程"></a>如何创建守护进程</h2><ol>
+<li>调用fork()，创建新的子进程</li>
+<li>在父进程中调用exit()。这会确保父进程的父进程（即守护进程的祖父进程）在其子进程结束时会退出，保证了守护进程的父进程不再继续运行，而且守护进程不是首进程。最后一点是成功完成下一步骤的前提 </li>
+<li>通过调用 <code>setsid()</code> 函数创建一个新的会话，使守护进程成为会话的领头进程，并且摆脱终端的控制。</li>
+<li>在子进程中，通过调用 <code>umask()</code> 函数来<strong>修改文件掩码</strong>，以确保守护进程创建的文件具有合适的权限。</li>
+<li>为了确保守护进程不会影响其他进程的工作目录，一般会将工作目录<strong>切换</strong>到根<strong>目录</strong></li>
+<li><strong>关闭</strong>守护进程继承的<strong>文件描述符</strong>，以避免其影响其他进程或继承终端。</li>
+<li>为了确保守护进程能够正常退出或重新加载配置等，需要注册一些信号处理函数，比如 <code>SIGTERM</code> 和 <code>SIGHUP</code> 信号。</li>
+<li>在守护进程初始化完成后，执行它的核心功能，比如提供网络服务、定时任务等。</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/stat.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;signal.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">signal_handler</span><span class="params">(<span class="type">int</span> sig)</span> &#123;</span><br><span class="line">    <span class="comment">// 处理信号</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="comment">// 创建子进程</span></span><br><span class="line">    <span class="type">pid_t</span> pid = fork();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (pid &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="comment">// 创建失败</span></span><br><span class="line">        <span class="built_in">exit</span>(EXIT_FAILURE);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (pid &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="comment">// 父进程退出</span></span><br><span class="line">        <span class="built_in">exit</span>(EXIT_SUCCESS);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 在子进程中执行以下操作</span></span><br><span class="line">    <span class="comment">// 创建一个新会话</span></span><br><span class="line">    <span class="keyword">if</span> (setsid() &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">exit</span>(EXIT_FAILURE);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 修改文件掩码</span></span><br><span class="line">    umask(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 改变工作目录</span></span><br><span class="line">    chdir(<span class="string">&quot;/&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 关闭文件描述符</span></span><br><span class="line">    close(STDIN_FILENO);</span><br><span class="line">    close(STDOUT_FILENO);</span><br><span class="line">    close(STDERR_FILENO);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 注册信号处理函数</span></span><br><span class="line">    signal(SIGTERM, signal_handler);</span><br><span class="line">    signal(SIGHUP, signal_handler);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 执行守护进程的核心功能</span></span><br><span class="line">    <span class="keyword">while</span> (<span class="number">1</span>) &#123;</span><br><span class="line">        <span class="comment">// Do something</span></span><br><span class="line">        sleep(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 
       
     </div>
@@ -889,78 +1191,11 @@ lseek(fd, 0, SEEK_END); //得到文件的总大小
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/03/16/hello-world/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="stars zhang">
-      <meta itemprop="description" content="永远迎着光走">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="stars">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/03/16/hello-world/" class="post-title-link" itemprop="url">Hello World</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-03-16 23:43:02" itemprop="dateCreated datePublished" datetime="2024-03-16T23:43:02+08:00">2024-03-16</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+  </nav>
 
 
 
@@ -1025,20 +1260,20 @@ lseek(fd, 0, SEEK_END); //得到文件的总大小
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-count">11</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-count">9</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
