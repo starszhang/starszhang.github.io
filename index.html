@@ -162,6 +162,95 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/04/05/%E6%8C%87%E9%92%88%E5%92%8C%E5%BC%95%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="stars zhang">
+      <meta itemprop="description" content="永远迎着光走">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="stars">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/04/05/%E6%8C%87%E9%92%88%E5%92%8C%E5%BC%95%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB/" class="post-title-link" itemprop="url">指针和引用的区别</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-04-05 18:15:10 / 修改时间：18:49:25" itemprop="dateCreated datePublished" datetime="2024-04-05T18:15:10+08:00">2024-04-05</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <ol>
+<li>定义</li>
+</ol>
+<p>（1）指针是一个变量，其值为另一个变量的地址，指向内存的一个存储单元。是一个对象实体</p>
+<p>（2）而引用的本质是给变量起别名，允许通过这个别名去直接操纵和修改对象本身的属性。引用跟原来的变量实质上是同一个东西。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">5</span>;</span><br><span class="line"><span class="comment">//指针</span></span><br><span class="line"><span class="type">int</span>* p = &amp;a;</span><br><span class="line"><span class="comment">//引用</span></span><br><span class="line"><span class="type">int</span>&amp; b = a;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>空指针与无效引用</li>
+</ol>
+<p>（1）指针可以为空，表示它不指向任何有效的内存地址。在指针没有被初始化时，它的值通常是未定义的，为了避免错误，可以将其初始化为 <code>nullptr</code> 或 <code>NULL</code>。</p>
+<p>（2）引用不能为空，它必须在声明时被初始化，并且始终指向某个对象。试图将引用声明为 null 或者空值会导致编译错误。</p>
+<ol start="3">
+<li>初始化</li>
+</ol>
+<p>（1）指针需要进行初始化，可以使用取地址符号 <code>&amp;</code> 来获取一个变量的地址，也可以将另一个指针赋值给它。</p>
+<p>（2）引用在声明时必须初始化，而且一旦初始化后，不能被重新绑定到其他变量。</p>
+<ol start="4">
+<li>运算符</li>
+</ol>
+<p>（1）指针可以通过解引用 <code>*</code> 运算符来访问所指向的对象，也可以使用箭头 <code>-&gt;</code> 运算符来访问成员，例如：<code>p-&gt;member</code>。</p>
+<p>（2）引用则不需要解引用操作符，因为它们在使用时就是被解引用的。例如：<code>b.member</code>。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2024/03/27/%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -185,10 +274,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2024-03-27 13:12:33 / 修改时间：15:20:05" itemprop="dateCreated datePublished" datetime="2024-03-27T13:12:33+08:00">2024-03-27</time>
+              <time title="创建时间：2024-03-27 13:12:33" itemprop="dateCreated datePublished" datetime="2024-03-27T13:12:33+08:00">2024-03-27</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-03-30 13:22:45" itemprop="dateModified" datetime="2024-03-30T13:22:45+08:00">2024-03-30</time>
+              </span>
 
           
 
@@ -247,6 +342,8 @@
 
 <h1 id="3-C-示例"><a href="#3-C-示例" class="headerlink" title="3. C++示例"></a>3. C++示例</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;thread&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;mutex&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;shared_mutex&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;condition_variable&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;semaphore.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span> <span class="comment">// 用于 sleep 函数</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 共享资源</span></span><br><span class="line"><span class="type">int</span> shared_data = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 互斥锁</span></span><br><span class="line">mutex mtx;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 读写锁</span></span><br><span class="line">shared_mutex rw_mtx;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 条件变量</span></span><br><span class="line">condition_variable cond_var;</span><br><span class="line"><span class="type">bool</span> ready = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 信号量</span></span><br><span class="line"><span class="type">sem_t</span> semaphore;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 互斥锁示例</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">mutex_example</span><span class="params">(<span class="type">int</span> id)</span> </span>&#123;</span><br><span class="line">    mtx.<span class="built_in">lock</span>();</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;Thread &quot;</span> &lt;&lt; id &lt;&lt; <span class="string">&quot; is accessing shared resource with mutex. Shared data: &quot;</span> &lt;&lt; shared_data &lt;&lt; endl;</span><br><span class="line">    shared_data++;</span><br><span class="line">    mtx.<span class="built_in">unlock</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 读写锁示例</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">rw_lock_example</span><span class="params">(<span class="type">int</span> id)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (id % <span class="number">2</span> == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="comment">// 读操作</span></span><br><span class="line">        <span class="function">shared_lock&lt;shared_mutex&gt; <span class="title">lock</span><span class="params">(rw_mtx)</span></span>;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;Thread &quot;</span> &lt;&lt; id &lt;&lt; <span class="string">&quot; is reading shared resource with read-write lock. Shared data: &quot;</span> &lt;&lt; shared_data &lt;&lt; endl;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// 写操作</span></span><br><span class="line">        unique_lock&lt;shared_mutex&gt; <span class="built_in">lock</span>(rw_mtx);</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;Thread &quot;</span> &lt;&lt; id &lt;&lt; <span class="string">&quot; is writing shared resource with read-write lock. Shared data: &quot;</span> &lt;&lt; shared_data &lt;&lt; endl;</span><br><span class="line">        shared_data++;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 条件变量示例</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">cond_var_example</span><span class="params">(<span class="type">int</span> id)</span> </span>&#123;</span><br><span class="line">    <span class="function">unique_lock&lt;mutex&gt; <span class="title">lock</span><span class="params">(mtx)</span></span>;</span><br><span class="line">    cond_var.<span class="built_in">wait</span>(lock, []&#123; <span class="keyword">return</span> ready; &#125;);</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;Thread &quot;</span> &lt;&lt; id &lt;&lt; <span class="string">&quot; is accessing shared resource with condition variable. Shared data: &quot;</span> &lt;&lt; shared_data &lt;&lt; endl;</span><br><span class="line">    shared_data++;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 信号量示例</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">semaphore_example</span><span class="params">(<span class="type">int</span> id)</span> </span>&#123;</span><br><span class="line">    <span class="built_in">sem_wait</span>(&amp;semaphore);</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;Thread &quot;</span> &lt;&lt; id &lt;&lt; <span class="string">&quot; is accessing shared resource with semaphore. Shared data: &quot;</span> &lt;&lt; shared_data &lt;&lt; endl;</span><br><span class="line">    shared_data++;</span><br><span class="line">    <span class="built_in">sem_post</span>(&amp;semaphore);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 初始化信号量</span></span><br><span class="line">    <span class="built_in">sem_init</span>(&amp;semaphore, <span class="number">0</span>, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 创建线程</span></span><br><span class="line">    <span class="function">thread <span class="title">t1</span><span class="params">(mutex_example, <span class="number">1</span>)</span></span>;</span><br><span class="line">    <span class="function">thread <span class="title">t2</span><span class="params">(mutex_example, <span class="number">2</span>)</span></span>;</span><br><span class="line">    <span class="function">thread <span class="title">t3</span><span class="params">(rw_lock_example, <span class="number">3</span>)</span></span>;</span><br><span class="line">    <span class="function">thread <span class="title">t4</span><span class="params">(rw_lock_example, <span class="number">4</span>)</span></span>;</span><br><span class="line">    <span class="function">thread <span class="title">t5</span><span class="params">(cond_var_example, <span class="number">5</span>)</span></span>;</span><br><span class="line">    <span class="function">thread <span class="title">t6</span><span class="params">(cond_var_example, <span class="number">6</span>)</span></span>;</span><br><span class="line">    <span class="function">thread <span class="title">t7</span><span class="params">(semaphore_example, <span class="number">7</span>)</span></span>;</span><br><span class="line">    <span class="function">thread <span class="title">t8</span><span class="params">(semaphore_example, <span class="number">8</span>)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 通知条件变量</span></span><br><span class="line">    <span class="built_in">sleep</span>(<span class="number">1</span>);</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function">lock_guard&lt;mutex&gt; <span class="title">lock</span><span class="params">(mtx)</span></span>;</span><br><span class="line">        ready = <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    cond_var.<span class="built_in">notify_all</span>();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 等待线程结束</span></span><br><span class="line">    t1.<span class="built_in">join</span>();</span><br><span class="line">    t2.<span class="built_in">join</span>();</span><br><span class="line">    t3.<span class="built_in">join</span>();</span><br><span class="line">    t4.<span class="built_in">join</span>();</span><br><span class="line">    t5.<span class="built_in">join</span>();</span><br><span class="line">    t6.<span class="built_in">join</span>();</span><br><span class="line">    t7.<span class="built_in">join</span>();</span><br><span class="line">    t8.<span class="built_in">join</span>();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 销毁信号量</span></span><br><span class="line">    <span class="built_in">sem_destroy</span>(&amp;semaphore);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
+<h1 id="4-死锁"><a href="#4-死锁" class="headerlink" title="4. 死锁"></a>4. 死锁</h1><p>死锁（Deadlock）是指两个或多个进程(线程)在互相等待对方持有的资源而无法继续执行的情况。在死锁状态下，每个进程都在等待某个资源被释放，而该资源被其他进程所持有，导致所有进程都无法继续执行。</p>
+<p>死锁发生的<strong>主要原因</strong>通常是由于多个进程同时持有某些资源，并且每个进程都在等待其他进程释放它所需要的资源。</p>
 
       
     </div>
@@ -280,7 +377,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2024/03/26/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" class="post-title-link" itemprop="url">多线程</a>
+            <a href="/2024/03/26/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" class="post-title-link" itemprop="url">C++并发与多线程</a>
         </h2>
 
         <div class="post-meta">
@@ -289,10 +386,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2024-03-26 19:37:30 / 修改时间：20:43:59" itemprop="dateCreated datePublished" datetime="2024-03-26T19:37:30+08:00">2024-03-26</time>
+              <time title="创建时间：2024-03-26 19:37:30" itemprop="dateCreated datePublished" datetime="2024-03-26T19:37:30+08:00">2024-03-26</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-04-05 10:15:47" itemprop="dateModified" datetime="2024-04-05T10:15:47+08:00">2024-04-05</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -597,7 +700,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-03-25 15:17:35" itemprop="dateModified" datetime="2024-03-25T15:17:35+08:00">2024-03-25</time>
+                <time title="修改时间：2024-03-30 13:29:47" itemprop="dateModified" datetime="2024-03-30T13:29:47+08:00">2024-03-30</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -687,12 +790,23 @@
 <h1 id="6-进程间通信"><a href="#6-进程间通信" class="headerlink" title="6. 进程间通信"></a>6. 进程间通信</h1><p>Linux支持的进程间通信机制包括<strong>管道</strong>、<strong>命名管道</strong>、<strong>信号量</strong>、<strong>消息队列</strong>、<strong>共享内存</strong>、<strong>套接字</strong></p>
 <h2 id="6-1-管道"><a href="#6-1-管道" class="headerlink" title="6.1 管道"></a>6.1 管道</h2><p>管道是一种半双工的通信方式，分为<strong>匿名管道pipe</strong>和<strong>命名管道FIFO</strong>两种。匿名管道只存在于内存中，且只能用于具有<strong>亲缘关系的进程</strong>，通常用于父子进程之间。命名管道（FIFO）则是一种特殊的文件，可以用于不同进程之间的通信。</p>
 <p><code>pipe()</code> 系统调用创建一个管道，返回两个文件描述符，一个用于读取数据，另一个用于写入数据。通常与 <code>fork()</code> 系统调用一起使用，创建一个父子进程，然后使用 <code>dup()</code> 复制文件描述符以便父子进程可以在管道中进行通信，最后使用 <code>close()</code> 关闭不需要的文件描述符。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="comment">// 创建一个匿名的管道, 得到两个可用的文件描述符</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">pipe</span><span class="params">(<span class="type">int</span> pipefd[<span class="number">2</span>])</span>;</span><br></pre></td></tr></table></figure>
+
+<p>参数：</p>
+<ul>
+<li>pipefd[0]: 对应管道读端的文件描述符，通过它可以将数据从管道中读出</li>
+<li>pipefd[1]: 对应管道写端的文件描述符，通过它可以将数据写入到管道中</li>
+</ul>
+<p>返回值：成功返回0，失败返回-1</p>
 <p>使用 <code>mkfifo()</code> 创建一个命名管道，然后可以使用 <code>open()</code> 打开该命名管道，之后使用 <code>read()</code> 和 <code>write()</code> 进行数据的读写操作，最后使用 <code>close()</code> 关闭文件描述符。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/stat.h&gt;</span></span></span><br><span class="line"><span class="comment">// int open(const char *pathname, int flags, mode_t mode);</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">mkfifo</span><span class="params">(<span class="type">const</span> <span class="type">char</span> *pathname, <span class="type">mode_t</span> mode)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>参数:<br>pathname: 要创建的有名管道的名字<br>mode: 文件的操作权限, 和open()的第三个参数一个作用，最终权限: (mode &amp; ~umask)<br>返回值：创建成功返回 0，失败返回 -1</p>
 <h2 id="6-2-消息队列"><a href="#6-2-消息队列" class="headerlink" title="6.2 消息队列"></a>6.2 消息队列</h2><p>消息队列是一种通过消息传递进行通信的机制，允许一个进程向队列发送消息，其他进程从队列中接收消息。</p>
 <p>使用 <code>msgget()</code> 创建或打开一个消息队列，然后使用 <code>msgsnd()</code> 发送消息到队列中，使用 <code>msgrcv()</code> 从队列中接收消息，使用 <code>msgctl()</code> 控制消息队列的属性。</p>
 <h2 id="6-3-信号量"><a href="#6-3-信号量" class="headerlink" title="6.3 信号量"></a>6.3 信号量</h2><p>信号量是一种用于进程间同步和互斥的机制，通常用于解决共享资源的访问问题</p>
 <p>使用 <code>semget()</code> 创建或打开一个信号量集，然后使用 <code>semop()</code> 对信号量进行操作，包括对信号量的增减、等待等操作，最后使用 <code>semctl()</code> 控制信号量集的属性。</p>
-<h2 id="6-4-共享内存"><a href="#6-4-共享内存" class="headerlink" title="6.4 共享内存"></a>6.4 共享内存</h2><p>共享内存是一种高效的进程间通信方式，允许多个进程直接访问同一块内存区域，从而实现数据共享。</p>
+<h2 id="6-4-共享内存"><a href="#6-4-共享内存" class="headerlink" title="6.4 共享内存"></a>6.4 共享内存</h2><p>共享内存是一种高效的进程间通信方式，允许多个进程直接访问同一块内存区域，从而实现数据共享。<strong>在所有进程间通信的方式中共享内存的效率是最高的。</strong></p>
 <p>使用 <code>shmget()</code> 创建或打开一个共享内存段，然后使用 <code>shmat()</code> 将共享内存连接到当前进程的地址空间，之后可以直接在内存中进行读写操作，最后使用 <code>shmdt()</code> 断开共享内存的连接，使用 <code>shmctl()</code> 控制共享内存的属性。</p>
 <h2 id="6-5-套接字"><a href="#6-5-套接字" class="headerlink" title="6.5 套接字"></a>6.5 套接字</h2><p>套接字是一种在网络编程中常用的进程间通信方式，它允许不同主机上的进程进行通信</p>
 <p>使用 <code>socket()</code> 创建一个套接字，然后使用 <code>bind()</code> 绑定套接字到特定的地址和端口，使用 <code>listen()</code> 监听连接请求，使用 <code>accept()</code> 接受连接请求并创建新的套接字，然后使用 <code>connect()</code> 连接到远程主机的套接字，之后可以使用 <code>send()</code> 和 <code>recv()</code> 进行数据的发送和接收，最后使用 <code>close()</code> 关闭套接字。</p>
@@ -1119,80 +1233,6 @@ lseek(fd, 0, SEEK_END); //得到文件的总大小
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/03/18/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E4%B8%8E%E9%9D%A2%E5%90%91%E8%BF%87%E7%A8%8B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="stars zhang">
-      <meta itemprop="description" content="永远迎着光走">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="stars">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/03/18/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E4%B8%8E%E9%9D%A2%E5%90%91%E8%BF%87%E7%A8%8B/" class="post-title-link" itemprop="url">面向对象与面向过程的区别</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2024-03-18 10:28:48 / 修改时间：10:57:01" itemprop="dateCreated datePublished" datetime="2024-03-18T10:28:48+08:00">2024-03-18</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">编程</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="1-面向过程"><a href="#1-面向过程" class="headerlink" title="1. 面向过程"></a>1. 面向过程</h1><p><strong>面向过程</strong>是一种以事件为中心的编程思想，按照从上到下的步骤解决问题，通过编写函数来实现每一步的操作，最终依次调用完成程序的运行。</p>
-<h1 id="2-面向对象"><a href="#2-面向对象" class="headerlink" title="2. 面向对象"></a>2. 面向对象</h1><p>简单问题采用面向过程的思想来解决时直接有效，但当问题的规模变得更大、更繁琐时就显得远远不够。<strong>面向对象</strong>是一种基于面向过程的编程思想，是向现实世界模型的自然延伸，是一种“万物皆对象”的编程思想。面向对象把事物抽象成对象的概念，给对象赋一些属性和方法，然后让每个对象去执行自己的方法。</p>
-<p>即以对象为中心，以消息为驱动。</p>
-<h1 id="3-优缺点"><a href="#3-优缺点" class="headerlink" title="3. 优缺点"></a>3. 优缺点</h1><h2 id="面向过程"><a href="#面向过程" class="headerlink" title="面向过程"></a>面向过程</h2><p>优点：效率高，面向过程强调代码的短小精悍，善于结合数据结构来开发高效率的程序。</p>
-<p>缺点：代码重用性低，扩展能力差，后期维护难度比较大。</p>
-<h2 id="面向对象"><a href="#面向对象" class="headerlink" title="面向对象"></a>面向对象</h2><p>优点：基于封装、继承和多态的特性，具有易扩展，代码复用率高，易维护等特点，可以设计低耦合的系统。</p>
-<p>缺点：开销大，性能低。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1262,7 +1302,7 @@ lseek(fd, 0, SEEK_END); //得到文件的总大小
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-count">12</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
