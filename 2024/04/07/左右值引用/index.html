@@ -20,15 +20,15 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="左值、右值左值： 表达式结束后依然存在的持久性对象或者函数，可以被取地址。 左值是可以被标识符引用的表达式，它们代表着内存中的一个位置。例如，变量、数组元素、通过引用或指针访问的对象、具有名称的对象等都是左值。 左值在赋值操作符左侧出现，可以接受赋值操作。  右值： 表达式结束后就消失的临时对象，通常不能被取地址。 右值是不具有持久性的临时对象或者表达式的结果，不能被直接引用。例如，字面常量、临时">
+  <meta name="description" content="1. 左值、右值左值： 表达式结束后依然存在的持久性对象或者函数，可以被取地址。 左值是可以被标识符引用的表达式，它们代表着内存中的一个位置。例如，变量、数组元素、通过引用或指针访问的对象、具有名称的对象等都是左值。 左值在赋值操作符左侧出现，可以接受赋值操作。  右值： 表达式结束后就消失的临时对象，通常不能被取地址。 右值是不具有持久性的临时对象或者表达式的结果，不能被直接引用。例如，字面常量">
 <meta property="og:type" content="article">
 <meta property="og:title" content="左右值引用">
 <meta property="og:url" content="http://example.com/2024/04/07/%E5%B7%A6%E5%8F%B3%E5%80%BC%E5%BC%95%E7%94%A8/index.html">
 <meta property="og:site_name" content="stars">
-<meta property="og:description" content="左值、右值左值： 表达式结束后依然存在的持久性对象或者函数，可以被取地址。 左值是可以被标识符引用的表达式，它们代表着内存中的一个位置。例如，变量、数组元素、通过引用或指针访问的对象、具有名称的对象等都是左值。 左值在赋值操作符左侧出现，可以接受赋值操作。  右值： 表达式结束后就消失的临时对象，通常不能被取地址。 右值是不具有持久性的临时对象或者表达式的结果，不能被直接引用。例如，字面常量、临时">
+<meta property="og:description" content="1. 左值、右值左值： 表达式结束后依然存在的持久性对象或者函数，可以被取地址。 左值是可以被标识符引用的表达式，它们代表着内存中的一个位置。例如，变量、数组元素、通过引用或指针访问的对象、具有名称的对象等都是左值。 左值在赋值操作符左侧出现，可以接受赋值操作。  右值： 表达式结束后就消失的临时对象，通常不能被取地址。 右值是不具有持久性的临时对象或者表达式的结果，不能被直接引用。例如，字面常量">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-04-07T04:32:40.000Z">
-<meta property="article:modified_time" content="2024-04-07T05:31:44.737Z">
+<meta property="article:modified_time" content="2024-04-07T08:34:43.410Z">
 <meta property="article:author" content="stars zhang">
 <meta property="article:tag" content="C++11">
 <meta name="twitter:card" content="summary">
@@ -190,7 +190,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2024-04-07 12:32:40 / 修改时间：13:31:44" itemprop="dateCreated datePublished" datetime="2024-04-07T12:32:40+08:00">2024-04-07</time>
+              <time title="创建时间：2024-04-07 12:32:40 / 修改时间：16:34:43" itemprop="dateCreated datePublished" datetime="2024-04-07T12:32:40+08:00">2024-04-07</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -213,7 +213,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="左值、右值"><a href="#左值、右值" class="headerlink" title="左值、右值"></a>左值、右值</h1><h2 id="左值："><a href="#左值：" class="headerlink" title="左值："></a>左值：</h2><ul>
+        <h1 id="1-左值、右值"><a href="#1-左值、右值" class="headerlink" title="1. 左值、右值"></a>1. 左值、右值</h1><h2 id="左值："><a href="#左值：" class="headerlink" title="左值："></a>左值：</h2><ul>
 <li>表达式结束后依然存在的<strong>持久性对象</strong>或者函数，可以被取地址。</li>
 <li>左值是可以被标识符引用的表达式，它们代表着内存中的一个位置。例如，变量、数组元素、通过引用或指针访问的对象、具有名称的对象等都是左值。</li>
 <li>左值在赋值操作符左侧出现，可以接受赋值操作。</li>
@@ -223,7 +223,7 @@
 <li>右值是不具有持久性的临时对象或者表达式的结果，不能被直接引用。例如，字面常量、临时对象、未命名的临时对象、返回临时对象的函数调用等都是右值。</li>
 <li>右值通常出现在赋值操作符右侧，用于提供值给赋值操作。</li>
 </ul>
-<h1 id="左值引用、右值引用"><a href="#左值引用、右值引用" class="headerlink" title="左值引用、右值引用"></a>左值引用、右值引用</h1><h2 id="左值引用"><a href="#左值引用" class="headerlink" title="左值引用"></a>左值引用</h2><ul>
+<h1 id="2-左值引用、右值引用"><a href="#2-左值引用、右值引用" class="headerlink" title="2. 左值引用、右值引用"></a>2. 左值引用、右值引用</h1><h2 id="左值引用"><a href="#左值引用" class="headerlink" title="左值引用"></a>左值引用</h2><ul>
 <li>左值引用是通过使用 <code>&amp;</code> 符号声明的引用类型。它绑定到左值，并且可以延长左值的生命周期，使得左值可以在函数调用等情况下被修改。</li>
 <li>左值引用不能绑定到右值。</li>
 <li>左值引用常用于函数参数传递、函数返回值和操作符重载等场景，可以实现有效的引用语义和避免不必要的拷贝。</li>
@@ -241,6 +241,26 @@
 <p>std::move函数：把一个左值强制转换成一个右值 。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">4</span>;</span><br><span class="line"><span class="type">int</span> &amp;&amp;b = a; <span class="comment">// error, a是左值</span></span><br><span class="line"><span class="type">int</span> &amp;&amp;c = std::<span class="built_in">move</span>(a); <span class="comment">// ok</span></span><br></pre></td></tr></table></figure>
 
+<h1 id="3-移动语义"><a href="#3-移动语义" class="headerlink" title="3. 移动语义"></a>3. 移动语义</h1><ul>
+<li>利用右值引用允许在对象间转移资源的所有权，而不是传统的拷贝。</li>
+<li>这种转移资源的操作比拷贝操作更高效，特别是对于动态分配的内存或者其他资源。</li>
+<li>移动语义的引入是为了解决传统的拷贝操作在处理临时对象时可能造成性能开销的问题。</li>
+<li>移动语义的核心概念在于，当一个对象被标记为将要被销毁（右值），它的资源可以被安全地“窃取”到另一个对象，而不是简单地复制。这意味着移动操作将对象的资源所有权从一个对象转移到另一个对象，而不会发生资源的复制或者额外的分配。</li>
+</ul>
+<h3 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h3><ol>
+<li>避免不必要的拷贝操作</li>
+<li>实现资源管理的高效转移</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Resource</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Resource</span>() &#123;&#125;</span><br><span class="line">    <span class="comment">// 移动构造函数</span></span><br><span class="line">    <span class="built_in">Resource</span>(Resource&amp;&amp; other) &#123;</span><br><span class="line">        <span class="comment">// 窃取资源</span></span><br><span class="line">        <span class="keyword">this</span>-&gt;data = other.data;</span><br><span class="line">        other.data = <span class="literal">nullptr</span>; <span class="comment">// 将原始对象置为空，避免资源重复释放</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="type">int</span>* data;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Resource res1;</span><br><span class="line">    Resource res2 = std::<span class="built_in">move</span>(res1); <span class="comment">// 调用移动构造函数</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="4-完美转发"><a href="#4-完美转发" class="headerlink" title="4. 完美转发"></a>4. 完美转发</h1><ul>
+<li>允许将参数传递到另一个函数，并保留原始参数的值类别（左值或右值）和const修饰符。</li>
+<li>目标是在保留参数类型的同时，将参数转发给其他函数，实现通用性更强的函数包装或者委托。</li>
+<li>完美转发的关键是使用了<strong>右值引用</strong>和<strong>模板参数</strong>推导。通过使用 <code>std::forward</code> 函数模板，可以在传递参数时保留参数的值类别，确保参数被按原样传递。这种机制在实现泛型编程时尤为有用，可以减少代码的重复和增加可读性。</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">wrapper</span><span class="params">(T&amp;&amp; arg)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// arg 是右值引用或者左值引用，依据传递的实参类型决定</span></span><br><span class="line">    <span class="comment">// 将参数 arg 转发给另一个函数 foo()</span></span><br><span class="line">    <span class="built_in">foo</span>(std::forward&lt;T&gt;(arg)); <span class="comment">// 完美转发</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">foo</span><span class="params">(<span class="type">int</span>&amp; x)</span> </span>&#123; <span class="comment">/* 处理左值引用 */</span> &#125;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">foo</span><span class="params">(<span class="type">int</span>&amp;&amp; x)</span> </span>&#123; <span class="comment">/* 处理右值引用 */</span> &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> x = <span class="number">42</span>;</span><br><span class="line">    <span class="built_in">wrapper</span>(x); <span class="comment">// 传递左值</span></span><br><span class="line">    <span class="built_in">wrapper</span>(<span class="number">42</span>); <span class="comment">// 传递右值</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>wrapper</code> 函数模板通过 <code>std::forward</code> 将参数 <code>arg</code> 完美转发给 <code>foo</code> 函数。无论 <code>arg</code> 是左值还是右值，都可以在 <code>foo</code> 中保持其原始的属性，并且正确地调用对应的 <code>foo</code> 函数重载。</p>
 
     </div>
 
@@ -324,7 +344,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B7%A6%E5%80%BC%E3%80%81%E5%8F%B3%E5%80%BC"><span class="nav-number">1.</span> <span class="nav-text">左值、右值</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A6%E5%80%BC%EF%BC%9A"><span class="nav-number">1.1.</span> <span class="nav-text">左值：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%B3%E5%80%BC%EF%BC%9A"><span class="nav-number">1.2.</span> <span class="nav-text">右值：</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B7%A6%E5%80%BC%E5%BC%95%E7%94%A8%E3%80%81%E5%8F%B3%E5%80%BC%E5%BC%95%E7%94%A8"><span class="nav-number">2.</span> <span class="nav-text">左值引用、右值引用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A6%E5%80%BC%E5%BC%95%E7%94%A8"><span class="nav-number">2.1.</span> <span class="nav-text">左值引用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%B3%E5%80%BC%E5%BC%95%E7%94%A8"><span class="nav-number">2.2.</span> <span class="nav-text">右值引用</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%B7%A6%E5%80%BC%E3%80%81%E5%8F%B3%E5%80%BC"><span class="nav-number">1.</span> <span class="nav-text">1. 左值、右值</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A6%E5%80%BC%EF%BC%9A"><span class="nav-number">1.1.</span> <span class="nav-text">左值：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%B3%E5%80%BC%EF%BC%9A"><span class="nav-number">1.2.</span> <span class="nav-text">右值：</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E5%B7%A6%E5%80%BC%E5%BC%95%E7%94%A8%E3%80%81%E5%8F%B3%E5%80%BC%E5%BC%95%E7%94%A8"><span class="nav-number">2.</span> <span class="nav-text">2. 左值引用、右值引用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A6%E5%80%BC%E5%BC%95%E7%94%A8"><span class="nav-number">2.1.</span> <span class="nav-text">左值引用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%B3%E5%80%BC%E5%BC%95%E7%94%A8"><span class="nav-number">2.2.</span> <span class="nav-text">右值引用</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E7%A7%BB%E5%8A%A8%E8%AF%AD%E4%B9%89"><span class="nav-number">3.</span> <span class="nav-text">3. 移动语义</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%9C%E7%94%A8"><span class="nav-number">3.0.1.</span> <span class="nav-text">作用</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-%E5%AE%8C%E7%BE%8E%E8%BD%AC%E5%8F%91"><span class="nav-number">4.</span> <span class="nav-text">4. 完美转发</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -338,20 +358,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-count">15</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-count">5</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-count">11</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
