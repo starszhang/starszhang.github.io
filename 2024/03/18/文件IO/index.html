@@ -29,7 +29,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/.com//Blog/source_posts/%E6%96%87%E4%BB%B6IO/%E8%BF%9B%E7%A8%8B%E6%8F%8F%E8%BF%B0%E7%AC%A6%E8%A1%A8.png">
 <meta property="article:published_time" content="2024-03-18T07:38:24.000Z">
-<meta property="article:modified_time" content="2024-03-23T16:19:15.555Z">
+<meta property="article:modified_time" content="2024-04-11T06:06:22.955Z">
 <meta property="article:author" content="stars zhang">
 <meta property="article:tag" content="文件IO">
 <meta name="twitter:card" content="summary">
@@ -198,7 +198,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-03-24 00:19:15" itemprop="dateModified" datetime="2024-03-24T00:19:15+08:00">2024-03-24</time>
+                <time title="修改时间：2024-04-11 14:06:22" itemprop="dateModified" datetime="2024-04-11T14:06:22+08:00">2024-04-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -227,30 +227,54 @@
 <h1 id="2-open-close"><a href="#2-open-close" class="headerlink" title="2. open&#x2F;close"></a>2. open&#x2F;close</h1><h2 id="2-1-open函数"><a href="#2-1-open函数" class="headerlink" title="2.1 open函数"></a>2.1 open函数</h2><p>通过open函数可以打开或创建一个文件，函数原型如下：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"><span class="comment">// 打开一个已经存在的磁盘文件</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">open</span><span class="params">(<span class="type">const</span> <span class="type">char</span> *path, <span class="type">int</span> flags)</span>;</span><br><span class="line"><span class="comment">// 打开磁盘文件, 如果文件不存在, 就会自动创建</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">open</span><span class="params">(<span class="type">const</span> <span class="type">char</span> *path, <span class="type">int</span> flags, <span class="type">mode_t</span> mode)</span>;</span><br></pre></td></tr></table></figure>
 
-<p>成功时返回文件描述符整数，失败时返回-1；</p>
-<p><strong>path</strong>：是被打开或创建的文件名</p>
-<p><strong>flags</strong>：用于说明以何种方式打开指定文件，由一个或多个标志位的按位或组合 </p>
-<p>必须指定的属性：（只能任选其一）</p>
+<p><strong>参数：</strong></p>
 <ul>
-<li>O_RDONLY —— 只读打开</li>
-<li>O_WRONLY —— 只写打开</li>
-<li>O_RDWR —— 读、写打开</li>
-</ul>
-<p>可选属性：（和以上属性一起使用）</p>
+<li><p><strong>path</strong>：要打开的文件的路径名。</p>
+</li>
+<li><p><strong>flags</strong>：打开文件的方式和选项，它是一个位掩码，可以通过按位或运算组合多个选项。常见选项包括：</p>
 <ul>
-<li>O_APPEND —— 新数据追加到文件的尾部</li>
-<li>O_CREAT —— 如果文件不存在，则创建该文件</li>
-<li>O_EXCL —— 检测文件是否存在, 必须要和 O_CREAT 一起使用, 不能单独使用：O_CREAT | O_EXCL<ul>
-<li>检测到文件不存在, 创建新文件</li>
-<li>检测到文件已存在, 创建失败, 函数直接返回-1</li>
+<li><strong>O_RDONLY</strong> —— 以只读方式打开文件</li>
+<li><strong>O_WRONLY</strong> —— 以只写方式打开文件</li>
+<li><strong>O_RDWR</strong> —— 以读写方式打开文件</li>
+<li>可选属性：（和以上属性一起使用）<ul>
+<li><strong>O_APPEND</strong> —— 新数据追加到文件的尾部</li>
+<li><strong>O_CREAT</strong> —— 如果文件不存在，则创建该文件</li>
+<li><strong>O_TRUNC</strong>—— 如果文件存在且以写入方式打开，则清空文件内容</li>
+<li><strong>O_EXCL</strong> —— 检测文件是否存在, 必须要和 O_CREAT 一起使用, 不能单独使用：O_CREAT | O_EXCL检测到文件不存在, 创建新文件；检测到文件已存在, 创建失败, 函数直接返回-1</li>
 </ul>
 </li>
 </ul>
-<p><strong>mode</strong>：八进制的整数，<strong>创建文件时才需要指定该参数的值</strong>，用于指定新文件的权限。</p>
+</li>
+<li><p><strong>mode</strong>：表示文件的权限掩码，指定新建文件的权限，<strong>仅在<code>O_CREAT</code>选项被指定时有效</strong>。</p>
+<ul>
+<li>文件权限掩码是一个八进制数，每一位分别代表了不同的权限。</li>
+<li>一般情况下，文件权限掩码可以分为三组：用户权限、组权限和其他用户权限。每组权限又包括读（R）、写（W）和执行（X）权限。</li>
+<li><strong>读（R）：4、写（W）：2、执行（X）：1</strong></li>
+<li>例如：<ul>
+<li><code>rwxrwxrwx</code>：全部权限，八进制数值为777。</li>
+<li><code>rw-r--r--</code>：所有者可读写，其他用户只读，八进制数值为644。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>返回值：</strong></p>
+<ul>
+<li>成功：返回一个非负整数，表示文件描述符。</li>
+<li>失败：返回 <code>-1</code>，并设置 <code>errno</code> 来指示错误类型。</li>
+</ul>
 <h2 id="2-2-close函数"><a href="#2-2-close函数" class="headerlink" title="2.2 close函数"></a>2.2 close函数</h2><p>通过close函数关闭一个打开文件，释放打开时分配的文件描述符。close()原型：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unisted&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">close</span><span class="params">(<span class="type">int</span> fd)</span></span><br></pre></td></tr></table></figure>
 
-<p>fd是文件描述符，执行open()时的返回值；close()函数成功时返回0，失败时返回1。</p>
+<p>参数：</p>
+<ul>
+<li><strong>fd</strong>：要关闭的文件描述符。</li>
+</ul>
+<p>返回值：</p>
+<ul>
+<li>成功：返回0。</li>
+<li>失败：返回-1，并设置 <code>errno</code> 来指示错误类型。</li>
+</ul>
 <h2 id="2-3-文件操作"><a href="#2-3-文件操作" class="headerlink" title="2.3 文件操作"></a>2.3 文件操作</h2><p>打开已有文件：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> fd = open(<span class="string">&quot;abc.txt&quot;</span>, O_RDWR);</span><br></pre></td></tr></table></figure>
 
@@ -260,21 +284,41 @@
 <h1 id="3-read-write"><a href="#3-read-write" class="headerlink" title="3. read&#x2F;write"></a>3. read&#x2F;write</h1><h2 id="3-1-read函数"><a href="#3-1-read函数" class="headerlink" title="3.1 read函数"></a>3.1 read函数</h2><p>用于从打开的文件中读数据，函数原型：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unisted.h&gt;</span></span></span><br><span class="line"><span class="type">ssize_t</span> <span class="title function_">read</span><span class="params">(<span class="type">int</span> fd, <span class="type">void</span> *buf, <span class="type">size_t</span> count)</span>;</span><br></pre></td></tr></table></figure>
 
+<p><strong>参数:</strong></p>
 <ul>
-<li><strong>参数:</strong><br><strong>fd</strong>: 文件描述符, open() 函数的返回值, 通过这个参数定位打开的磁盘文件<br><strong>buf</strong>: 是一个传出参数, 指向一块有效的内存, 用于存储从文件中读出的数据，即读出数据缓冲区地址<br><strong>count</strong>: buf指针指向的内存的大小, 指定可以存储的最大字节数</li>
-<li>返回值:<br>大于0: 从文件中读出的字节数，读文件成功<br>0: 代表文件读完了，读文件成功<br>-1: 读文件失败</li>
+<li><strong>fd</strong>: 要读取的文件描述符</li>
+<li><strong>buf</strong>: 指向存放读取数据的缓冲区的指针。</li>
+<li><strong>count</strong>: 要读取的字节数</li>
 </ul>
-<h2 id="3-2-write函数"><a href="#3-2-write函数" class="headerlink" title="3.2 write函数"></a>3.2 write函数</h2><p>向打开的文件中写数据，函数原型：</p>
+<p><strong>返回值:</strong></p>
+<ul>
+<li>成功：返回读取的字节数，可能小于 <code>count</code>。数据类型是 <code>ssize_t</code>，这是一个带符号的整数类型</li>
+<li>文件结束(EOF)：返回 <code>0</code>，表示已读取到文件末尾。</li>
+<li>失败：返回 <code>-1</code>，并设置 <code>errno</code> 来指示错误类型。</li>
+</ul>
+<p><strong>什么是缓冲区：</strong></p>
+<ul>
+<li><p>缓冲区（Buffer）是指在计算机中用于临时存储数据的一段内存区域。在程序中，缓冲区通常用于临时存放数据，以便稍后进行处理或传输。缓冲区的使用可以提高数据的读写效率，减少频繁的IO操作，特别是在涉及大量数据的情况下。</p>
+</li>
+<li><p>在文件IO操作中，缓冲区通常用于存储要读取或写入的数据。当调用 <code>read()</code> 系统调用从文件中读取数据时，数据首先被读取到缓冲区中，然后程序可以从缓冲区中获取数据进行进一步处理。类似地，当调用 <code>write()</code> 系统调用向文件中写入数据时，数据首先被写入到缓冲区中，然后由系统决定何时将缓冲区中的数据写入到文件中。</p>
+</li>
+</ul>
+<h2 id="3-2-write函数"><a href="#3-2-write函数" class="headerlink" title="3.2 write函数"></a>3.2 write函数</h2><p>用于将数据从用户空间写入到已打开文件中，函数原型：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unisted.h&gt;</span></span></span><br><span class="line"><span class="type">ssize_t</span> <span class="title function_">write</span><span class="params">(<span class="type">int</span> fd, <span class="type">const</span> <span class="type">void</span> *buf, <span class="type">size_t</span> count)</span></span><br></pre></td></tr></table></figure>
 
+<p>参数：</p>
 <ul>
-<li><p>参数cout：往磁盘文件中写入的字节数，一般是buf的长度sizeof(buf).</p>
-</li>
-<li><p>返回值：</p>
-<p>​      -1：写文件失败</p>
-<p>​     大于0：成功写入文件的字节数</p>
-</li>
+<li>fd：要写入的文件描述符。</li>
+<li>buf：指向要写入数据的缓冲区的指针。</li>
+<li>count：往磁盘文件中写入的字节数，一般是buf的长度sizeof(buf)。</li>
 </ul>
+<p>返回值：</p>
+<ul>
+<li>成功：返回写入的字节数，可以小于 <code>count</code>。</li>
+<li>失败：返回 <code>-1</code>，并设置 <code>errno</code> 来指示错误类型。</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;errno.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> fd = <span class="built_in">open</span>(<span class="string">&quot;example.txt&quot;</span>, O_WRONLY | O_CREAT | O_TRUNC, <span class="number">0644</span>);</span><br><span class="line">    <span class="keyword">if</span> (fd == <span class="number">-1</span>) &#123;</span><br><span class="line">        <span class="built_in">perror</span>(<span class="string">&quot;open&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="type">const</span> <span class="type">char</span> *data = <span class="string">&quot;Hello, World!\n&quot;</span>;</span><br><span class="line">    <span class="type">ssize_t</span> bytes_written = <span class="built_in">write</span>(fd, data, <span class="built_in">strlen</span>(data));</span><br><span class="line">    <span class="keyword">if</span> (bytes_written == <span class="number">-1</span>) &#123;</span><br><span class="line">        <span class="built_in">perror</span>(<span class="string">&quot;write&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">close</span>(fd);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <h1 id="4-Iseek函数"><a href="#4-Iseek函数" class="headerlink" title="4. Iseek函数"></a>4. Iseek函数</h1><p>用于移动文件的指针。</p>
 <p>每一个打开文件都有一个与其相关联的”当前文件偏移量“，即文件指针指向的位置，作用在于控制文件的读写位置</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unisted.h&gt;</span></span></span><br><span class="line"><span class="type">off_t</span> <span class="title function_">lseek</span><span class="params">(<span class="type">int</span> fd, <span class="type">off_t</span> offset, <span class="type">int</span> whence)</span>;</span><br></pre></td></tr></table></figure>
