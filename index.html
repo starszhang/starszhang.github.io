@@ -162,6 +162,124 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/04/12/%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="stars zhang">
+      <meta itemprop="description" content="永远迎着光走">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="stars">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/04/12/%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/" class="post-title-link" itemprop="url">智能指针</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-04-12 20:43:40 / 修改时间：21:45:51" itemprop="dateCreated datePublished" datetime="2024-04-12T20:43:40+08:00">2024-04-12</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="1-智能指针"><a href="#1-智能指针" class="headerlink" title="1. 智能指针"></a>1. 智能指针</h1><p>智能指针是一种用于管理动态分配的内存的工具，能够帮助避免<strong>内存泄漏</strong>和<strong>悬挂指针</strong>等问题。</p>
+<p>智能指针是C++11标准引入的一个重要特性，它们基于RAII（资源获取即初始化）原则，利用对象生命周期的概念，在对象生命周期结束时自动释放资源。</p>
+<p>智能指针实际上是一个类对象，它封装了原始指针，并在其生命周期结束时负责释放指针所指向的内存。</p>
+<p>C++11引入了三种指针：std::shared_ptr、std::unique_ptr、std::weak_ptr</p>
+<h1 id="2-std-shared-ptr"><a href="#2-std-shared-ptr" class="headerlink" title="2. std::shared_ptr"></a>2. std::shared_ptr</h1><p><code>std::shared_ptr</code>允许多个指针指向同一块内存，它使用<strong>引用计数</strong>来跟踪有多少个指针指向了该对象。并且会在最后一个指针不再指向该内存区域时自动释放资源。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;memory&gt;</span><br><span class="line">int main()&#123;</span><br><span class="line">	// 使用make_shared创建shared_ptr</span><br><span class="line">	std::shared_ptr&lt;int&gt; ptr = std::make_shared&lt;int&gt;(42);</span><br><span class="line">	// 拷贝复制</span><br><span class="line">	std::shared_ptr&lt;int&gt; ptr2 = ptr1; //引用计数+1</span><br><span class="line">	//获取引用计数</span><br><span class="line">	std::cout &lt;&lt;&quot;引用计数：&quot; &lt;&lt; ptr1.use_count() &lt;&lt; std::endl;</span><br><span class="line">	</span><br><span class="line">	return 0;// 当ptr1和ptr2都超出作用域时，所管理的内存会被自动释放</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><strong>创建shared_ptr</strong></p>
+<p>使用<code>std::make_shared</code>函数来创建<code>std::shared_ptr</code>，它会自动分配内存并构造对象，同时返回一个指向该对象的<code>std::shared_ptr</code>。</p>
+</li>
+<li><p><strong>拷贝和赋值</strong></p>
+<p>将一个<code>std::shared_ptr</code>赋值给另一个时，引用计数会增加。当所有指向该对象的<code>std::shared_ptr</code>都被销毁时，引用计数会减少。只有当引用计数为0时，资源才会被释放。</p>
+</li>
+<li><p><strong>引用计数</strong></p>
+<p><code>std::shared_ptr</code>内部维护了一个引用计数器，用于跟踪有多少个<code>std::shared_ptr</code>指向了相同的资源。可以通过<code>use_count()</code>方法获取引用计数。</p>
+</li>
+</ul>
+<h1 id="3-std-weak-ptr"><a href="#3-std-weak-ptr" class="headerlink" title="3. std::weak_ptr"></a>3. std::weak_ptr</h1><p>循环引用指的是两个或多个对象彼此之间相互引用，导致它们的引用计数永远不会变为零，从而造成内存泄漏。在使用<code>std::shared_ptr</code>时，循环引用是一个常见的问题，因为<code>std::shared_ptr</code>的引用计数机制可能导致对象永远无法被释放。如以下示例：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;memory&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">A</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    std::shared_ptr&lt;A&gt; next;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">A</span>() &#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;A 构造函数&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ~<span class="built_in">A</span>() &#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;A 析构函数&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    std::shared_ptr&lt;A&gt; a1 = std::<span class="built_in">make_shared</span>&lt;A&gt;();</span><br><span class="line">    std::shared_ptr&lt;A&gt; a2 = std::<span class="built_in">make_shared</span>&lt;A&gt;();</span><br><span class="line"></span><br><span class="line">    a1-&gt;next = a2;</span><br><span class="line">    a2-&gt;next = a1; <span class="comment">// 循环引用</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在这个例子中，<code>a1</code>和<code>a2</code>相互引用，即<code>a1</code>的<code>next</code>指针指向<code>a2</code>，而<code>a2</code>的<code>next</code>指针又指向<code>a1</code>。这样一来，它们之间的引用计数永远不会变为零，因为彼此都在互相引用。即使在<code>main</code>函数结束时，<code>a1</code>和<code>a2</code>的引用计数也不会为零，导致<code>A</code>类对象永远无法被销毁，造成内存泄漏。</p>
+<p><code>std::weak_ptr</code>是<code>std::shared_ptr</code>的一种弱引用，它不会增加引用计数。用于解决<code>std::shared_ptr</code>的循环引用带来的内存泄漏问题。可以通过<code>lock()</code>方法获得一个<code>std::shared_ptr</code>，如果原来的<code>std::shared_ptr</code>已经被销毁，则返回一个空指针。</p>
+<p>上述示例中，可以将<code>next</code>成员改为<code>std::weak_ptr</code>类型，这样就不会导致循环引用。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;memory&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">A</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    std::weak_ptr&lt;A&gt; next; <span class="comment">// 使用weak_ptr</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">A</span>() &#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;A 构造函数&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ~<span class="built_in">A</span>() &#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;A 析构函数&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    std::shared_ptr&lt;A&gt; a1 = std::<span class="built_in">make_shared</span>&lt;A&gt;();</span><br><span class="line">    std::shared_ptr&lt;A&gt; a2 = std::<span class="built_in">make_shared</span>&lt;A&gt;();</span><br><span class="line"></span><br><span class="line">    a1-&gt;next = a2;</span><br><span class="line">    a2-&gt;next = a1; <span class="comment">// 循环引用被打破</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在这个修改后的示例中，<code>A</code>类的<code>next</code>成员现在是<code>std::weak_ptr</code>类型，这意味着<code>a1-&gt;next</code>和<code>a2-&gt;next</code>不会增加<code>A</code>对象的引用计数。因此，即使<code>a1</code>和<code>a2</code>相互引用，它们之间的循环引用也被打破了。这样在<code>main</code>函数结束时，<code>A</code>类对象的引用计数会变为零，对象会被正确地销毁，从而避免了内存泄漏问题。</p>
+<h1 id="4-unique-ptr"><a href="#4-unique-ptr" class="headerlink" title="4. unique_ptr"></a>4. unique_ptr</h1><p><code>std::unique_ptr</code>是一种独占所有权的智能指针，它确保在其生命周期内，只有一个指针可以指向该对象。当<code>std::unique_ptr</code>被销毁时，它所管理的对象也会被自动释放。</p>
+<ul>
+<li>创建unique_ptr</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;memory&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 使用make_unique创建unique_ptr</span></span><br><span class="line">    std::unique_ptr&lt;<span class="type">int</span>&gt; ptr = std::<span class="built_in">make_unique</span>&lt;<span class="type">int</span>&gt;(<span class="number">42</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 或者使用构造函数</span></span><br><span class="line">    <span class="function">std::unique_ptr&lt;<span class="type">int</span>&gt; <span class="title">ptr2</span><span class="params">(<span class="keyword">new</span> <span class="type">int</span>(<span class="number">42</span>))</span></span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>移动语义</li>
+</ul>
+<p><code>std::unique_ptr</code>是独占所有权的，因此它不支持拷贝语义，但支持移动语义。这意味着可以通过移动操作将资源所有权从一个<code>std::unique_ptr</code>转移到另一个。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;memory&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    std::unique_ptr&lt;<span class="type">int</span>&gt; ptr1 = std::<span class="built_in">make_unique</span>&lt;<span class="type">int</span>&gt;(<span class="number">42</span>);</span><br><span class="line">    std::unique_ptr&lt;<span class="type">int</span>&gt; ptr2 = std::<span class="built_in">move</span>(ptr1); <span class="comment">// 移动所有权到ptr2</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 此时ptr1不再拥有资源，它指向nullptr</span></span><br><span class="line">    <span class="comment">// ptr2拥有资源，可以安全地使用</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>释放资源</li>
+</ul>
+<p>当<code>std::unique_ptr</code>超出作用域时，它所管理的资源会被自动释放。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;memory&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">someFunction</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    std::unique_ptr&lt;<span class="type">int</span>&gt; ptr = std::<span class="built_in">make_unique</span>&lt;<span class="type">int</span>&gt;(<span class="number">42</span>);</span><br><span class="line">    <span class="comment">// 在这里可以安全地使用ptr</span></span><br><span class="line">&#125; <span class="comment">// ptr超出作用域，所管理的内存会被自动释放</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">someFunction</span>();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>自定义删除器</li>
+</ul>
+<p><code>std::unique_ptr</code>支持自定义删除器，可以指定在释放资源时调用的函数或者函数对象。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;memory&gt;</span><br><span class="line">#include &lt;iostream&gt;</span><br><span class="line"></span><br><span class="line">void customDeleter(int* ptr) &#123;</span><br><span class="line">    std::cout &lt;&lt; &quot;自定义删除器被调用&quot; &lt;&lt; std::endl;</span><br><span class="line">    delete ptr;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main() &#123;</span><br><span class="line">    std::unique_ptr&lt;int, decltype(&amp;customDeleter)&gt; ptr(new int(42), customDeleter);</span><br><span class="line"></span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2024/04/08/C++%E5%A4%9A%E7%BA%BF%E7%A8%8B/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1206,109 +1324,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/03/22/%E4%BF%A1%E5%8F%B7/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="stars zhang">
-      <meta itemprop="description" content="永远迎着光走">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="stars">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/03/22/%E4%BF%A1%E5%8F%B7/" class="post-title-link" itemprop="url">信号</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-03-22 15:45:58" itemprop="dateCreated datePublished" datetime="2024-03-22T15:45:58+08:00">2024-03-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-03-25 15:01:11" itemprop="dateModified" datetime="2024-03-25T15:01:11+08:00">2024-03-25</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>信号是一种软件中断，它提供了异步事件的处理机制。信号作为一种进程间通信（IPC）的基本形式，而一个进程可以给另一个进程发送信号。信号本质上是一个整数，不同的信号对应不同的值，由于信号的结构简单所以天生不能携带很大的信息量，但是信号在系统中的优先级是非常高的。</p>
-<p>每个信号都有一个以SIG为前缀的符号名称。信号的编号从1开始（通常是SIGHUP）线性增加。总共有大约31个<br>信号，但是大多数的程序只用到了它们中的一少部分。 </p>
-<p>信号有三种状态：产生、未决、递达</p>
-<p>产生：键盘输入, 函数调用, 执行shell命令, 对硬件进行非法访问都会产生信号</p>
-<p>未决：信号产生, 但还没有被处理</p>
-<p>递达：信号被处理后</p>
-<h1 id="信号相关函数"><a href="#信号相关函数" class="headerlink" title="信号相关函数"></a>信号相关函数</h1><p>**signal()**：该函数用于设置信号处理函数，其原型为：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;signal.h&gt;</span></span></span><br><span class="line"><span class="type">void</span> (*signal(<span class="type">int</span> signum, <span class="type">void</span> (*func)(<span class="type">int</span>)))(<span class="type">int</span>);</span><br></pre></td></tr></table></figure>
-
-<p>它接受两个参数，<code>signum</code> 表示要捕获的信号类型，<code>func</code> 表示信号处理函数的指针。当收到指定的信号时，系统将调用指定的处理函数。</p>
-<p>**kill()**：用于向指定的进程发送信号。其原型为：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">kill</span><span class="params">(<span class="type">pid_t</span> pid, <span class="type">int</span> sig)</span>;</span><br></pre></td></tr></table></figure>
-
-<p><code>pid</code> 参数指定了目标进程的进程ID，<code>sig</code> 参数指定了要发送的信号类型。</p>
-<p>**raise()**：用于向当前进程发送信号。其原型为：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">raise</span><span class="params">(<span class="type">int</span> sig)</span>;</span><br></pre></td></tr></table></figure>
-
-<p><code>sig</code> 参数指定了要发送的信号类型。</p>
-<p>**abort()**：给当前进程发送一个固定信号 (SIGABRT)，函数原型：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="type">void</span> <span class="title function_">abort</span><span class="params">(<span class="type">void</span>)</span>;</span><br></pre></td></tr></table></figure>
-
-<p>调用 <code>abort()</code> 函数可以快速终止进程，并进行相应的清理工作</p>
-<p>**sigpending()**：用于获取当前进程挂起的信号集。其原型为：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">sigpending</span><span class="params">(<span class="type">sigset_t</span> *<span class="built_in">set</span>)</span>;</span><br></pre></td></tr></table></figure>
-
-<p>它将当前未决的信号放入由 <code>set</code> 参数指向的信号集中</p>
-<p>**sigprocmask()**：用于检查或修改当前进程的信号屏蔽字。其原型为：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">sigprocmask</span><span class="params">(<span class="type">int</span> how, <span class="type">const</span> <span class="type">sigset_t</span> *<span class="built_in">set</span>, <span class="type">sigset_t</span> *oldset)</span>;</span><br></pre></td></tr></table></figure>
-
-<p>通过 <code>sigprocmask()</code> 函数可以设置当前进程的信号屏蔽字，从而阻塞或解除阻塞特定的信号。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1378,7 +1393,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-count">18</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
