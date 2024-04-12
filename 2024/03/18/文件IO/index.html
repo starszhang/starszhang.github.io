@@ -29,7 +29,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/.com//Blog/source_posts/%E6%96%87%E4%BB%B6IO/%E8%BF%9B%E7%A8%8B%E6%8F%8F%E8%BF%B0%E7%AC%A6%E8%A1%A8.png">
 <meta property="article:published_time" content="2024-03-18T07:38:24.000Z">
-<meta property="article:modified_time" content="2024-04-11T06:06:22.955Z">
+<meta property="article:modified_time" content="2024-04-12T06:45:40.290Z">
 <meta property="article:author" content="stars zhang">
 <meta property="article:tag" content="文件IO">
 <meta name="twitter:card" content="summary">
@@ -198,7 +198,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-04-11 14:06:22" itemprop="dateModified" datetime="2024-04-11T14:06:22+08:00">2024-04-11</time>
+                <time title="修改时间：2024-04-12 14:45:40" itemprop="dateModified" datetime="2024-04-12T14:45:40+08:00">2024-04-12</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -224,7 +224,8 @@
         <h1 id="1-文件描述符"><a href="#1-文件描述符" class="headerlink" title="1. 文件描述符"></a>1. 文件描述符</h1><p>Linux系统中一切皆文件，所有打开的文件都通过文件描述符进行索引。文件描述符是一个非负整数，当打开或创建文件时，内核向该进程返回一个文件描述符用于指代该文件。</p>
 <p>Linux内核对所有打开的文件都维护了一个文件描述符表，用于存储文件描述符。且在文件描述符表中已经默认分配了三个文件描述符：0是标准输入stdin，1是标准输出stdout，2是标准错误stderr。故打开或创建的文件描述符大于或等于3。</p>
 <p><img src="/.com//Blog\source_posts\文件IO\进程描述符表.png" alt="进程描述符表"></p>
-<h1 id="2-open-close"><a href="#2-open-close" class="headerlink" title="2. open&#x2F;close"></a>2. open&#x2F;close</h1><h2 id="2-1-open函数"><a href="#2-1-open函数" class="headerlink" title="2.1 open函数"></a>2.1 open函数</h2><p>通过open函数可以打开或创建一个文件，函数原型如下：</p>
+<h1 id="2-open-close"><a href="#2-open-close" class="headerlink" title="2. open&#x2F;close"></a>2. open&#x2F;close</h1><h2 id="2-1-open函数"><a href="#2-1-open函数" class="headerlink" title="2.1 open函数"></a>2.1 open函数</h2><p>通过open函数可以打开或创建一个文件，返回的文件描述符一定是该进程尚未使用的最小描述符，大于等于3。</p>
+<p><strong>函数原型：</strong></p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"><span class="comment">// 打开一个已经存在的磁盘文件</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">open</span><span class="params">(<span class="type">const</span> <span class="type">char</span> *path, <span class="type">int</span> flags)</span>;</span><br><span class="line"><span class="comment">// 打开磁盘文件, 如果文件不存在, 就会自动创建</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">open</span><span class="params">(<span class="type">const</span> <span class="type">char</span> *path, <span class="type">int</span> flags, <span class="type">mode_t</span> mode)</span>;</span><br></pre></td></tr></table></figure>
 
 <p><strong>参数：</strong></p>
@@ -243,6 +244,7 @@
 <li><strong>O_EXCL</strong> —— 检测文件是否存在, 必须要和 O_CREAT 一起使用, 不能单独使用：O_CREAT | O_EXCL检测到文件不存在, 创建新文件；检测到文件已存在, 创建失败, 函数直接返回-1</li>
 </ul>
 </li>
+<li><strong>O_NONBLOCK</strong> ——对于设备文件，以O_NONBLOCK方式打开可以做非阻塞I&#x2F;O</li>
 </ul>
 </li>
 <li><p><strong>mode</strong>：表示文件的权限掩码，指定新建文件的权限，<strong>仅在<code>O_CREAT</code>选项被指定时有效</strong>。</p>
@@ -281,7 +283,8 @@
 <p>创建新文件：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> fd = open(<span class="string">&quot;./new.txt&quot;</span>, O_CREAT|O_RDWR, <span class="number">0664</span>);</span><br></pre></td></tr></table></figure>
 
-<h1 id="3-read-write"><a href="#3-read-write" class="headerlink" title="3. read&#x2F;write"></a>3. read&#x2F;write</h1><h2 id="3-1-read函数"><a href="#3-1-read函数" class="headerlink" title="3.1 read函数"></a>3.1 read函数</h2><p>用于从打开的文件中读数据，函数原型：</p>
+<h1 id="3-read-write"><a href="#3-read-write" class="headerlink" title="3. read&#x2F;write"></a>3. read&#x2F;write</h1><h2 id="3-1-read函数"><a href="#3-1-read函数" class="headerlink" title="3.1 read函数"></a>3.1 read函数</h2><p>用于从打开的文件中读数据</p>
+<p><strong>函数原型：</strong></p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unisted.h&gt;</span></span></span><br><span class="line"><span class="type">ssize_t</span> <span class="title function_">read</span><span class="params">(<span class="type">int</span> fd, <span class="type">void</span> *buf, <span class="type">size_t</span> count)</span>;</span><br></pre></td></tr></table></figure>
 
 <p><strong>参数:</strong></p>
@@ -290,9 +293,9 @@
 <li><strong>buf</strong>: 指向存放读取数据的缓冲区的指针。</li>
 <li><strong>count</strong>: 要读取的字节数</li>
 </ul>
-<p><strong>返回值:</strong></p>
+<p><strong>返回值：</strong> 返回值的数据类型是 <code>ssize_t</code>，表示带符号的整型，这样既可以返回正的字节数、0（表<br>示到达文件末尾）也可以返回负值-1（表示出错） 。</p>
 <ul>
-<li>成功：返回读取的字节数，可能小于 <code>count</code>。数据类型是 <code>ssize_t</code>，这是一个带符号的整数类型</li>
+<li>成功：返回读取的字节数，可能小于 <code>count</code>，因为可能在读取count个字节之前已到达文件末尾。</li>
 <li>文件结束(EOF)：返回 <code>0</code>，表示已读取到文件末尾。</li>
 <li>失败：返回 <code>-1</code>，并设置 <code>errno</code> 来指示错误类型。</li>
 </ul>
@@ -303,23 +306,84 @@
 <li><p>在文件IO操作中，缓冲区通常用于存储要读取或写入的数据。当调用 <code>read()</code> 系统调用从文件中读取数据时，数据首先被读取到缓冲区中，然后程序可以从缓冲区中获取数据进行进一步处理。类似地，当调用 <code>write()</code> 系统调用向文件中写入数据时，数据首先被写入到缓冲区中，然后由系统决定何时将缓冲区中的数据写入到文件中。</p>
 </li>
 </ul>
-<h2 id="3-2-write函数"><a href="#3-2-write函数" class="headerlink" title="3.2 write函数"></a>3.2 write函数</h2><p>用于将数据从用户空间写入到已打开文件中，函数原型：</p>
+<h2 id="3-2-write函数"><a href="#3-2-write函数" class="headerlink" title="3.2 write函数"></a>3.2 write函数</h2><p>用于将数据从用户空间写入到已打开文件中</p>
+<p><strong>函数原型：</strong></p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unisted.h&gt;</span></span></span><br><span class="line"><span class="type">ssize_t</span> <span class="title function_">write</span><span class="params">(<span class="type">int</span> fd, <span class="type">const</span> <span class="type">void</span> *buf, <span class="type">size_t</span> count)</span></span><br></pre></td></tr></table></figure>
 
-<p>参数：</p>
+<p><strong>参数：</strong></p>
 <ul>
 <li>fd：要写入的文件描述符。</li>
 <li>buf：指向要写入数据的缓冲区的指针。</li>
 <li>count：往磁盘文件中写入的字节数，一般是buf的长度sizeof(buf)。</li>
 </ul>
-<p>返回值：</p>
+<p><strong>返回值：</strong></p>
 <ul>
 <li>成功：返回写入的字节数，可以小于 <code>count</code>。</li>
 <li>失败：返回 <code>-1</code>，并设置 <code>errno</code> 来指示错误类型。</li>
 </ul>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;errno.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> fd = <span class="built_in">open</span>(<span class="string">&quot;example.txt&quot;</span>, O_WRONLY | O_CREAT | O_TRUNC, <span class="number">0644</span>);</span><br><span class="line">    <span class="keyword">if</span> (fd == <span class="number">-1</span>) &#123;</span><br><span class="line">        <span class="built_in">perror</span>(<span class="string">&quot;open&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="type">const</span> <span class="type">char</span> *data = <span class="string">&quot;Hello, World!\n&quot;</span>;</span><br><span class="line">    <span class="type">ssize_t</span> bytes_written = <span class="built_in">write</span>(fd, data, <span class="built_in">strlen</span>(data));</span><br><span class="line">    <span class="keyword">if</span> (bytes_written == <span class="number">-1</span>) &#123;</span><br><span class="line">        <span class="built_in">perror</span>(<span class="string">&quot;write&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">close</span>(fd);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="3-3-示例"><a href="#3-3-示例" class="headerlink" title="3.3 示例"></a>3.3 示例</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;errno.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> fd = <span class="built_in">open</span>(<span class="string">&quot;example.txt&quot;</span>, O_WRONLY | O_CREAT | O_TRUNC, <span class="number">0644</span>);</span><br><span class="line">    <span class="keyword">if</span> (fd == <span class="number">-1</span>) &#123;</span><br><span class="line">        <span class="built_in">perror</span>(<span class="string">&quot;open&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="type">const</span> <span class="type">char</span> *data = <span class="string">&quot;Hello, World!\n&quot;</span>;</span><br><span class="line">    <span class="type">ssize_t</span> bytes_written = <span class="built_in">write</span>(fd, data, <span class="built_in">strlen</span>(data));</span><br><span class="line">    <span class="keyword">if</span> (bytes_written == <span class="number">-1</span>) &#123;</span><br><span class="line">        <span class="built_in">perror</span>(<span class="string">&quot;write&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">close</span>(fd);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h1 id="4-Iseek函数"><a href="#4-Iseek函数" class="headerlink" title="4. Iseek函数"></a>4. Iseek函数</h1><p>用于移动文件的指针。</p>
+<h1 id="4-阻塞和非阻塞"><a href="#4-阻塞和非阻塞" class="headerlink" title="4. 阻塞和非阻塞"></a>4. 阻塞和非阻塞</h1><p>阻塞和非阻塞是指，程序在执行某种操作时的行为方式。</p>
+<ul>
+<li><p>阻塞（Blocking）：</p>
+<p>​        在阻塞模式下，当程序执行某个操作时，如果该操作无法立即完成，程序将一直等待，直到操作完成为止。</p>
+</li>
+<li><p>非阻塞（Non-blocking）：</p>
+<p>​        在非阻塞模式下，当程序执行某个操作时，如果该操作无法立即完成，程序将立即返回而不会等待。程序可以继续执行其他任务，不会因为某个操作的未完成而被阻塞。</p>
+</li>
+</ul>
+<h1 id="5-fcntl函数"><a href="#5-fcntl函数" class="headerlink" title="5. fcntl函数"></a>5. fcntl函数</h1><p>fcntl()可以修改一个已打开文件的属性，可以重新设置读、写、追加、非阻塞等标志，而不必重新open文件 。</p>
+<p><strong>函数原型：</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">fcntl</span><span class="params">(<span class="type">int</span> fd, <span class="type">int</span> cmd, ... <span class="comment">/* arg */</span> )</span>;</span><br></pre></td></tr></table></figure>
+
+<p>参数<code>fd</code>表示已打开的文件描述符，<code>cmd</code> 是控制命令，指定了要对文件进行的操作，<code>arg</code> 是与控制命令相关的参数，类型和意义取决于具体的命令。</p>
+<p><strong>常用命令：</strong></p>
+<ul>
+<li><p><code>F_DUPFD</code>：</p>
+<ul>
+<li><p>复制文件描述符，创建一个新的文件描述符，其值大于或等于第三个参数（指定的最小文件描述符值）。</p>
+</li>
+<li><pre><code class="c">fcntl(fd, F_DUPFD, newfd)
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- `F_GETFL`：</span><br><span class="line"></span><br><span class="line">  - 获取文件状态标志（file status flags）。</span><br><span class="line"></span><br><span class="line">  - ```</span><br><span class="line">    fcntl(fd, F_GETFL)</span><br></pre></td></tr></table></figure>
+</code></pre>
+</li>
+</ul>
+</li>
+<li><p><code>F_SETFL</code>：</p>
+<ul>
+<li><p>设置文件状态标志为flags。</p>
+</li>
+<li><pre><code>fcntl(fd, F_SETFL, flags)
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- `F_GETFD`：</span><br><span class="line"></span><br><span class="line">  - 获取文件描述符标志（file descriptor flags）。</span><br><span class="line"></span><br><span class="line">  - ```</span><br><span class="line">    fcntl(fd, F_GETFD)</span><br></pre></td></tr></table></figure>
+</code></pre>
+</li>
+</ul>
+</li>
+<li><p><code>F_SETFD</code>：</p>
+<ul>
+<li><p>设置文件描述符标志为flags。</p>
+</li>
+<li><pre><code>fcntl(fd, F_SETFD, flags)
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- `F_GETLK`：</span><br><span class="line"></span><br><span class="line">  - 获取文件锁信息，并将锁信息写入提供的结构体 `lock` 中。</span><br><span class="line"></span><br><span class="line">  - ```</span><br><span class="line">    fcntl(fd, F_GETLK, &amp;lock)</span><br></pre></td></tr></table></figure>
+</code></pre>
+</li>
+</ul>
+</li>
+<li><p><code>F_SETLK</code>：</p>
+<ul>
+<li><p>设置文件锁，如果无法获取锁，则调用失败。</p>
+</li>
+<li><pre><code>fcntl(fd, F_SETLK, &amp;lock)
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- `F_SETLKW`：</span><br><span class="line"></span><br><span class="line">  - 设置文件锁，并在必要时阻塞。</span><br><span class="line"></span><br><span class="line">  - ```</span><br><span class="line">    fcntl(fd, F_SETLKW, &amp;lock)</span><br></pre></td></tr></table></figure>
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<p>将文件设置为非阻塞：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fcntl(fd, F_SETFL, fcntl(fd, F_GETFL) | O_NONBLOCK)</span><br></pre></td></tr></table></figure>
+
+<h1 id="6-Iseek函数"><a href="#6-Iseek函数" class="headerlink" title="6. Iseek函数"></a>6. Iseek函数</h1><p>用于移动文件的指针。</p>
 <p>每一个打开文件都有一个与其相关联的”当前文件偏移量“，即文件指针指向的位置，作用在于控制文件的读写位置</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unisted.h&gt;</span></span></span><br><span class="line"><span class="type">off_t</span> <span class="title function_">lseek</span><span class="params">(<span class="type">int</span> fd, <span class="type">off_t</span> offset, <span class="type">int</span> whence)</span>;</span><br></pre></td></tr></table></figure>
 
@@ -341,25 +405,19 @@
 <li><pre><code class="c">lseek(fd, 0, SEEK_SET); //将文件指针移动到头部
 lseek(fd, 0, SEEK_CUR); //得到当前文件指针的位置
 lseek(fd, 0, SEEK_END); //得到文件的总大小
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"># 5. 复制与重定向</span><br><span class="line"></span><br><span class="line">## 5.1 dup函数</span><br><span class="line"></span><br><span class="line">dup函数的作用是复制一个现有的文件描述符，使多个文件描述符指向同一个文件。函数原型：</span><br><span class="line"></span><br><span class="line">```c</span><br><span class="line">#include &lt;unisted.h&gt;</span><br><span class="line">int dup(int oldfd);</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"># 7. 复制与重定向</span><br><span class="line"></span><br><span class="line">## 7.1 dup函数</span><br><span class="line"></span><br><span class="line">dup函数的作用是复制一个现有的文件描述符，使多个文件描述符指向同一个文件。函数原型：</span><br><span class="line"></span><br><span class="line">```c</span><br><span class="line">#include &lt;unisted.h&gt;</span><br><span class="line">int dup(int oldfd);</span><br></pre></td></tr></table></figure>
 </code></pre>
 </li>
 </ul>
 <p>参数oldfd是被复制的文件描述符</p>
 <p>函数调用成功后返回新的文件描述符，且是当前可用文件描述符中的最小数值；调用失败则返回-1</p>
 <p>被复制出的新文件描述符是独立于旧的文件描述符的，二者没有连带关系。也就是说当旧的文件描述符被关闭了，复制出的新文件描述符还是可以继续使用的。</p>
-<h2 id="5-2-dup2函数"><a href="#5-2-dup2函数" class="headerlink" title="5.2 dup2函数"></a>5.2 dup2函数</h2><p>dup2函数可以进行文件描述符的复制，也可以进行文件描述符的重定向。重定向指的是断开文件描述符和当前文件的关联关系，与新的文件建立关联关系。</p>
+<h2 id="7-2-dup2函数"><a href="#7-2-dup2函数" class="headerlink" title="7.2 dup2函数"></a>7.2 dup2函数</h2><p>dup2函数可以进行文件描述符的复制，也可以进行文件描述符的重定向。重定向指的是断开文件描述符和当前文件的关联关系，与新的文件建立关联关系。</p>
 <p>函数原型：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unisted.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">dup2</span><span class="params">(<span class="type">int</span> oldfd, <span class="type">int</span> newfd)</span>;</span><br></pre></td></tr></table></figure>
 
 <p>作用是复制参数 <code>oldfd</code> 所指向的文件描述符，创建一个新的文件描述符，新的文件描述符的值是参数 <code>newfd</code>。如果 <code>newfd</code> 已经是一个打开的文件描述符，<code>dup2()</code> 会先关闭它。</p>
 <p><code>dup2()</code> 调用成功返回新的文件描述符，该文件描述符与 <code>newfd</code> 相同；调用失败则返回-1</p>
-<h1 id="6-fcntl函数"><a href="#6-fcntl函数" class="headerlink" title="6. fcntl函数"></a>6. fcntl函数</h1><p>fcntl()可以改变已打开文件的属性，函数原型：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">fcntl</span><span class="params">(<span class="type">int</span> fd, <span class="type">int</span> cmd, ... <span class="comment">/* arg */</span> )</span>;</span><br></pre></td></tr></table></figure>
-
-<p>参数<code>fd</code>表示已打开的文件描述符，<code>cmd</code> 是控制命令，指定了要对文件进行的操作，<code>arg</code> 是与控制命令相关的参数，类型和意义取决于具体的命令。将文件设置为非阻塞：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fcntl(fd, F_SETFL, fcntl(fd, F_GETFL) | O_NONBLOCK)</span><br></pre></td></tr></table></figure>
-
 
     </div>
 
@@ -443,7 +501,7 @@ lseek(fd, 0, SEEK_END); //得到文件的总大小
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6"><span class="nav-number">1.</span> <span class="nav-text">1. 文件描述符</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-open-close"><span class="nav-number">2.</span> <span class="nav-text">2. open&#x2F;close</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-open%E5%87%BD%E6%95%B0"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 open函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-close%E5%87%BD%E6%95%B0"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 close函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 文件操作</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-read-write"><span class="nav-number">3.</span> <span class="nav-text">3. read&#x2F;write</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-read%E5%87%BD%E6%95%B0"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 read函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-write%E5%87%BD%E6%95%B0"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 write函数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-Iseek%E5%87%BD%E6%95%B0"><span class="nav-number">4.</span> <span class="nav-text">4. Iseek函数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#5-2-dup2%E5%87%BD%E6%95%B0"><span class="nav-number">4.1.</span> <span class="nav-text">5.2 dup2函数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-fcntl%E5%87%BD%E6%95%B0"><span class="nav-number">5.</span> <span class="nav-text">6. fcntl函数</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6"><span class="nav-number">1.</span> <span class="nav-text">1. 文件描述符</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-open-close"><span class="nav-number">2.</span> <span class="nav-text">2. open&#x2F;close</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-open%E5%87%BD%E6%95%B0"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 open函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-close%E5%87%BD%E6%95%B0"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 close函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 文件操作</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-read-write"><span class="nav-number">3.</span> <span class="nav-text">3. read&#x2F;write</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-read%E5%87%BD%E6%95%B0"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 read函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-write%E5%87%BD%E6%95%B0"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 write函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-%E7%A4%BA%E4%BE%8B"><span class="nav-number">3.3.</span> <span class="nav-text">3.3 示例</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-%E9%98%BB%E5%A1%9E%E5%92%8C%E9%9D%9E%E9%98%BB%E5%A1%9E"><span class="nav-number">4.</span> <span class="nav-text">4. 阻塞和非阻塞</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-fcntl%E5%87%BD%E6%95%B0"><span class="nav-number">5.</span> <span class="nav-text">5. fcntl函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-Iseek%E5%87%BD%E6%95%B0"><span class="nav-number">6.</span> <span class="nav-text">6. Iseek函数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#7-2-dup2%E5%87%BD%E6%95%B0"><span class="nav-number">6.1.</span> <span class="nav-text">7.2 dup2函数</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
