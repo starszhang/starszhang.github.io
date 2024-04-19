@@ -162,6 +162,110 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/03/26/%E5%A4%9A%E7%BA%BF%E7%A8%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="stars zhang">
+      <meta itemprop="description" content="永远迎着光走">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="stars">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/03/26/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" class="post-title-link" itemprop="url">C++并发与多线程</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-03-26 19:37:30" itemprop="dateCreated datePublished" datetime="2024-03-26T19:37:30+08:00">2024-03-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-04-05 10:15:47" itemprop="dateModified" datetime="2024-04-05T10:15:47+08:00">2024-04-05</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>一个程序只有一个进程，但可以拥有至少一个线程（主线程），这些线程共同拥有进程的地址空间。</p>
+<p>C++11通过std::thread进行多线程编程</p>
+<h1 id="1-构造函数"><a href="#1-构造函数" class="headerlink" title="1. 构造函数"></a>1. 构造函数</h1><table>
+<thead>
+<tr>
+<th align="center">函数</th>
+<th align="center">类别</th>
+<th align="center">作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">thread() noexcept</td>
+<td align="center">默认构造函数</td>
+<td align="center">创建一个线程，但什么也不做</td>
+</tr>
+<tr>
+<td align="center">template&lt; class Function, class… Args &gt;<br>explicit thread( Function&amp;&amp; f, Args&amp;&amp;… args )</td>
+<td align="center">初始化构造函数</td>
+<td align="center">创建一个线程，以<code>args</code>为参数执行<code>fn</code>函数</td>
+</tr>
+<tr>
+<td align="center">thread( thread&amp;&amp; other ) noexcept</td>
+<td align="center">移动构造函数</td>
+<td align="center">将 other 的线程所有权转移给新的thread 对象</td>
+</tr>
+<tr>
+<td align="center">thread( const thread&amp; ) &#x3D; delete</td>
+<td align="center">复制构造函数</td>
+<td align="center">使用&#x3D;delete显示删除拷贝构造, 不允许线程对象之间的拷贝</td>
+</tr>
+</tbody></table>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2024/03/25/IO%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1430,7 +1534,7 @@ lseek(fd, 0, SEEK_END); //得到文件的总大小
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-count">20</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1443,7 +1547,7 @@ lseek(fd, 0, SEEK_END); //得到文件的总大小
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-count">14</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

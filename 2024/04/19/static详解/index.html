@@ -20,20 +20,20 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="定义  （1）指针是一个变量，其值为另一个变量的地址，指向内存的一个存储单元。是一个对象实体 （2）而引用的本质是给变量起别名，允许通过这个别名去直接操纵和修改对象本身的属性。引用跟原来的变量实质上是同一个东西。 12345int a &#x3D; 5;&#x2F;&#x2F;指针int* p &#x3D; &amp;a;&#x2F;&#x2F;引用int&amp; b &#x3D; a;   空指针与无效引用  （1）指针可以为空，表示它不指向任何有效的内存地址">
+  <meta name="description" content="static 是 C++ 中的关键字，用于声明静态成员变量和静态成员函数，以及在局部变量中具有持久性。 1. 静态变量 静态局部变量：在函数内部声明的静态变量。 在函数内部声明的静态变量，其生命周期跨越函数调用。它们只会在第一次函数调用时初始化，并且保留其值直到程序结束。 123456789101112void foo() &#123;    static int count &#x3D; 0;    co">
 <meta property="og:type" content="article">
-<meta property="og:title" content="指针和引用的区别">
-<meta property="og:url" content="http://example.com/2024/04/05/%E6%8C%87%E9%92%88%E5%92%8C%E5%BC%95%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB/index.html">
+<meta property="og:title" content="static详解">
+<meta property="og:url" content="http://example.com/2024/04/19/static%E8%AF%A6%E8%A7%A3/index.html">
 <meta property="og:site_name" content="stars">
-<meta property="og:description" content="定义  （1）指针是一个变量，其值为另一个变量的地址，指向内存的一个存储单元。是一个对象实体 （2）而引用的本质是给变量起别名，允许通过这个别名去直接操纵和修改对象本身的属性。引用跟原来的变量实质上是同一个东西。 12345int a &#x3D; 5;&#x2F;&#x2F;指针int* p &#x3D; &amp;a;&#x2F;&#x2F;引用int&amp; b &#x3D; a;   空指针与无效引用  （1）指针可以为空，表示它不指向任何有效的内存地址">
+<meta property="og:description" content="static 是 C++ 中的关键字，用于声明静态成员变量和静态成员函数，以及在局部变量中具有持久性。 1. 静态变量 静态局部变量：在函数内部声明的静态变量。 在函数内部声明的静态变量，其生命周期跨越函数调用。它们只会在第一次函数调用时初始化，并且保留其值直到程序结束。 123456789101112void foo() &#123;    static int count &#x3D; 0;    co">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2024-04-05T10:15:10.000Z">
-<meta property="article:modified_time" content="2024-04-05T10:49:25.681Z">
+<meta property="article:published_time" content="2024-04-19T08:55:53.000Z">
+<meta property="article:modified_time" content="2024-04-19T09:46:18.645Z">
 <meta property="article:author" content="stars zhang">
-<meta property="article:tag" content="C++">
+<meta property="article:tag" content="static">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://example.com/2024/04/05/%E6%8C%87%E9%92%88%E5%92%8C%E5%BC%95%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB/">
+<link rel="canonical" href="http://example.com/2024/04/19/static%E8%AF%A6%E8%A7%A3/">
 
 
 <script id="page-configurations">
@@ -46,7 +46,7 @@
   };
 </script>
 
-  <title>指针和引用的区别 | stars</title>
+  <title>static详解 | stars</title>
   
 
 
@@ -166,7 +166,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/04/05/%E6%8C%87%E9%92%88%E5%92%8C%E5%BC%95%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/04/19/static%E8%AF%A6%E8%A7%A3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -179,7 +179,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          指针和引用的区别
+          static详解
         </h1>
 
         <div class="post-meta">
@@ -190,7 +190,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2024-04-05 18:15:10 / 修改时间：18:49:25" itemprop="dateCreated datePublished" datetime="2024-04-05T18:15:10+08:00">2024-04-05</time>
+              <time title="创建时间：2024-04-19 16:55:53 / 修改时间：17:46:18" itemprop="dateCreated datePublished" datetime="2024-04-19T16:55:53+08:00">2024-04-19</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -213,28 +213,22 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <ol>
-<li>定义</li>
+        <p><code>static</code> 是 C++ 中的关键字，用于声明静态成员变量和静态成员函数，以及在局部变量中具有持久性。</p>
+<h5 id="1-静态变量"><a href="#1-静态变量" class="headerlink" title="1. 静态变量"></a>1. 静态变量</h5><ol>
+<li><p><strong>静态局部变量</strong>：在函数内部声明的静态变量。</p>
+<p>在函数内部声明的静态变量，其生命周期<strong>跨越函数调用</strong>。它们<strong>只会在第一次函数调用时初始化</strong>，并且保留其值直到程序结束。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">foo</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="type">static</span> <span class="type">int</span> count = <span class="number">0</span>;</span><br><span class="line">    count++;</span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Count: &quot;</span> &lt;&lt; count &lt;&lt; std::endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">foo</span>(); <span class="comment">// 输出：Count: 1</span></span><br><span class="line">    <span class="built_in">foo</span>(); <span class="comment">// 输出：Count: 2</span></span><br><span class="line">    <span class="built_in">foo</span>(); <span class="comment">// 输出：Count: 3</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>静态成员变量</strong>：静态成员变量<strong>属于类，而不是类的实例</strong>。它们<strong>被所有类的对象所共享</strong>，并且在类的所有实例中只有一个副本。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MyClass</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="type">static</span> <span class="type">int</span> count;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> MyClass::count = <span class="number">0</span>; <span class="comment">// 静态成员变量在类外部进行初始化</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    MyClass obj1;</span><br><span class="line">    MyClass::count = <span class="number">5</span>; <span class="comment">// 通过类名访问静态成员变量</span></span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Count: &quot;</span> &lt;&lt; obj1.count &lt;&lt; std::endl; <span class="comment">// 输出：Count: 5，因为静态成员变量是共享的</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>静态全局变量</strong>：在函数外部声明的静态变量称为静态全局变量。它们的<strong>作用域限制在声明它们的文件内</strong>，并且在程序的整个生命周期内保留其值。</p>
+<p>说到这，顺便说说<code>extern</code>关键字。它用于<strong>声明一个变量或函数是在其他文件中定义的，而不是在当前文件中定义的</strong>。即在当前文件中声明在其他文件中定义的变量或函数，以便在当前文件中使用它们。</p>
+</li>
 </ol>
-<p>（1）指针是一个变量，其值为另一个变量的地址，指向内存的一个存储单元。是一个对象实体</p>
-<p>（2）而引用的本质是给变量起别名，允许通过这个别名去直接操纵和修改对象本身的属性。引用跟原来的变量实质上是同一个东西。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">5</span>;</span><br><span class="line"><span class="comment">//指针</span></span><br><span class="line"><span class="type">int</span>* p = &amp;a;</span><br><span class="line"><span class="comment">//引用</span></span><br><span class="line"><span class="type">int</span>&amp; b = a;</span><br></pre></td></tr></table></figure>
+<h5 id="2-静态函数"><a href="#2-静态函数" class="headerlink" title="2. 静态函数"></a>2. 静态函数</h5><p>静态成员函数：静态函数<strong>属于类，而不是类的实例</strong>。它们可以直接通过类名调用，而无需创建类的实例。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Math</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">static</span> <span class="type">int</span> <span class="title">add</span><span class="params">(<span class="type">int</span> a, <span class="type">int</span> b)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> a + b;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> sum = Math::<span class="built_in">add</span>(<span class="number">5</span>, <span class="number">3</span>); <span class="comment">// 直接通过类名调用静态函数</span></span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Sum: &quot;</span> &lt;&lt; sum &lt;&lt; std::endl; <span class="comment">// 输出：Sum: 8</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<ol start="2">
-<li>空指针与无效引用</li>
-</ol>
-<p>（1）指针可以为空，表示它不指向任何有效的内存地址。在指针没有被初始化时，它的值通常是未定义的，为了避免错误，可以将其初始化为 <code>nullptr</code> 或 <code>NULL</code>。</p>
-<p>（2）引用不能为空，它必须在声明时被初始化，并且始终指向某个对象。试图将引用声明为 null 或者空值会导致编译错误。</p>
-<ol start="3">
-<li>初始化</li>
-</ol>
-<p>（1）指针需要进行初始化，可以使用取地址符号 <code>&amp;</code> 来获取一个变量的地址，也可以将另一个指针赋值给它。</p>
-<p>（2）引用在声明时必须初始化，而且一旦初始化后，不能被重新绑定到其他变量。</p>
-<ol start="4">
-<li>运算符</li>
-</ol>
-<p>（1）指针可以通过解引用 <code>*</code> 运算符来访问所指向的对象，也可以使用箭头 <code>-&gt;</code> 运算符来访问成员，例如：<code>p-&gt;member</code>。</p>
-<p>（2）引用则不需要解引用操作符，因为它们在使用时就是被解引用的。例如：<code>b.member</code>。</p>
 
     </div>
 
@@ -244,7 +238,7 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/C/" rel="tag"># C++</a>
+              <a href="/tags/static/" rel="tag"># static</a>
           </div>
 
         
@@ -253,13 +247,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2024/03/27/%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5/" rel="prev" title="线程同步">
-      <i class="fa fa-chevron-left"></i> 线程同步
+    <a href="/2024/04/19/const%E8%AF%A6%E8%A7%A3/" rel="prev" title="const详解">
+      <i class="fa fa-chevron-left"></i> const详解
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2024/04/07/%E5%B7%A6%E5%8F%B3%E5%80%BC%E5%BC%95%E7%94%A8/" rel="next" title="左右值引用">
-      左右值引用 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -318,6 +309,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-%E9%9D%99%E6%80%81%E5%8F%98%E9%87%8F"><span class="nav-number">1.</span> <span class="nav-text">1. 静态变量</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-%E9%9D%99%E6%80%81%E5%87%BD%E6%95%B0"><span class="nav-number">2.</span> <span class="nav-text">2. 静态函数</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
