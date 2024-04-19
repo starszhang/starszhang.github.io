@@ -28,7 +28,7 @@
 <meta property="og:description" content="1. 选择排序开启n-1轮循环，每次从未排序的元素中选择最小（或最大）的元素，将其与未排序序列的第一个元素交换位置，从而逐步构建有序序列。 选择排序的具体流程如下：  初始状态：将整个序列视为两部分，一部分是已排序序列，另一部分是未排序序列。 选择最小元素：从未排序序列中选择最小的元素，并将其与未排序序列的第一个元素交换位置。 扩大已排序序列：将交换后的元素视为已排序序列的一部分，未排序序列减少一">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-04-08T04:00:05.000Z">
-<meta property="article:modified_time" content="2024-04-10T05:41:21.092Z">
+<meta property="article:modified_time" content="2024-04-17T10:35:50.678Z">
 <meta property="article:author" content="stars zhang">
 <meta property="article:tag" content="排序">
 <meta name="twitter:card" content="summary">
@@ -196,7 +196,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-04-10 13:41:21" itemprop="dateModified" datetime="2024-04-10T13:41:21+08:00">2024-04-10</time>
+                <time title="修改时间：2024-04-17 18:35:50" itemprop="dateModified" datetime="2024-04-17T18:35:50+08:00">2024-04-17</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -269,7 +269,45 @@
 <p>快速排序的时间复杂度为 O(n log n)，其中 n 是待排序序列的长度。在平均情况下，快速排序的性能非常好，但是在最坏情况下（例如，当选择的基准元素总是序列中的最大或最小元素时），快速排序的时间复杂度可能会退化为 O(n^2)。</p>
 <p>空间复杂度为O(n)：在输入数组完全倒序的情况下，达到最差递归深度 n ，使用 O(n)栈帧空间。若采用<strong>尾递归优化</strong>，则复杂度为O(log n)。</p>
 <p>尾递归优化是一种编译器优化技术，用于优化递归调用的栈空间使用。在尾递归优化中，如果函数的最后一个操作是对自身的递归调用，编译器会将这种递归调用转换为循环，从而避免在调用栈上创建新的帧，节省了栈空间的使用。</p>
-<h1 id="5-归并排序"><a href="#5-归并排序" class="headerlink" title="5. 归并排序"></a>5. 归并排序</h1><h1 id="6-堆排序"><a href="#6-堆排序" class="headerlink" title="6. 堆排序"></a>6. 堆排序</h1><h1 id="7-桶排序"><a href="#7-桶排序" class="headerlink" title="7. 桶排序"></a>7. 桶排序</h1><h1 id="8-计数排序"><a href="#8-计数排序" class="headerlink" title="8. 计数排序"></a>8. 计数排序</h1><h1 id="9-基数排序"><a href="#9-基数排序" class="headerlink" title="9. 基数排序"></a>9. 基数排序</h1><h1 id="10-希尔排序"><a href="#10-希尔排序" class="headerlink" title="10. 希尔排序"></a>10. 希尔排序</h1>
+<h1 id="5-归并排序"><a href="#5-归并排序" class="headerlink" title="5. 归并排序"></a>5. 归并排序</h1><p>归并排序（Merge Sort）是一种基于<strong>分治</strong>思想的排序算法。其基本思路是将待排序序列<strong>分</strong>成两个子序列，分别对这两个子序列进行递归排序，然后将两个已经排好序的子序列<strong>合</strong>并成一个有序序列。</p>
+<p>具体的算法流程：</p>
+<ol>
+<li><strong>分割序列：</strong>不断地将待排序序列划分成两个子序列，直到子序列的长度为1或0</li>
+<li><strong>递归排序</strong>：递归地对分割后的两个子序列进行排序。</li>
+<li><strong>合并序列：</strong>将两个已经排好序的子序列合并成一个有序序列。</li>
+</ol>
+<p>伪代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">归并排序(A):</span><br><span class="line">    <span class="keyword">if</span> length(A) &lt;= <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> A</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        middle = length(A) / <span class="number">2</span></span><br><span class="line">        left_half = 归并排序(A[<span class="number">0</span>:middle])  // 递归排序左半部分</span><br><span class="line">        right_half = 归并排序(A[middle:length(A)])  // 递归排序右半部分</span><br><span class="line">        <span class="keyword">return</span> 合并(left_half, right_half)  // 合并左右两部分并返回合并后的有序序列</span><br><span class="line"></span><br><span class="line">合并(left_half, right_half):</span><br><span class="line">    result = []</span><br><span class="line">    <span class="keyword">while</span> left_half 不为空 <span class="keyword">and</span> right_half 不为空:</span><br><span class="line">        <span class="keyword">if</span> left_half[<span class="number">0</span>] &lt;= right_half[<span class="number">0</span>]:</span><br><span class="line">            result.append(left_half[<span class="number">0</span>])</span><br><span class="line">            left_half = left_half[<span class="number">1</span>:]</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            result.append(right_half[<span class="number">0</span>])</span><br><span class="line">            right_half = right_half[<span class="number">1</span>:]</span><br><span class="line">    // 将剩余的元素追加到结果中</span><br><span class="line">    result += left_half</span><br><span class="line">    result += right_half</span><br><span class="line">    <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
+
+<p>归并排序的时间复杂度为 O(n log n)。虽然归并排序的时间复杂度较低，但是需要额外的空间来存储归并过程中产生的临时序列，因此其空间复杂度为 O(n)。</p>
+<h1 id="6-堆排序"><a href="#6-堆排序" class="headerlink" title="6. 堆排序"></a>6. 堆排序</h1><p>堆排序（Heap Sort）是一种基于堆数据结构的排序算法，其基本思想是利用堆的性质实现排序。堆是一个特殊的树形数据结构，具有以下性质：</p>
+<ol>
+<li>它是一个完全二叉树，即除了最后一层，其他层都是满的。</li>
+<li>在一个小顶堆（Min Heap）中，任意节点的值都小于或等于其子节点的值。</li>
+<li>在一个大顶堆（Max Heap）中，任意节点的值都大于或等于其子节点的值。</li>
+</ol>
+<p>将待排序的序列构建成一个大顶堆，重复从堆中取出堆顶元素，并重新构建堆，直到堆为空，最终得到即为排序好的序列。</p>
+<p>算法的流程：</p>
+<ol>
+<li><p>构建堆：</p>
+<p>​		首先需要将待排序的序列构建成一个堆。一种常见的方法是从最后一个非叶子节点开始，依次向前进行调整，保证每个节点都满足堆的性质。</p>
+<p>大顶堆的调整过程：</p>
+<ul>
+<li>从最后一个非叶子节点开始（即 n&#x2F;2-1），向前遍历到根节点。</li>
+<li>对于每个节点，如果它的子节点中有比它大的，就将其与最大的子节点进行交换，直到它没有比它大的子节点或者到达叶子节点为止。</li>
+</ul>
+</li>
+<li><p>排序：</p>
+<p>​		构建好堆之后，需要重复从堆中取出最大（或最小）的元素，并重新调整堆，直到堆为空。具体的过程如下：</p>
+<ul>
+<li>将堆顶元素（最大或最小值）与堆中的最后一个元素交换位置。</li>
+<li>从堆中移除最后一个元素（即最大或最小值）。</li>
+<li>对剩余的元素重新调整堆，使其满足堆的性质。</li>
+</ul>
+<p>重复以上步骤，直到堆为空。</p>
+</li>
+</ol>
+<h1 id="7-桶排序"><a href="#7-桶排序" class="headerlink" title="7. 桶排序"></a>7. 桶排序</h1><h1 id="8-计数排序"><a href="#8-计数排序" class="headerlink" title="8. 计数排序"></a>8. 计数排序</h1><h1 id="9-基数排序"><a href="#9-基数排序" class="headerlink" title="9. 基数排序"></a>9. 基数排序</h1><h1 id="10-希尔排序"><a href="#10-希尔排序" class="headerlink" title="10. 希尔排序"></a>10. 希尔排序</h1>
     </div>
 
     
@@ -366,7 +404,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-count">19</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -379,7 +417,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-count">13</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

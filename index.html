@@ -162,6 +162,105 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/04/19/const%E8%AF%A6%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="stars zhang">
+      <meta itemprop="description" content="永远迎着光走">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="stars">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/04/19/const%E8%AF%A6%E8%A7%A3/" class="post-title-link" itemprop="url">const详解</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-04-19 15:34:46 / 修改时间：16:52:56" itemprop="dateCreated datePublished" datetime="2024-04-19T15:34:46+08:00">2024-04-19</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h5 id="const"><a href="#const" class="headerlink" title="const"></a>const</h5><p><code>const</code> 用于定义常量、声明常量引用以及修饰成员函数。<code>const</code> 的作用是告诉编译器这个东西是不可修改的，即它的值在初始化后不能再被修改。</p>
+<p>编译器通常不为普通的const常量分配内存空间，而是将他们保存在符号表中。</p>
+<h6 id="1-定义常量"><a href="#1-定义常量" class="headerlink" title="1. 定义常量"></a>1. 定义常量</h6><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">int</span> x = <span class="number">5</span>;</span><br></pre></td></tr></table></figure>
+
+<p>定义了一个常量 <code>x</code>，其值为 5。一旦定义，就不能再修改 <code>x</code> 的值。</p>
+<h6 id="2-const和引用"><a href="#2-const和引用" class="headerlink" title="2. const和引用"></a>2. const和引用</h6><p>把<code>const</code>修饰的引用称为”常用引用“，常量引用不能直接修改所引用的对象。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">int</span> ci = <span class="number">1024</span>;<span class="comment">//ci是一个int型的常量</span></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> &amp;r1 = ci;<span class="comment">//正确，r1是一个常量引用，并且r1本身也是一个常量</span></span><br><span class="line">r1 = <span class="number">42</span>;<span class="comment">//错误，引用被const限制了，不能修改所引用对象的值了</span></span><br><span class="line"><span class="type">int</span> &amp;r2 = ci;<span class="comment">//错误，试图让一个非常量引用指向一个常量对象</span></span><br></pre></td></tr></table></figure>
+
+<h6 id="3-const和指针"><a href="#3-const和指针" class="headerlink" title="3. const和指针"></a>3. const和指针</h6><ol>
+<li><p>常量指针：指针指向的对象不可变，但指针本身的值可以改变。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> x = <span class="number">5</span>;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span>* ptr = &amp;x; <span class="comment">// ptr 是一个指向整型常量的指针，它所指向的对象不能被修改，但可以改变指针的值</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// *ptr = 10; // 错误，不能修改 ptr 所指向的对象的值</span></span><br><span class="line"><span class="type">int</span> y = <span class="number">10</span>;</span><br><span class="line">ptr = &amp;y; <span class="comment">// 可以修改指针 ptr 的值，使其指向不同的对象</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>指针常量：指针本身的值不可变，但指针所指向的对象可以改变。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> x = <span class="number">5</span>;</span><br><span class="line"><span class="type">int</span>* <span class="type">const</span> ptr = &amp;x; <span class="comment">// ptr 是一个指向整型的常量指针，它的值不能改变，但可以修改其指向的对象</span></span><br><span class="line"></span><br><span class="line">*ptr = <span class="number">10</span>; <span class="comment">// 可以修改 ptr 所指向的对象的值</span></span><br><span class="line"><span class="comment">// ptr = &amp;y; // 错误，无法修改指针 ptr 的值</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<h6 id="4-const和类对象"><a href="#4-const和类对象" class="headerlink" title="4. const和类对象"></a>4. const和类对象</h6><ol>
+<li><p>const成员变量：</p>
+<p>const 成员变量是指在类中声明为常量的数据成员。一旦被初始化，其值就不能再修改。它们只能在类的构造函数初始化列表中初始化，而不能在构造函数体中赋值。</p>
+</li>
+<li><p>const成员函数：</p>
+<p>const只能限定类的成员函数，表示该函数不会修改类的成员变量，<strong>除非成员变量被 mutable 修饰符修饰</strong>。</p>
+</li>
+</ol>
+<p>const限定后，该成员函数不允许修改类的数据成员，也不允许调用非const函数，即使该函数没有修改类的数据成员，只要没有声明成const，就不能调用。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MyClass</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">// 构造函数初始化 const 成员变量</span></span><br><span class="line">    <span class="built_in">MyClass</span>(<span class="type">int</span> x): <span class="built_in">constValue</span>(x) &#123;&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">getValue</span><span class="params">()</span> <span class="type">const</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 这是一个常量成员函数，不能修改类的成员变量</span></span><br><span class="line">        <span class="keyword">return</span> value;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">setValue</span><span class="params">(<span class="type">int</span> newValue)</span> </span>&#123;</span><br><span class="line">        value = newValue;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="type">const</span> <span class="type">int</span> constValue;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="type">const</span> MyClass <span class="title">obj</span><span class="params">(<span class="number">10</span>)</span></span>;</span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Value: &quot;</span> &lt;&lt; obj.<span class="built_in">getValue</span>() &lt;&lt; std::endl; <span class="comment">// 合法，调用常量成员函数</span></span><br><span class="line">    <span class="comment">// obj.setValue(5); // 错误，常量对象不能调用非常量成员函数</span></span><br><span class="line">    obj.constValue = <span class="number">5</span>; <span class="comment">// 错误，不能修改 const 成员变量的值</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="constexper"><a href="#constexper" class="headerlink" title="constexper"></a>constexper</h5><p><code>constexpr</code> 是 C++11 引入的关键字，用于声明“常量表达式”。</p>
+<p>常量表达式是在编译时就可以求值的表达式，即它的值可以在编译时被确定。</p>
+<p><code>constexpr</code> 可以用于变量、函数、构造函数以及类的成员函数，用于指示它们在编译时就可以被计算出来，而不是在运行时计算。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//5是一个常量表达式</span></span><br><span class="line"><span class="keyword">constexpr</span> <span class="type">int</span> x = <span class="number">5</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//square是一个constexpr函数</span></span><br><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="type">int</span> <span class="title">square</span><span class="params">(<span class="type">int</span> x)</span></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> x * x;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Circle</span> &#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">double</span> PI = <span class="number">3.14159</span>;</span><br><span class="line">    <span class="type">double</span> radius;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">constexpr</span> <span class="title">Circle</span><span class="params">(<span class="type">double</span> r)</span> : radius(r) &#123;</span>&#125;</span><br><span class="line">    <span class="function"><span class="keyword">constexpr</span> <span class="type">double</span> <span class="title">getArea</span><span class="params">()</span> <span class="type">const</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> PI * radius * radius;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>使用 <code>constexpr</code> 可以使得程序在编译时进行更多的优化，提高程序的性能。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2024/04/12/%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -514,7 +613,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-04-10 13:41:21" itemprop="dateModified" datetime="2024-04-10T13:41:21+08:00">2024-04-10</time>
+                <time title="修改时间：2024-04-17 18:35:50" itemprop="dateModified" datetime="2024-04-17T18:35:50+08:00">2024-04-17</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -587,7 +686,45 @@
 <p>快速排序的时间复杂度为 O(n log n)，其中 n 是待排序序列的长度。在平均情况下，快速排序的性能非常好，但是在最坏情况下（例如，当选择的基准元素总是序列中的最大或最小元素时），快速排序的时间复杂度可能会退化为 O(n^2)。</p>
 <p>空间复杂度为O(n)：在输入数组完全倒序的情况下，达到最差递归深度 n ，使用 O(n)栈帧空间。若采用<strong>尾递归优化</strong>，则复杂度为O(log n)。</p>
 <p>尾递归优化是一种编译器优化技术，用于优化递归调用的栈空间使用。在尾递归优化中，如果函数的最后一个操作是对自身的递归调用，编译器会将这种递归调用转换为循环，从而避免在调用栈上创建新的帧，节省了栈空间的使用。</p>
-<h1 id="5-归并排序"><a href="#5-归并排序" class="headerlink" title="5. 归并排序"></a>5. 归并排序</h1><h1 id="6-堆排序"><a href="#6-堆排序" class="headerlink" title="6. 堆排序"></a>6. 堆排序</h1><h1 id="7-桶排序"><a href="#7-桶排序" class="headerlink" title="7. 桶排序"></a>7. 桶排序</h1><h1 id="8-计数排序"><a href="#8-计数排序" class="headerlink" title="8. 计数排序"></a>8. 计数排序</h1><h1 id="9-基数排序"><a href="#9-基数排序" class="headerlink" title="9. 基数排序"></a>9. 基数排序</h1><h1 id="10-希尔排序"><a href="#10-希尔排序" class="headerlink" title="10. 希尔排序"></a>10. 希尔排序</h1>
+<h1 id="5-归并排序"><a href="#5-归并排序" class="headerlink" title="5. 归并排序"></a>5. 归并排序</h1><p>归并排序（Merge Sort）是一种基于<strong>分治</strong>思想的排序算法。其基本思路是将待排序序列<strong>分</strong>成两个子序列，分别对这两个子序列进行递归排序，然后将两个已经排好序的子序列<strong>合</strong>并成一个有序序列。</p>
+<p>具体的算法流程：</p>
+<ol>
+<li><strong>分割序列：</strong>不断地将待排序序列划分成两个子序列，直到子序列的长度为1或0</li>
+<li><strong>递归排序</strong>：递归地对分割后的两个子序列进行排序。</li>
+<li><strong>合并序列：</strong>将两个已经排好序的子序列合并成一个有序序列。</li>
+</ol>
+<p>伪代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">归并排序(A):</span><br><span class="line">    <span class="keyword">if</span> length(A) &lt;= <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> A</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        middle = length(A) / <span class="number">2</span></span><br><span class="line">        left_half = 归并排序(A[<span class="number">0</span>:middle])  // 递归排序左半部分</span><br><span class="line">        right_half = 归并排序(A[middle:length(A)])  // 递归排序右半部分</span><br><span class="line">        <span class="keyword">return</span> 合并(left_half, right_half)  // 合并左右两部分并返回合并后的有序序列</span><br><span class="line"></span><br><span class="line">合并(left_half, right_half):</span><br><span class="line">    result = []</span><br><span class="line">    <span class="keyword">while</span> left_half 不为空 <span class="keyword">and</span> right_half 不为空:</span><br><span class="line">        <span class="keyword">if</span> left_half[<span class="number">0</span>] &lt;= right_half[<span class="number">0</span>]:</span><br><span class="line">            result.append(left_half[<span class="number">0</span>])</span><br><span class="line">            left_half = left_half[<span class="number">1</span>:]</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            result.append(right_half[<span class="number">0</span>])</span><br><span class="line">            right_half = right_half[<span class="number">1</span>:]</span><br><span class="line">    // 将剩余的元素追加到结果中</span><br><span class="line">    result += left_half</span><br><span class="line">    result += right_half</span><br><span class="line">    <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
+
+<p>归并排序的时间复杂度为 O(n log n)。虽然归并排序的时间复杂度较低，但是需要额外的空间来存储归并过程中产生的临时序列，因此其空间复杂度为 O(n)。</p>
+<h1 id="6-堆排序"><a href="#6-堆排序" class="headerlink" title="6. 堆排序"></a>6. 堆排序</h1><p>堆排序（Heap Sort）是一种基于堆数据结构的排序算法，其基本思想是利用堆的性质实现排序。堆是一个特殊的树形数据结构，具有以下性质：</p>
+<ol>
+<li>它是一个完全二叉树，即除了最后一层，其他层都是满的。</li>
+<li>在一个小顶堆（Min Heap）中，任意节点的值都小于或等于其子节点的值。</li>
+<li>在一个大顶堆（Max Heap）中，任意节点的值都大于或等于其子节点的值。</li>
+</ol>
+<p>将待排序的序列构建成一个大顶堆，重复从堆中取出堆顶元素，并重新构建堆，直到堆为空，最终得到即为排序好的序列。</p>
+<p>算法的流程：</p>
+<ol>
+<li><p>构建堆：</p>
+<p>​		首先需要将待排序的序列构建成一个堆。一种常见的方法是从最后一个非叶子节点开始，依次向前进行调整，保证每个节点都满足堆的性质。</p>
+<p>大顶堆的调整过程：</p>
+<ul>
+<li>从最后一个非叶子节点开始（即 n&#x2F;2-1），向前遍历到根节点。</li>
+<li>对于每个节点，如果它的子节点中有比它大的，就将其与最大的子节点进行交换，直到它没有比它大的子节点或者到达叶子节点为止。</li>
+</ul>
+</li>
+<li><p>排序：</p>
+<p>​		构建好堆之后，需要重复从堆中取出最大（或最小）的元素，并重新调整堆，直到堆为空。具体的过程如下：</p>
+<ul>
+<li>将堆顶元素（最大或最小值）与堆中的最后一个元素交换位置。</li>
+<li>从堆中移除最后一个元素（即最大或最小值）。</li>
+<li>对剩余的元素重新调整堆，使其满足堆的性质。</li>
+</ul>
+<p>重复以上步骤，直到堆为空。</p>
+</li>
+</ol>
+<h1 id="7-桶排序"><a href="#7-桶排序" class="headerlink" title="7. 桶排序"></a>7. 桶排序</h1><h1 id="8-计数排序"><a href="#8-计数排序" class="headerlink" title="8. 计数排序"></a>8. 计数排序</h1><h1 id="9-基数排序"><a href="#9-基数排序" class="headerlink" title="9. 基数排序"></a>9. 基数排序</h1><h1 id="10-希尔排序"><a href="#10-希尔排序" class="headerlink" title="10. 希尔排序"></a>10. 希尔排序</h1>
       
     </div>
 
@@ -1218,183 +1355,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/03/25/IO%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="stars zhang">
-      <meta itemprop="description" content="永远迎着光走">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="stars">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/03/25/IO%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8/" class="post-title-link" itemprop="url">IO多路复用</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-03-25 10:00:09" itemprop="dateCreated datePublished" datetime="2024-03-25T10:00:09+08:00">2024-03-25</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-04-14 11:11:53" itemprop="dateModified" datetime="2024-04-14T11:11:53+08:00">2024-04-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>应用通常需要在多个文件描述符上阻塞：在键盘输入（stdin）、进程间通信以及很多文件之间协调I&#x2F;O 。</p>
-<p>在传统的IO模型中，每个IO操作都需要创建一个新的线程或进程来处理。因为单个进程无法同时在多个文件描述符上阻塞。 </p>
-<p>I&#x2F;O多路复用支持一个线程同时监测多个文件描述符并且这个过程是阻塞的，当有IO操作可以进行时才唤醒线程进行处理，避免了频繁的线程创建和切换，提高了系统的效率。 </p>
-<p>多线程&#x2F;多进程并发和IO多路复用的并发处理流程进行对比（服务器端）：</p>
-<ul>
-<li><p>多线程&#x2F;多进程并发</p>
-<ul>
-<li>主线程&#x2F;父进程：调用 accept()监测客户端连接请求，如果没有新的客户端的连接请求，当前线程&#x2F;进程会阻塞；如果有新的客户端连接请求解除阻塞，建立连接</li>
-<li>子线程&#x2F;子进程：和建立连接的客户端通信。<ul>
-<li>调用 read() &#x2F; recv() 接收客户端发送的通信数据，如果没有通信数据，当前线程&#x2F;进程会阻塞，数据到达之后阻塞自动解除</li>
-<li>调用 write() &#x2F; send() 给客户端发送数据，如果写缓冲区已满，当前线程&#x2F;进程会阻塞，否则将待发送数据写入写缓冲区中</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>IO多路复用并发</p>
-<ul>
-<li><p>使用IO多路复用函数委托内核检测服务器端所有的文件描述符（通信和监听两类），检测过程会导致进程&#x2F;线程的阻塞，如果检测到已就绪的文件描述符阻塞解除，并将这些已就绪的文件描述符传出</p>
-</li>
-<li><p>根据类型对传出的所有已就绪文件描述符进行判断，并做出不同的处理</p>
-<ul>
-<li><p>监听的文件描述符：和客户端建立连接，此时调用accept()不会导致程序阻塞，因为监听的文件描述符是已就绪的（有新请求）</p>
-</li>
-<li><p>通信的文件描述符：调用通信函数和已建立连接的客户端通信，调用 read() &#x2F; recv() 不会阻塞程序，因为通信的文件描述符是就绪的，读缓冲区内已有数据；调用 write() &#x2F; send() 不会阻塞程序，因为通信的文件描述符是就绪的，写缓冲区不满，可以往里面写数据</p>
-</li>
-</ul>
-</li>
-<li><p>对这些文件描述符继续进行下一轮的检测</p>
-</li>
-</ul>
-</li>
-</ul>
-<p>Linux提供了三种I&#x2F;O多路复用方案：select、poll和epoll </p>
-<h1 id="epoll"><a href="#epoll" class="headerlink" title="epoll"></a>epoll</h1><p><code>epoll</code> 是 Linux 中高性能的事件通知机制，它可以监视多个文件描述符的 I&#x2F;O 事件，并在这些文件描述符上发生事件时通知应用程序。</p>
-<p>epoll把用户关心的<strong>文件描述符上的事件放在内核里的一个事件表</strong>中，从而无须像select和poll那样每次调用都要重复传入文件描述符集或事件集。但<strong>epoll需要使用一个额外的文件描述符，来唯一标识内核中的这个事件表</strong> 。这个文件描述符通过epoll_create或epoll_create1创建</p>
-<h2 id="创建epoll实例"><a href="#创建epoll实例" class="headerlink" title="创建epoll实例"></a>创建epoll实例</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> ＜sys/epoll.h＞</span></span><br><span class="line"><span class="type">int</span> epfd = epoll_create(<span class="type">int</span> size);</span><br><span class="line"><span class="type">int</span> epfd = epoll_create1(<span class="type">int</span> flags)	;</span><br></pre></td></tr></table></figure>
-
-<p><code>size</code> 参数指定了 <code>epoll</code> 实例的大小，通常设置为大于零的值即可。在 Linux 2.6.8 之前的版本中，该参数没有意义，但是现在已经被忽略。</p>
-<p><code>flags</code> 参数是一个位掩码，用于指定一些选项。目前支持的选项只有一个：<code>EPOLL_CLOEXEC</code>，用于在创建 <code>epoll</code> 实例时设置 <code>close-on-exec</code> 标志。如果设置了这个选项，当调用 <code>exec</code> 函数执行其他程序时，内核会自动关闭该 <code>epoll</code> 实例。<strong>简单地创建一个 <code>epoll</code> 实例，可以将 <code>flags</code> 参数设置为 0</strong>。</p>
-<h2 id="操作内核事件表"><a href="#操作内核事件表" class="headerlink" title="操作内核事件表"></a>操作内核事件表</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">epoll_ctl</span><span class="params">(<span class="type">int</span> epfd, <span class="type">int</span> op, <span class="type">int</span> fd, <span class="keyword">struct</span> epoll_event *event)</span>;</span><br></pre></td></tr></table></figure>
-
-<p><strong>参数：</strong></p>
-<ul>
-<li><code>epfd</code> 是 <code>epoll</code> 实例的文件描述符。</li>
-<li><code>op</code> 是操作类型，可以是 <code>EPOLL_CTL_ADD</code>、<code>EPOLL_CTL_MOD</code> 或者 <code>EPOLL_CTL_DEL</code>。</li>
-<li><code>fd</code> 是需要向内核事件表中添加&#x2F;修改&#x2F;删除的文件描述符。</li>
-<li><code>event</code> 是指向 <code>epoll_event</code> 结构的指针，用于指定事件类型。定义如下：</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">epoll_event</span> &#123;</span><br><span class="line">    <span class="type">uint32_t</span> events;  <span class="comment">// 表示事件的类型</span></span><br><span class="line">    <span class="type">epoll_data_t</span> data; <span class="comment">// 与事件相关的数据</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<p><code>epoll_event</code> 结构包含两个成员：</p>
-<ol>
-<li><code>events</code>：是一个 32 位无符号整数，表示事件的类型。可以是下列宏的组合：<ul>
-<li><code>EPOLLIN</code>：表示文件描述符上有数据可读。</li>
-<li><code>EPOLLOUT</code>：表示文件描述符可以进行写操作。</li>
-<li><code>EPOLLRDHUP</code>：表示对端断开连接。</li>
-<li><code>EPOLLERR</code>：表示发生错误。</li>
-<li><code>EPOLLHUP</code>：表示发生挂起事件。</li>
-<li><code>EPOLLET</code>：设置为边缘触发模式。</li>
-<li><code>EPOLLONESHOT</code>：设置为单次触发模式。</li>
-</ul>
-</li>
-<li><code>data</code>：表示事件的数据，它是一个联合体 <code>epoll_data_t</code>，可以是一个文件描述符（<code>fd</code>）或者一个指针（<code>ptr</code>）。具体定义如下：</li>
-</ol>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">union</span> <span class="title">epoll_data</span> &#123;</span></span><br><span class="line">    <span class="type">void</span>    *ptr;    <span class="comment">// 指针类型</span></span><br><span class="line">    <span class="type">int</span>      fd;     <span class="comment">// 文件描述符类型</span></span><br><span class="line">    <span class="type">uint32_t</span> u32;    <span class="comment">// 32 位无符号整数类型</span></span><br><span class="line">    <span class="type">uint64_t</span> u64;    <span class="comment">// 64 位无符号整数类型</span></span><br><span class="line">&#125; <span class="type">epoll_data_t</span>;</span><br></pre></td></tr></table></figure>
-
-<p><code>epoll_data</code> 联合体允许用户在事件中传递一些附加的数据。</p>
-<ul>
-<li><p>如果事件类型是 <code>EPOLLIN</code> 或 <code>EPOLLOUT</code>，则通常使用 <code>fd</code> 成员来表示文件描述符；</p>
-</li>
-<li><p>如果需要传递其他类型的数据，可以使用 <code>ptr</code> 成员来存储一个指针，或者使用 <code>u32</code> 或 <code>u64</code> 来存储一个整数值。</p>
-</li>
-</ul>
-<p><strong>返回值：</strong></p>
-<ul>
-<li>成功时，返回 0。</li>
-<li>失败时，返回 -1，并设置相应的errno。</li>
-</ul>
-<p><strong>示例：</strong>添加一个文件描述符到内核事件表中</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">epoll_event</span> <span class="title">event</span>;</span></span><br><span class="line">event.events = EPOLLIN; <span class="comment">// 指定事件为可读事件</span></span><br><span class="line">event.data.fd = fd;     <span class="comment">// 文件描述符</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (epoll_ctl(epoll_fd, EPOLL_CTL_ADD, fd, &amp;event) == <span class="number">-1</span>) &#123;</span><br><span class="line">    perror(<span class="string">&quot;epoll_ctl: add&quot;</span>);</span><br><span class="line">    <span class="built_in">exit</span>(EXIT_FAILURE);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="等待事件发生"><a href="#等待事件发生" class="headerlink" title="等待事件发生"></a>等待事件发生</h2><ul>
-<li><p><code>epoll_wait</code> 调用会阻塞程序直到事件发生或者超时。</p>
-</li>
-<li><p>如果有事件发生，**<code>epoll_wait</code> 将把这些事件复制到 <code>events</code> 数组中**，并返回发生事件的数量。</p>
-</li>
-<li><p><code>events</code> 数组中的每个元素都是一个 <code>epoll_event</code> 结构，其中包含了发生事件的文件描述符及其事件类型。</p>
-</li>
-</ul>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">epoll_wait</span><span class="params">(<span class="type">int</span> epfd, <span class="keyword">struct</span> epoll_event *events, <span class="type">int</span> maxevents, <span class="type">int</span> timeout)</span>;</span><br></pre></td></tr></table></figure>
-
-<p><strong>参数：</strong></p>
-<ul>
-<li><code>maxevents</code> 是 <code>events</code> 数组的大小，表示最多可以存储多少个事件。</li>
-<li><code>timeout</code> 是超时时间，以毫秒为单位。传递 <code>-1</code> 将一直阻塞等待事件，传递 <code>0</code> 将立即返回。</li>
-</ul>
-<p><strong>返回值：</strong></p>
-<ul>
-<li>如果没有事件发生，且超时时间到达，则返回 0。</li>
-<li>如果有事件发生，返回发生事件的数量。</li>
-</ul>
-<p><strong>示例：</strong></p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">epoll_event</span> <span class="title">events</span>[<span class="title">MAX_EVENTS</span>];</span></span><br><span class="line"><span class="type">int</span> nfds = epoll_wait(epoll_fd, events, MAX_EVENTS, <span class="number">-1</span>);</span><br><span class="line"><span class="keyword">if</span> (nfds == <span class="number">-1</span>) &#123;</span><br><span class="line">    perror(<span class="string">&quot;epoll_wait&quot;</span>);</span><br><span class="line">    <span class="built_in">exit</span>(EXIT_FAILURE);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 处理发生的事件</span></span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; nfds; ++i) &#123;</span><br><span class="line">    <span class="comment">// 处理 events[i].data.fd 对应的文件描述符的事件</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1464,7 +1424,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-count">19</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1477,7 +1437,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-count">13</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

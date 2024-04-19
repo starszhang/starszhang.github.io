@@ -162,6 +162,269 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/03/25/IO%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="stars zhang">
+      <meta itemprop="description" content="永远迎着光走">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="stars">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/03/25/IO%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8/" class="post-title-link" itemprop="url">IO多路复用</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-03-25 10:00:09" itemprop="dateCreated datePublished" datetime="2024-03-25T10:00:09+08:00">2024-03-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-04-16 14:35:27" itemprop="dateModified" datetime="2024-04-16T14:35:27+08:00">2024-04-16</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>应用通常需要在多个文件描述符上阻塞：在键盘输入（stdin）、进程间通信以及很多文件之间协调I&#x2F;O 。</p>
+<p>在传统的IO模型中，每个IO操作都需要创建一个新的线程或进程来处理。因为单个进程无法同时在多个文件描述符上阻塞。 </p>
+<p>I&#x2F;O多路复用支持<strong>一个线程同时监测多个文件描述符并且这个过程是阻塞的，当有IO操作可以进行时才唤醒线程进行处理，避免了频繁的线程创建和切换</strong>，提高了系统的效率。 </p>
+<p>多线程&#x2F;多进程并发和IO多路复用的并发处理流程进行对比（服务器端）：</p>
+<ul>
+<li><p>多线程&#x2F;多进程并发</p>
+<ul>
+<li>主线程&#x2F;父进程：调用 accept()监测客户端连接请求，如果没有新的客户端的连接请求，当前线程&#x2F;进程会阻塞；如果有新的客户端连接请求解除阻塞，建立连接</li>
+<li>子线程&#x2F;子进程：和建立连接的客户端通信。<ul>
+<li>调用 read() &#x2F; recv() 接收客户端发送的通信数据，如果没有通信数据，当前线程&#x2F;进程会阻塞，数据到达之后阻塞自动解除</li>
+<li>调用 write() &#x2F; send() 给客户端发送数据，如果写缓冲区已满，当前线程&#x2F;进程会阻塞，否则将待发送数据写入写缓冲区中</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>IO多路复用并发</p>
+<ul>
+<li><p>使用IO多路复用函数委托<strong>内核</strong>检测服务器端所有的文件描述符（通信和监听两类），检测过程会导致进程&#x2F;线程的阻塞，如果检测到已就绪的文件描述符阻塞解除，并将这些已就绪的文件描述符传出</p>
+</li>
+<li><p>根据类型对传出的所有已就绪文件描述符进行判断，并做出不同的处理</p>
+<ul>
+<li><p>监听的文件描述符：和客户端建立连接，此时调用accept()不会导致程序阻塞，因为监听的文件描述符是已就绪的（有新请求）</p>
+</li>
+<li><p>通信的文件描述符：调用通信函数和已建立连接的客户端通信，调用 read() &#x2F; recv() 不会阻塞程序，因为通信的文件描述符是就绪的，读缓冲区内已有数据；调用 write() &#x2F; send() 不会阻塞程序，因为通信的文件描述符是就绪的，写缓冲区不满，可以往里面写数据</p>
+</li>
+</ul>
+</li>
+<li><p>对这些文件描述符继续进行下一轮的检测</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>Linux提供了三种I&#x2F;O多路复用方案：select、poll和epoll </p>
+<h1 id="select"><a href="#select" class="headerlink" title="select"></a>select</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">select</span><span class="params">(<span class="type">int</span> nfds, fd_set *readfds, fd_set *writefds, fd_set *exceptfds, <span class="keyword">struct</span> timeval *timeout)</span>;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>nfds</code>：待检测的文件描述符的数量，即监视的文件描述符集合中<strong>最大的文件描述符加1</strong>。</li>
+<li><code>readfds</code>：指向一个集合，包含了希望监视其读操作的文件描述符。</li>
+<li><code>writefds</code>：指向一个集合，包含了希望监视其写操作的文件描述符。</li>
+<li><code>exceptfds</code>：指向一个集合，包含了希望监视错误异常的文件描述符。</li>
+<li><code>timeout</code>：指定超时时间，即 select() 函数最多等待的时间。如果设置为 NULL，则表示一直等待，直到有事件发生；如果设置为 0，则表示立即返回。</li>
+</ul>
+<p><strong>返回值：</strong></p>
+<ul>
+<li>大于0：成功，返回集合中已就绪的IO总个数</li>
+<li>等于-1：调用失败</li>
+<li>等于0：没有就绪的IO</li>
+</ul>
+<p>fd_set本质是一个数组，为了方便我们操作该数组，操作系统提供了以下函数：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">/ 将文件描述符fd从<span class="built_in">set</span>集合中删除 </span><br><span class="line"><span class="type">void</span> <span class="title function_">FD_CLR</span><span class="params">(<span class="type">int</span> fd, fd_set *<span class="built_in">set</span>)</span>; </span><br><span class="line"></span><br><span class="line"><span class="comment">// 判断文件描述符fd是否在set集合中 </span></span><br><span class="line"><span class="type">int</span>  <span class="title function_">FD_ISSET</span><span class="params">(<span class="type">int</span> fd, fd_set *<span class="built_in">set</span>)</span>; </span><br><span class="line"></span><br><span class="line"><span class="comment">// 将文件描述符fd添加到set集合中 </span></span><br><span class="line"><span class="type">void</span> <span class="title function_">FD_SET</span><span class="params">(<span class="type">int</span> fd, fd_set *<span class="built_in">set</span>)</span>; </span><br><span class="line"></span><br><span class="line"><span class="comment">// 将set集合中, 所有文件描述符对应的标志位设置为0</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">FD_ZERO</span><span class="params">(fd_set *<span class="built_in">set</span>)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>select() 函数的<strong>基本工作原理</strong>：</p>
+<ol>
+<li>当用户process调用select的时候，select会将需要监控的readfds集合拷贝到内核空间（假设监控的仅仅是socket可读），</li>
+<li>然后遍历自己监控的skb(SocketBuffer)，挨个调用skb的poll逻辑以便检查该socket是否有可读事件，</li>
+<li>遍历完所有的skb后，如果没有任何一个socket可读，那么select会调用schedule_timeout进入schedule循环，使得process进入睡眠。</li>
+<li>如果在timeout时间内某个socket上有数据可读了，或者等待timeout了，则调用select的process会被唤醒，接下来select就是遍历监控的集合，挨个收集可读事件并返回给用户了</li>
+</ol>
+<p>需要注意的是，select() 函数有一些局限性，其中最主要的是：</p>
+<ul>
+<li><code>nfds</code> 参数需要指定为待监视文件描述符的最大值加1，这意味着它的性能可能受到文件描述符数量的限制。</li>
+<li>select() 的效率可能会随着待监视的文件描述符数量的增加而下降。</li>
+<li>select() 函数的时间复杂度为 O(n)，因此在大规模文件描述符的情况下可能效率较低。</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/time.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    fd_set readfds;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">timeval</span> <span class="title">timeout</span>;</span></span><br><span class="line">    <span class="type">int</span> fds[NUM_FDS] = &#123;<span class="number">0</span>&#125;; <span class="comment">// 存储文件描述符</span></span><br><span class="line">    <span class="type">int</span> maxfd = <span class="number">0</span>; <span class="comment">// 最大文件描述符</span></span><br><span class="line">    <span class="type">int</span> retval, i;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 创建5个文件描述符（示例中使用stdin和stdout）</span></span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; <span class="number">5</span>; ++i) &#123;</span><br><span class="line">        fds[i] = i &lt; <span class="number">3</span> ? STDIN_FILENO : STDOUT_FILENO; <span class="comment">// 前三个是 stdin，后两个是 stdout</span></span><br><span class="line">        <span class="keyword">if</span> (fds[i] &gt; maxfd) &#123;</span><br><span class="line">            maxfd = fds[i];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 清空文件描述符集合</span></span><br><span class="line">    FD_ZERO(&amp;readfds);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 将所有文件描述符加入读集合</span></span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; <span class="number">5</span>; ++i) &#123;</span><br><span class="line">        FD_SET(fds[i], &amp;readfds);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 设置超时时间为5秒</span></span><br><span class="line">    timeout.tv_sec = <span class="number">5</span>;</span><br><span class="line">    timeout.tv_usec = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 使用select()函数进行监听</span></span><br><span class="line">    retval = select(maxfd + <span class="number">1</span>, &amp;readfds, <span class="literal">NULL</span>, <span class="literal">NULL</span>, &amp;timeout);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (retval == <span class="number">-1</span>) &#123;</span><br><span class="line">        perror(<span class="string">&quot;select()&quot;</span>);</span><br><span class="line">        <span class="built_in">exit</span>(EXIT_FAILURE);</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (retval == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;No data within 5 seconds.\n&quot;</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// 检查就绪的文件描述符</span></span><br><span class="line">        <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; <span class="number">5</span>; ++i) &#123;</span><br><span class="line">            <span class="keyword">if</span> (FD_ISSET(fds[i], &amp;readfds)) &#123;</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">&quot;Data is available from fd %d.\n&quot;</span>, fds[i]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="poll"><a href="#poll" class="headerlink" title="poll"></a>poll</h1><p>poll的实现和select非常相似，只是描述fd集合的方式不同。poll使用pollfd结构而不是select的fd_set结构，这就解决了select中fds集合大小1024限制问题。但poll和select同样存在一个性能缺点就是包含大量文件描述符的数组被整体复制于用户态和内核的地址空间之间，而不论这些文件描述符是否就绪，它的开销随着文件描述符数量的增加而线性增大。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">poll</span><span class="params">(<span class="keyword">struct</span> pollfd *fds, <span class="type">nfds_t</span> nfds, <span class="type">int</span> timeout)</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">pollfd</span> &#123;</span></span><br><span class="line">    <span class="type">int</span> fd;         <span class="comment">// 文件描述符</span></span><br><span class="line">    <span class="type">short</span> events;   <span class="comment">// 要监视的事件（可通过常量定义）</span></span><br><span class="line">    <span class="type">short</span> revents;  <span class="comment">// 监视的事件中满足条件返回的事件（由内核填充）</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>fds</code>：一个指向 <code>struct pollfd</code> 结构体数组的指针，其中每个元素描述了一个要监视的文件描述符及其所关注的事件。struct pollfd有三个成员：<ul>
+<li><code>fd</code>：委托内核检测的文件描述符</li>
+<li><code>events</code>：委托内核检测的fd事件（输入、输出、错误），它可以是以下几种事件的组合：<ul>
+<li><code>POLLIN</code>：文件描述符可读。</li>
+<li><code>POLLOUT</code>：文件描述符可写。</li>
+<li><code>POLLERR</code>：发生错误。</li>
+<li><code>POLLHUP</code>：对端挂起。</li>
+</ul>
+</li>
+<li><code>revents</code>：这是一个传出参数，数据由内核写入，存储内核检测之后的结果</li>
+</ul>
+</li>
+<li><code>nfds</code>：要监视的文件描述符的数量，类型实际是unsigned long</li>
+<li><code>timeout</code>：指定超时时间，单位是毫秒。如果设置为负值，<code>poll()</code> 将会无限期等待，直到有事件发生；如果设置为 0，则 <code>poll()</code> 将立即返回，不管是否有事件发生。</li>
+</ul>
+<p><strong>返回值：</strong></p>
+<ul>
+<li>-1：失败</li>
+<li>大于0：表示检测的集合中已就绪的文件描述符的总个数</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;poll.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> NUM_FDS 5</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">pollfd</span> <span class="title">fds</span>[<span class="title">NUM_FDS</span>];</span></span><br><span class="line">    <span class="type">int</span> timeout = <span class="number">5000</span>; <span class="comment">// 5秒超时</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 创建5个文件描述符（示例中使用 stdin 和 stdout）</span></span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; NUM_FDS; ++i) &#123;</span><br><span class="line">        fds[i].fd = i &lt; <span class="number">3</span> ? STDIN_FILENO : STDOUT_FILENO; <span class="comment">// 前三个是 stdin，后两个是 stdout</span></span><br><span class="line">        fds[i].events = i &lt; <span class="number">3</span> ? POLLIN : POLLOUT; <span class="comment">// 前三个监视读事件，后两个监视写事件</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 使用 poll() 函数进行监听</span></span><br><span class="line">    <span class="type">int</span> retval = poll(fds, NUM_FDS, timeout);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (retval == <span class="number">-1</span>) &#123;</span><br><span class="line">        perror(<span class="string">&quot;poll()&quot;</span>);</span><br><span class="line">        <span class="built_in">exit</span>(EXIT_FAILURE);</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (retval == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;No data within 5 seconds.\n&quot;</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// 检查就绪的文件描述符</span></span><br><span class="line">        <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; NUM_FDS; ++i) &#123;</span><br><span class="line">            <span class="keyword">if</span> (fds[i].revents &amp; POLLIN) &#123;</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">&quot;Data is available from fd %d.\n&quot;</span>, fds[i].fd);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (fds[i].revents &amp; POLLOUT) &#123;</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">&quot;Ready to write data to fd %d.\n&quot;</span>, fds[i].fd);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="epoll"><a href="#epoll" class="headerlink" title="epoll"></a>epoll</h1><p><code>epoll</code> 是 Linux 中高性能的事件通知机制，它可以监视多个文件描述符的 I&#x2F;O 事件，并在这些文件描述符上发生事件时通知应用程序。</p>
+<p>epoll把用户关心的<strong>文件描述符上的事件放在内核里的一个事件表</strong>中，从而无须像select和poll那样每次调用都要重复传入文件描述符集或事件集。但<strong>epoll需要使用一个额外的文件描述符，来唯一标识内核中的这个事件表</strong> 。这个文件描述符通过epoll_create或epoll_create1创建</p>
+<h2 id="创建epoll实例"><a href="#创建epoll实例" class="headerlink" title="创建epoll实例"></a>创建epoll实例</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> ＜sys/epoll.h＞</span></span><br><span class="line"><span class="type">int</span> epfd = epoll_create(<span class="type">int</span> size);</span><br><span class="line"><span class="type">int</span> epfd = epoll_create1(<span class="type">int</span> flags)	;</span><br></pre></td></tr></table></figure>
+
+<p><code>size</code> 参数指定了 <code>epoll</code> 实例的大小，通常设置为大于零的值即可。在 Linux 2.6.8 之前的版本中，该参数没有意义，但是现在已经被忽略。</p>
+<p><code>flags</code> 参数是一个位掩码，用于指定一些选项。目前支持的选项只有一个：<code>EPOLL_CLOEXEC</code>，用于在创建 <code>epoll</code> 实例时设置 <code>close-on-exec</code> 标志。如果设置了这个选项，当调用 <code>exec</code> 函数执行其他程序时，内核会自动关闭该 <code>epoll</code> 实例。<strong>简单地创建一个 <code>epoll</code> 实例，可以将 <code>flags</code> 参数设置为 0</strong>。</p>
+<p><strong>当我们调用 epoll_create 函数创建一个 epoll 实例时，实际上是在内核中创建了一个数据结构来表示这个 epoll 实例</strong>。epoll 实例用于存储被监听的文件描述符及其相关信息，例如需要监听的事件类型、文件描述符的状态等。每个 epoll 实例都有一个唯一的标识符，通过这个标识符可以在用户空间中操作这个 epoll 实例。</p>
+<h2 id="操作内核事件表"><a href="#操作内核事件表" class="headerlink" title="操作内核事件表"></a>操作内核事件表</h2><ul>
+<li>事件表是 epoll 实例内部的数据结构，<strong>用于存储被监听的文件描述符的事件和状态。</strong>在 epoll 中，一个文件描述符可以关注多种类型的事件，主要包括可读事件（EPOLLIN）、可写事件（EPOLLOUT）、对端关闭事件（EPOLLRDHUP）等。当文件描述符上发生了关注的事件时，内核会通知用户程序进行相应的处理。 文件描述符的状态通常指的是其当前的就绪状态，即是否有事件发生或准备好进行IO操作。<strong>当文件描述符上有事件发生时，它的状态会被标记为就绪，用户程序可以通过 epoll_wait 函数等待并获取就绪的文件描述符列表</strong>，进行相应的操作。</li>
+<li>在注册(<code>EPOLL_CTL_ADD</code>)文件描述符和事件时，这些信息会被存储到事件表中。事件表通常采用高效的数据结构（如<strong>红黑树</strong>）来组织，以便快速地查询、添加和删除事件。</li>
+<li>当文件描述符上有事件发生时，内核会在事件表中查找对应的文件描述符，并更新其状态。</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">epoll_ctl</span><span class="params">(<span class="type">int</span> epfd, <span class="type">int</span> op, <span class="type">int</span> fd, <span class="keyword">struct</span> epoll_event *event)</span>;</span><br></pre></td></tr></table></figure>
+
+<p><strong>参数：</strong></p>
+<ul>
+<li><code>epfd</code> 是 <code>epoll</code> 实例的文件描述符。</li>
+<li><code>op</code> 是操作类型，用三个宏来表示：<ul>
+<li><code>EPOLL_CTL_ADD</code>：注册新的 fd 到 epfd 中；</li>
+<li><code>EPOLL_CTL_MOD</code> ：修改已经注册的fd的监听事件；</li>
+<li><code>EPOLL_CTL_DEL</code>：从 epfd 中删除一个 fd；</li>
+</ul>
+</li>
+<li><code>fd</code> 是需要向内核事件表中添加&#x2F;修改&#x2F;删除的文件描述符。</li>
+<li><code>event</code> 是指向 <code>epoll_event</code> 结构的指针，告诉内核要监听什么事件。定义如下：</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">epoll_event</span> &#123;</span><br><span class="line">    <span class="type">uint32_t</span> events;  <span class="comment">// 表示事件的类型</span></span><br><span class="line">    <span class="type">epoll_data_t</span> data; <span class="comment">// 与事件相关的数据</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p><code>epoll_event</code> 结构包含两个成员：</p>
+<ol>
+<li><code>events</code>：是一个 32 位无符号整数，表示事件的类型。可以是下列宏的组合：<ul>
+<li><code>EPOLLIN</code>：表示文件描述符上有数据可读。</li>
+<li><code>EPOLLOUT</code>：表示文件描述符可以进行写操作。</li>
+<li><code>EPOLLRDHUP</code>：表示对端断开连接。</li>
+<li><code>EPOLLERR</code>：表示发生错误。</li>
+<li><code>EPOLLHUP</code>：表示发生挂起事件。</li>
+<li><code>EPOLLET</code>：设置为边缘触发模式。</li>
+<li><code>EPOLLONESHOT</code>：设置为单次触发模式。</li>
+</ul>
+</li>
+<li><code>data</code>：表示事件的数据，它是一个联合体 <code>epoll_data_t</code>，可以是一个文件描述符（<code>fd</code>）或者一个指针（<code>ptr</code>）。具体定义如下：</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">union</span> <span class="title">epoll_data</span> &#123;</span></span><br><span class="line">    <span class="type">void</span>    *ptr;    <span class="comment">// 指针类型</span></span><br><span class="line">    <span class="type">int</span>      fd;     <span class="comment">// 文件描述符类型</span></span><br><span class="line">    <span class="type">uint32_t</span> u32;    <span class="comment">// 32 位无符号整数类型</span></span><br><span class="line">    <span class="type">uint64_t</span> u64;    <span class="comment">// 64 位无符号整数类型</span></span><br><span class="line">&#125; <span class="type">epoll_data_t</span>;</span><br></pre></td></tr></table></figure>
+
+<p><code>epoll_data</code> 联合体允许用户在事件中传递一些附加的数据。</p>
+<ul>
+<li><p>如果事件类型是 <code>EPOLLIN</code> 或 <code>EPOLLOUT</code>，则通常使用 <code>fd</code> 成员来表示文件描述符；</p>
+</li>
+<li><p>如果需要传递其他类型的数据，可以使用 <code>ptr</code> 成员来存储一个指针，或者使用 <code>u32</code> 或 <code>u64</code> 来存储一个整数值。</p>
+</li>
+</ul>
+<p><strong>返回值：</strong></p>
+<ul>
+<li>成功时，返回 0。</li>
+<li>失败时，返回 -1，并设置相应的errno。</li>
+</ul>
+<p><strong>示例：</strong>添加一个文件描述符到内核事件表中</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">epoll_event</span> <span class="title">event</span>;</span></span><br><span class="line">event.events = EPOLLIN; <span class="comment">// 指定事件为可读事件</span></span><br><span class="line">event.data.fd = fd;     <span class="comment">// 文件描述符</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (epoll_ctl(epoll_fd, EPOLL_CTL_ADD, fd, &amp;event) == <span class="number">-1</span>) &#123;</span><br><span class="line">    perror(<span class="string">&quot;epoll_ctl: add&quot;</span>);</span><br><span class="line">    <span class="built_in">exit</span>(EXIT_FAILURE);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="等待事件发生"><a href="#等待事件发生" class="headerlink" title="等待事件发生"></a>等待事件发生</h2><ul>
+<li><p><code>epoll_wait</code> 调用会阻塞程序直到事件发生或者超时。</p>
+</li>
+<li><p>如果有事件发生，**<code>epoll_wait</code> 将把这些事件复制到 <code>events</code> 数组中**，并返回发生事件的数量。</p>
+</li>
+<li><p><code>events</code> 数组中的每个元素都是一个 <code>epoll_event</code> 结构，其中包含了发生事件的文件描述符及其事件类型。</p>
+</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">epoll_wait</span><span class="params">(<span class="type">int</span> epfd, <span class="keyword">struct</span> epoll_event *events, <span class="type">int</span> maxevents, <span class="type">int</span> timeout)</span>;</span><br></pre></td></tr></table></figure>
+
+<p><strong>参数：</strong></p>
+<ul>
+<li><code>maxevents</code> 是 <code>events</code> 数组的大小，表示最多可以存储多少个事件。</li>
+<li><code>timeout</code> 是超时时间，以毫秒为单位。传递 <code>-1</code> 将一直阻塞等待事件，传递 <code>0</code> 将立即返回。</li>
+</ul>
+<p><strong>返回值：</strong></p>
+<ul>
+<li>如果没有事件发生，且超时时间到达，则返回 0。</li>
+<li>如果有事件发生，返回发生事件的数量。</li>
+</ul>
+<p><strong>示例：</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">epoll_event</span> <span class="title">events</span>[<span class="title">MAX_EVENTS</span>];</span></span><br><span class="line"><span class="type">int</span> nfds = epoll_wait(epoll_fd, events, MAX_EVENTS, <span class="number">-1</span>);</span><br><span class="line"><span class="keyword">if</span> (nfds == <span class="number">-1</span>) &#123;</span><br><span class="line">    perror(<span class="string">&quot;epoll_wait&quot;</span>);</span><br><span class="line">    <span class="built_in">exit</span>(EXIT_FAILURE);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 处理发生的事件</span></span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; nfds; ++i) &#123;</span><br><span class="line">    <span class="comment">// 处理 events[i].data.fd 对应的文件描述符的事件</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="示例代码"><a href="#示例代码" class="headerlink" title="示例代码"></a>示例代码</h1><p>server端：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;arpa/inet.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/epoll.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> PORT 8080</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> MAX_EVENTS 10</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> BUFFER_SIZE 1024</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> server_fd, new_socket, epoll_fd, nfds;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_in</span> <span class="title">address</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">epoll_event</span> <span class="title">event</span>, <span class="title">events</span>[<span class="title">MAX_EVENTS</span>];</span></span><br><span class="line">    <span class="type">char</span> buffer[BUFFER_SIZE];</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Creating socket file descriptor</span></span><br><span class="line">    <span class="keyword">if</span> ((server_fd = socket(AF_INET, SOCK_STREAM, <span class="number">0</span>)) == <span class="number">0</span>) &#123;</span><br><span class="line">        perror(<span class="string">&quot;socket failed&quot;</span>);</span><br><span class="line">        <span class="built_in">exit</span>(EXIT_FAILURE);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    address.sin_family = AF_INET;</span><br><span class="line">    address.sin_addr.s_addr = INADDR_ANY;</span><br><span class="line">    address.sin_port = htons(PORT);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Forcefully attaching socket to the port 8080</span></span><br><span class="line">    <span class="keyword">if</span> (bind(server_fd, (<span class="keyword">struct</span> sockaddr *)&amp;address, <span class="keyword">sizeof</span>(address)) &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        perror(<span class="string">&quot;bind failed&quot;</span>);</span><br><span class="line">        <span class="built_in">exit</span>(EXIT_FAILURE);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (listen(server_fd, <span class="number">5</span>) &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        perror(<span class="string">&quot;listen&quot;</span>);</span><br><span class="line">        <span class="built_in">exit</span>(EXIT_FAILURE);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    epoll_fd = epoll_create1(<span class="number">0</span>);</span><br><span class="line">    <span class="keyword">if</span> (epoll_fd == <span class="number">-1</span>) &#123;</span><br><span class="line">        perror(<span class="string">&quot;epoll_create1&quot;</span>);</span><br><span class="line">        <span class="built_in">exit</span>(EXIT_FAILURE);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    event.events = EPOLLIN;</span><br><span class="line">    event.data.fd = server_fd;</span><br><span class="line">    <span class="keyword">if</span> (epoll_ctl(epoll_fd, EPOLL_CTL_ADD, server_fd, &amp;event) == <span class="number">-1</span>) &#123;</span><br><span class="line">        perror(<span class="string">&quot;epoll_ctl: server_fd&quot;</span>);</span><br><span class="line">        <span class="built_in">exit</span>(EXIT_FAILURE);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (<span class="number">1</span>) &#123;</span><br><span class="line">        nfds = epoll_wait(epoll_fd, events, MAX_EVENTS, <span class="number">-1</span>);</span><br><span class="line">        <span class="keyword">if</span> (nfds == <span class="number">-1</span>) &#123;</span><br><span class="line">            perror(<span class="string">&quot;epoll_wait&quot;</span>);</span><br><span class="line">            <span class="built_in">exit</span>(EXIT_FAILURE);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; nfds; ++i) &#123;</span><br><span class="line">            <span class="keyword">if</span> (events[i].data.fd == server_fd) &#123;</span><br><span class="line">                new_socket = accept(server_fd, <span class="literal">NULL</span>, <span class="literal">NULL</span>);</span><br><span class="line">                <span class="keyword">if</span> (new_socket == <span class="number">-1</span>) &#123;</span><br><span class="line">                    perror(<span class="string">&quot;accept&quot;</span>);</span><br><span class="line">                    <span class="built_in">exit</span>(EXIT_FAILURE);</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                event.events = EPOLLIN | EPOLLET;</span><br><span class="line">                event.data.fd = new_socket;</span><br><span class="line">                <span class="keyword">if</span> (epoll_ctl(epoll_fd, EPOLL_CTL_ADD, new_socket, &amp;event) == <span class="number">-1</span>) &#123;</span><br><span class="line">                    perror(<span class="string">&quot;epoll_ctl: new_socket&quot;</span>);</span><br><span class="line">                    <span class="built_in">exit</span>(EXIT_FAILURE);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="type">int</span> client_socket = events[i].data.fd;</span><br><span class="line">                <span class="type">int</span> valread = read(client_socket, buffer, BUFFER_SIZE);</span><br><span class="line">                <span class="keyword">if</span> (valread == <span class="number">0</span>) &#123;</span><br><span class="line">                    <span class="comment">// Client disconnected</span></span><br><span class="line">                    close(client_socket);</span><br><span class="line">                    epoll_ctl(epoll_fd, EPOLL_CTL_DEL, client_socket, <span class="literal">NULL</span>);</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="built_in">printf</span>(<span class="string">&quot;Client: %s\n&quot;</span>, buffer);</span><br><span class="line">                    send(client_socket, buffer, valread, <span class="number">0</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    close(server_fd);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>首先，服务器创建一个 TCP 套接字 <code>server_fd</code>，并将其绑定到本地的 8080 端口上。然后开始监听连接请求。</li>
+<li>创建了一个 epoll 实例 <code>epoll_fd</code>，并将服务器的监听套接字 <code>server_fd</code> 添加到 epoll 实例中，以便监视它上面的事件（主要是可读事件）。</li>
+<li>进入一个无限循环，用于等待并处理发生在 epoll 实例中的事件。每次循环开始时，调用 <code>epoll_wait</code> 函数等待事件发生。</li>
+<li>当有事件发生时，<code>epoll_wait</code> 返回并填充一个 <code>events</code> 数组，其中包含了发生的事件。</li>
+<li>遍历 <code>events</code> 数组，对每一个事件进行处理。如果事件是发生在服务器监听套接字 <code>server_fd</code> 上的可读事件，说明有新的客户端连接请求到达了。</li>
+<li>对新的客户端连接请求，服务器调用 <code>accept</code> 函数接受连接，创建一个新的套接字 <code>new_socket</code> 用于与客户端通信，并将新套接字添加到 epoll 实例中。</li>
+<li>如果事件不是发生在监听套接字上的，则说明是已连接的客户端套接字上发生了可读事件，这表示客户端发送了数据。</li>
+<li>服务器尝试从客户端套接字中读取数据，并进行处理。如果读取到的数据长度为 0，说明客户端已经关闭了连接，服务器关闭客户端套接字，并从 epoll 实例中删除该套接字。</li>
+<li>循环继续，等待下一轮事件发生。</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2024/03/22/%E4%BF%A1%E5%8F%B7/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -640,7 +903,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-04-12 14:45:40" itemprop="dateModified" datetime="2024-04-12T14:45:40+08:00">2024-04-12</time>
+                <time title="修改时间：2024-04-14 12:57:02" itemprop="dateModified" datetime="2024-04-14T12:57:02+08:00">2024-04-14</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -774,6 +1037,8 @@
 <p>​        在非阻塞模式下，当程序执行某个操作时，如果该操作无法立即完成，程序将立即返回而不会等待。程序可以继续执行其他任务，不会因为某个操作的未完成而被阻塞。</p>
 </li>
 </ul>
+<p> 使用非阻塞 I&#x2F;O 可以使得一个进程能够同时处理多个连接而不会被阻塞。当一个套接字上没有数据可读或者没有数据可写时，程序不会等待，而是立即返回，这样可以更有效地利用 CPU 时间。</p>
+<p>非阻塞 I&#x2F;O 结合事件驱动模型（如 epoll）可以实现异步 I&#x2F;O。通过 epoll 等机制，程序可以注册对多个文件描述符的监听，一旦有事件发生，程序立即得到通知，而不需要轮询或阻塞等待。</p>
 <h1 id="5-fcntl函数"><a href="#5-fcntl函数" class="headerlink" title="5. fcntl函数"></a>5. fcntl函数</h1><p>fcntl()可以修改一个已打开文件的属性，可以重新设置读、写、追加、非阻塞等标志，而不必重新open文件 。</p>
 <p><strong>函数原型：</strong></p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">fcntl</span><span class="params">(<span class="type">int</span> fd, <span class="type">int</span> cmd, ... <span class="comment">/* arg */</span> )</span>;</span><br></pre></td></tr></table></figure>
@@ -1165,7 +1430,7 @@ lseek(fd, 0, SEEK_END); //得到文件的总大小
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-count">19</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1178,7 +1443,7 @@ lseek(fd, 0, SEEK_END); //得到文件的总大小
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-count">13</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
