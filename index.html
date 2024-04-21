@@ -162,6 +162,287 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/04/21/lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="stars zhang">
+      <meta itemprop="description" content="永远迎着光走">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="stars">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/04/21/lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F/" class="post-title-link" itemprop="url">lambda表达式</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-04-21 14:39:07 / 修改时间：14:46:55" itemprop="dateCreated datePublished" datetime="2024-04-21T14:39:07+08:00">2024-04-21</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>C++11 引入了 lambda 表达式，它是一种用于创建匿名函数的语法。Lambda 表达式提供了一种更加简洁和灵活的方式来编写函数对象，尤其适用于需要传递函数作为参数的情况，比如 STL 算法、函数式编程、事件处理等。</p>
+<h3 id="Lambda-表达式的基本语法"><a href="#Lambda-表达式的基本语法" class="headerlink" title="Lambda 表达式的基本语法"></a>Lambda 表达式的基本语法</h3><p>Lambda 表达式的一般形式如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[capture](parameters) -&gt; return_type &#123; body &#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>capture</code>：捕获列表，用于捕获外部变量，可以是值捕获、引用捕获或混合捕获。</li>
+<li><code>parameters</code>：参数列表，与普通函数的参数列表类似，可以为空。</li>
+<li><code>return_type</code>：返回类型，可以<strong>省略</strong>，由编译器自动推导。</li>
+<li><code>body</code>：函数体，与普通函数体相似，可以包含一系列语句或表达式。</li>
+</ul>
+<h3 id="Lambda-表达式的用法示例"><a href="#Lambda-表达式的用法示例" class="headerlink" title="Lambda 表达式的用法示例"></a>Lambda 表达式的用法示例</h3><ul>
+<li>Lambda 表达式作为函数对象：</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> sum = [](<span class="type">int</span> a, <span class="type">int</span> b) &#123; <span class="keyword">return</span> a + b; &#125;;</span><br><span class="line"><span class="type">int</span> result = <span class="built_in">sum</span>(<span class="number">3</span>, <span class="number">4</span>); <span class="comment">// result = 7</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Lambda 表达式作为 STL 算法的参数：</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">std::vector&lt;<span class="type">int</span>&gt; numbers = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>&#125;;</span><br><span class="line"><span class="type">int</span> total = std::<span class="built_in">accumulate</span>(numbers.<span class="built_in">begin</span>(), numbers.<span class="built_in">end</span>(), <span class="number">0</span>, [](<span class="type">int</span> a, <span class="type">int</span> b) &#123; <span class="keyword">return</span> a + b; &#125;);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Lambda 表达式与标准库函数配合使用：</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">std::vector&lt;<span class="type">int</span>&gt; numbers = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>&#125;;</span><br><span class="line">std::for_each(numbers.<span class="built_in">begin</span>(), numbers.<span class="built_in">end</span>(), [](<span class="type">int</span> num) &#123; std::cout &lt;&lt; num &lt;&lt; std::endl; &#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="Lambda-表达式捕获列表"><a href="#Lambda-表达式捕获列表" class="headerlink" title="Lambda 表达式捕获列表"></a>Lambda 表达式捕获列表</h3><p>Lambda 表达式的捕获列表控制了它可以访问的外部变量。捕获列表可以为空，也可以包含一个或多个变量。捕获列表支持值捕获、引用捕获和混合捕获。</p>
+<ol>
+<li><strong>值捕获：</strong> 捕获外部变量的值，在 lambda 表达式创建时复制该变量的值。</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> x = <span class="number">10</span>;</span><br><span class="line"><span class="keyword">auto</span> func = [x]() &#123; <span class="keyword">return</span> x; &#125;;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><strong>引用捕获：</strong> 捕获外部变量的引用，可以修改外部变量的值。</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> y = <span class="number">20</span>;</span><br><span class="line"><span class="keyword">auto</span> func = [&amp;y]() &#123; y++; &#125;;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><strong>混合捕获：</strong> 混合使用值捕获和引用捕获。</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> x = <span class="number">10</span>, y = <span class="number">20</span>;</span><br><span class="line"><span class="keyword">auto</span> func = [&amp;x, y]() &#123; <span class="keyword">return</span> x + y; &#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Lambda-表达式的返回类型推导"><a href="#Lambda-表达式的返回类型推导" class="headerlink" title="Lambda 表达式的返回类型推导"></a>Lambda 表达式的返回类型推导</h3><p>在 C++14 中，Lambda 表达式的返回类型可以由编译器根据其返回语句的类型自动推导。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> add = [](<span class="type">int</span> a, <span class="type">int</span> b) &#123; <span class="keyword">return</span> a + b; &#125;;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/04/19/std-function%E5%92%8Cstd-bind/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="stars zhang">
+      <meta itemprop="description" content="永远迎着光走">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="stars">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/04/19/std-function%E5%92%8Cstd-bind/" class="post-title-link" itemprop="url">std::function和std::bind</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-04-19 20:15:15 / 修改时间：20:23:27" itemprop="dateCreated datePublished" datetime="2024-04-19T20:15:15+08:00">2024-04-19</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><code>std::function</code> 和 <code>std::bind</code> 是 C++11 标准库中引入的两个重要组件，用于实现函数对象的封装和绑定。它们为 C++ 中的函数式编程提供了更加灵活和方便的方式。可以用于实现回调函数的思想。</p>
+<h3 id="std-function"><a href="#std-function" class="headerlink" title="std::function"></a>std::function</h3><p><code>std::function</code> 是一个模板类，用于封装任意可调用对象（函数指针、函数对象、成员函数指针、lambda 表达式等），并提供一种统一的接口来调用这些对象。它可以看作是一个类型安全的函数指针的容器。</p>
+<h4 id="特点："><a href="#特点：" class="headerlink" title="特点："></a>特点：</h4><ul>
+<li><code>std::function</code> 是可调用对象的包装器，它可以存储、复制和调用任何可调用对象。</li>
+<li><code>std::function</code> 的类型由其模板参数确定，因此它可以表示各种不同的函数类型。</li>
+<li><code>std::function</code> 对象可以在运行时被赋予不同的可调用对象，并且可以被多次复制、传递和调用。</li>
+</ul>
+<h4 id="示例："><a href="#示例：" class="headerlink" title="示例："></a>示例：</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">cppCopy code<span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;functional&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">say_hello</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Hello, world!&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">add</span><span class="params">(<span class="type">int</span> a, <span class="type">int</span> b)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a + b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    std::function&lt;<span class="type">void</span>()&gt; func1 = say_hello;</span><br><span class="line">    <span class="built_in">func1</span>();  <span class="comment">// 调用 say_hello 函数</span></span><br><span class="line"></span><br><span class="line">    std::function&lt;<span class="type">int</span>(<span class="type">int</span>, <span class="type">int</span>)&gt; func2 = add;</span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Sum: &quot;</span> &lt;&lt; <span class="built_in">func2</span>(<span class="number">3</span>, <span class="number">4</span>) &lt;&lt; std::endl;  <span class="comment">// 调用 add 函数</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="std-bind"><a href="#std-bind" class="headerlink" title="std::bind"></a>std::bind</h3><p><code>std::bind</code> 是一个函数模板，用于创建一个新的可调用对象，该对象会将指定的参数绑定到指定的函数或函数对象上。<strong>它允许延迟绑定参数，以后再调用时传递剩余的参数</strong>。</p>
+<h4 id="特点：-1"><a href="#特点：-1" class="headerlink" title="特点："></a>特点：</h4><ul>
+<li><code>std::bind</code> 可以绑定函数的部分或全部参数，从而创建一个新的可调用对象。</li>
+<li><code>std::bind</code> 返回的可调用对象可以被多次复制、传递和调用。</li>
+<li><code>std::bind</code> 可以绑定参数的位置，也可以绑定参数的值，还可以使用占位符 <code>_1</code>、<code>_2</code> 等来表示未指定的参数。</li>
+</ul>
+<h4 id="示例：-1"><a href="#示例：-1" class="headerlink" title="示例："></a>示例：</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">cppCopy code<span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;functional&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">greet</span><span class="params">(<span class="type">const</span> std::string&amp; name, <span class="type">int</span> age)</span> </span>&#123;</span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Hello, &quot;</span> &lt;&lt; name &lt;&lt; <span class="string">&quot;! You are &quot;</span> &lt;&lt; age &lt;&lt; <span class="string">&quot; years old.&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">auto</span> greet_function = std::<span class="built_in">bind</span>(greet, <span class="string">&quot;Alice&quot;</span>, std::placeholders::_1);</span><br><span class="line">    <span class="built_in">greet_function</span>(<span class="number">30</span>);  <span class="comment">// 输出：Hello, Alice! You are 30 years old.</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">auto</span> add_function = std::<span class="built_in">bind</span>(std::<span class="built_in">plus</span>&lt;<span class="type">int</span>&gt;(), std::placeholders::_1, std::placeholders::_2);</span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Sum: &quot;</span> &lt;&lt; <span class="built_in">add_function</span>(<span class="number">3</span>, <span class="number">4</span>) &lt;&lt; std::endl;  <span class="comment">// 输出：Sum: 7</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在这个示例中，<code>std::bind</code> 函数用来创建一个新的可调用对象 <code>greet_function</code>，它绑定了 <code>greet</code> 函数的第一个参数为 “Alice”，第二个参数由调用者传入。而另一个可调用对象 <code>add_function</code> 绑定了 <code>std::plus&lt;int&gt;()</code> 函数对象，表示对两个参数进行加法运算。</p>
+<p>假设我们有一个事件循环，当某个定时器超时时，我们需要执行一个回调函数，并传递一些参数给这个回调函数：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;functional&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;chrono&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;thread&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">callback</span><span class="params">(<span class="type">const</span> std::string&amp; message, <span class="type">int</span> value)</span> </span>&#123;</span><br><span class="line">    std::cout &lt;&lt; message &lt;&lt; <span class="string">&quot;: &quot;</span> &lt;&lt; value &lt;&lt; std::endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 定义一个 std::function 对象，用来存储回调函数</span></span><br><span class="line">    std::function&lt;<span class="type">void</span>()&gt; func;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 使用 std::bind 创建一个绑定了参数的可调用对象，并将其赋值给 func</span></span><br><span class="line">    func = std::<span class="built_in">bind</span>(callback, <span class="string">&quot;Callback message&quot;</span>, <span class="number">42</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 模拟定时器超时，当定时器超时时调用回调函数</span></span><br><span class="line">    std::this_thread::<span class="built_in">sleep_for</span>(std::chrono::<span class="built_in">seconds</span>(<span class="number">2</span>));</span><br><span class="line">    <span class="built_in">func</span>();  <span class="comment">// 调用回调函数</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/04/19/Reactor%E5%92%8CProactor/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="stars zhang">
+      <meta itemprop="description" content="永远迎着光走">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="stars">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/04/19/Reactor%E5%92%8CProactor/" class="post-title-link" itemprop="url">Reactor和Proactor</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-04-19 19:30:26 / 修改时间：20:11:10" itemprop="dateCreated datePublished" datetime="2024-04-19T19:30:26+08:00">2024-04-19</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">网络编程</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>Reactor模式和Proactor模式是两种常见的事件处理模式，通常用于构建高性能的并发系统。它们都是在事件驱动的系统中使用的设计模式，但它们在处理事件时的方式有所不同。下面我将详细解释它们的工作原理和区别。</p>
+<h3 id="Reactor模式"><a href="#Reactor模式" class="headerlink" title="Reactor模式"></a>Reactor模式</h3><h4 id="概念："><a href="#概念：" class="headerlink" title="概念："></a>概念：</h4><p>在Reactor模式中，有一个事件循环（Event Loop），负责监听并分发事件。该循环通过轮询或者异步IO等机制监视多个输入源（如文件描述符、套接字等），当有事件发生时，调用相关的事件处理器来处理这些事件。在Reactor模式中，事件处理是同步的，即当一个事件发生时，Reactor会调用相应的事件处理器，并且一直等待处理器完成处理，然后再继续监听新的事件。</p>
+<h4 id="特点："><a href="#特点：" class="headerlink" title="特点："></a>特点：</h4><p>Reactor模式的主要特点包括：</p>
+<ol>
+<li>单线程：通常Reactor模式在单线程中运行，事件循环会按顺序处理事件。</li>
+<li>同步处理：事件处理是同步的，一个事件处理器处理完事件之后，才会继续处理下一个事件。</li>
+<li>高效：由于采用了非阻塞IO和事件驱动的方式，Reactor模式在高并发场景下表现出色。</li>
+</ol>
+<h4 id="单、多Reactor模式："><a href="#单、多Reactor模式：" class="headerlink" title="单、多Reactor模式："></a>单、多Reactor模式：</h4><p>在<strong>单Reactor模式</strong>中，只有一个事件循环负责监听和分发事件，并且事件处理是同步的，即事件处理器会在事件循环中同步执行。这种模式通常适用于轻量级的应用或者处理较少并发连接的情况。</p>
+<p>与单Reactor模式不同，<strong>多Reactor模式</strong>通过将事件处理分布到多个事件循环中来提高系统的并发能力。每个事件循环负责监听和处理一部分事件，从而降低了单个事件循环的负载，提高了系统的并发处理能力。通常采用<strong>主从Reactor模式</strong>：</p>
+<p>​	在主从Reactor模式中，通常有一个主Reactor负责监听连接请求，并且负责创建和分配子Reactor。当主Reactor接收到连接请求时，会将连接分配给某个子Reactor，然后由子Reactor负责处理该连接的事件。这样可以避免单个Reactor负载过重，并且能够充分利用多核处理器的性能。</p>
+<h4 id="回调函数"><a href="#回调函数" class="headerlink" title="回调函数"></a>回调函数</h4><p>在Reactor模式中，回调函数被广泛应用于处理事件。回调函数是一种在某个事件发生时被调用的函数，用于处理特定类型的事件。在Reactor模式中，当事件发生时，事件循环会调用相应的回调函数来处理事件，例如读取数据、写入数据、关闭连接等。</p>
+<p>具体来说，在多Reactor模式中，每个事件循环都会注册一组回调函数，用于处理不同类型的事件。当事件发生时，事件循环会根据事件的类型找到对应的回调函数，并调用它来处理事件。这样可以实现事件驱动的编程模型，将事件的处理与业务逻辑分离开来，提高了代码的可维护性和可扩展性。</p>
+<p>举个例子，假设一个Web服务器使用多Reactor模式来处理客户端连接。每个事件循环会注册一组回调函数，包括处理新连接事件、读取数据事件、写入数据事件等。当有新的客户端连接到达时，主Reactor会接收到连接请求，并将连接分配给某个子Reactor。子Reactor会调用相应的回调函数来处理该连接的读取数据事件和写入数据事件。</p>
+<h3 id="Proactor模式"><a href="#Proactor模式" class="headerlink" title="Proactor模式"></a>Proactor模式</h3><p>Proactor模式与Reactor模式有所不同。在Proactor模式中，操作（通常是IO操作）被提交给一个专门的组件，称为Proactor，然后由Proactor负责执行这些操作。当操作完成时，Proactor会通知相关的事件处理器，告诉它们操作已完成，可以进行下一步处理。与Reactor模式不同，Proactor模式中的事件处理是异步的，事件处理器不需要等待操作完成，而是在操作完成后得到通知。</p>
+<p>Proactor模式的主要特点包括：</p>
+<ol>
+<li>异步处理：事件处理是异步的，事件处理器可以继续执行其他任务，而不必等待操作完成。</li>
+<li>多线程：通常Proactor模式会使用多线程来处理IO操作，以提高系统的并发能力。</li>
+<li>高性能：通过异步IO和多线程的结合，Proactor模式可以实现高性能的并发处理。</li>
+</ol>
+<h3 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h3><ol>
+<li><strong>同步 vs. 异步</strong>：Reactor模式中事件处理是同步的，而Proactor模式中事件处理是异步的。</li>
+<li><strong>单线程 vs. 多线程</strong>：Reactor模式通常在单线程中运行，而Proactor模式通常使用多线程来处理IO操作。</li>
+<li><strong>处理方式</strong>：在Reactor模式中，事件发生后Reactor负责调用事件处理器，而在Proactor模式中，操作完成后Proactor负责通知事件处理器。</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2024/04/19/static%E8%AF%A6%E8%A7%A3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1009,335 +1290,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/04/07/%E5%B7%A6%E5%8F%B3%E5%80%BC%E5%BC%95%E7%94%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="stars zhang">
-      <meta itemprop="description" content="永远迎着光走">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="stars">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/04/07/%E5%B7%A6%E5%8F%B3%E5%80%BC%E5%BC%95%E7%94%A8/" class="post-title-link" itemprop="url">左右值引用</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-04-07 12:32:40" itemprop="dateCreated datePublished" datetime="2024-04-07T12:32:40+08:00">2024-04-07</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-04-10 10:13:53" itemprop="dateModified" datetime="2024-04-10T10:13:53+08:00">2024-04-10</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="1-左值、右值"><a href="#1-左值、右值" class="headerlink" title="1. 左值、右值"></a>1. 左值、右值</h1><h2 id="左值："><a href="#左值：" class="headerlink" title="左值："></a>左值：</h2><ul>
-<li>表达式结束后依然存在的<strong>持久性对象</strong>或者函数，可以被取地址。</li>
-<li>左值是可以被标识符引用的表达式，它们代表着内存中的一个位置。例如，变量、数组元素、通过引用或指针访问的对象、具有名称的对象等都是左值。</li>
-<li>左值在赋值操作符左侧出现，可以接受赋值操作。</li>
-</ul>
-<h2 id="右值："><a href="#右值：" class="headerlink" title="右值："></a>右值：</h2><ul>
-<li>表达式结束后就消失的<strong>临时对象</strong>，通常不能被取地址。</li>
-<li>右值是不具有持久性的临时对象或者表达式的结果，不能被直接引用。例如，字面常量、临时对象、未命名的临时对象、返回临时对象的函数调用等都是右值。</li>
-<li>右值通常出现在赋值操作符右侧，用于提供值给赋值操作。</li>
-</ul>
-<h1 id="2-左值引用、右值引用"><a href="#2-左值引用、右值引用" class="headerlink" title="2. 左值引用、右值引用"></a>2. 左值引用、右值引用</h1><h2 id="左值引用"><a href="#左值引用" class="headerlink" title="左值引用"></a>左值引用</h2><ul>
-<li>左值引用是通过使用 <code>&amp;</code> 符号声明的引用类型。它绑定到左值，并且可以延长左值的生命周期，使得左值可以在函数调用等情况下被修改。</li>
-<li>左值引用不能绑定到右值。</li>
-<li>左值引用常用于函数参数传递、函数返回值和操作符重载等场景，可以实现有效的引用语义和避免不必要的拷贝。</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">5</span>;</span><br><span class="line"><span class="type">int</span> &amp;b = a; <span class="comment">// b是左值引用</span></span><br><span class="line">b = <span class="number">4</span>;</span><br><span class="line"><span class="type">int</span> &amp;c = <span class="number">10</span>; <span class="comment">// error，10无法取地址，无法进行引用</span></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> &amp;d = <span class="number">10</span>; <span class="comment">// ok，因为是常引用，引用常量数字，这个常量数字会存储在内存中，可以取地址</span></span><br></pre></td></tr></table></figure>
-
-<p>可以得出结论：对于左值引用，等号右边的值必须可以取地址，如果不能取地址，则会编译失败，或者可以使用const引用形式，但这样就只能通过引用来读取输出，不能修改数组，因为是常量引用。</p>
-<h2 id="右值引用"><a href="#右值引用" class="headerlink" title="右值引用"></a>右值引用</h2><ul>
-<li>右值引用是通过使用 <code>&amp;&amp;</code> 符号声明的引用类型。它主要用于绑定到临时对象或者即将销毁的对象，允许移动语义的使用。</li>
-<li>右值引用可以绑定到右值，但不能绑定到左值。</li>
-<li>右值引用的引入使得可以实现移动语义，即将资源从一个对象“移动”到另一个对象，而不是进行昂贵的拷贝操作。这在处理临时对象时尤为有用，能够提高性能。</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">A</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">A</span>() &#123;&#125; <span class="comment">// 默认构造函数</span></span><br><span class="line">    <span class="built_in">A</span>(<span class="type">const</span> A&amp; other) &#123;&#125; <span class="comment">// 拷贝构造函数</span></span><br><span class="line">    <span class="built_in">A</span>(A&amp;&amp; other) &#123;&#125; <span class="comment">// 移动构造函数</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function">A <span class="title">createA</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">A</span>(); <span class="comment">// 返回一个临时对象</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    A a1 = <span class="built_in">createA</span>(); <span class="comment">// 调用移动构造函数，避免了拷贝</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>std::move函数：把一个左值强制转换成一个右值 。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">4</span>;</span><br><span class="line"><span class="type">int</span> &amp;&amp;b = a; <span class="comment">// error, a是左值</span></span><br><span class="line"><span class="type">int</span> &amp;&amp;c = std::<span class="built_in">move</span>(a); <span class="comment">// ok</span></span><br></pre></td></tr></table></figure>
-
-<h1 id="3-移动语义"><a href="#3-移动语义" class="headerlink" title="3. 移动语义"></a>3. 移动语义</h1><ul>
-<li>利用右值引用允许在对象间转移资源的所有权，而不是传统的拷贝。</li>
-<li>这种转移资源的操作比拷贝操作更高效，特别是对于动态分配的内存或者其他资源。</li>
-<li>移动语义的引入是为了解决传统的拷贝操作在处理临时对象时可能造成性能开销的问题。</li>
-<li>移动语义的核心概念在于，当一个对象被标记为将要被销毁（右值），它的资源可以被安全地“窃取”到另一个对象，而不是简单地复制。这意味着移动操作将对象的资源所有权从一个对象转移到另一个对象，而不会发生资源的复制或者额外的分配。</li>
-</ul>
-<h3 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h3><ol>
-<li>避免不必要的拷贝操作</li>
-<li>实现资源管理的高效转移</li>
-</ol>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Resource</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Resource</span>() &#123;&#125;</span><br><span class="line">    <span class="comment">// 移动构造函数</span></span><br><span class="line">    <span class="built_in">Resource</span>(Resource&amp;&amp; other) &#123;</span><br><span class="line">        <span class="comment">// 窃取资源</span></span><br><span class="line">        <span class="keyword">this</span>-&gt;data = other.data;</span><br><span class="line">        other.data = <span class="literal">nullptr</span>; <span class="comment">// 将原始对象置为空，避免资源重复释放</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="type">int</span>* data;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Resource res1;</span><br><span class="line">    Resource res2 = std::<span class="built_in">move</span>(res1); <span class="comment">// 调用移动构造函数</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h1 id="4-完美转发"><a href="#4-完美转发" class="headerlink" title="4. 完美转发"></a>4. 完美转发</h1><ul>
-<li>允许将参数传递到另一个函数，并保留原始参数的值类别（左值或右值）和const修饰符。</li>
-<li>目标是在保留参数类型的同时，将参数转发给其他函数，实现通用性更强的函数包装或者委托。</li>
-<li>完美转发的关键是使用了<strong>右值引用</strong>和<strong>模板参数</strong>推导。通过使用 <code>std::forward</code> 函数模板，可以在传递参数时保留参数的值类别，确保参数被按原样传递。这种机制在实现泛型编程时尤为有用，可以减少代码的重复和增加可读性。</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">wrapper</span><span class="params">(T&amp;&amp; arg)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// arg 是右值引用或者左值引用，依据传递的实参类型决定</span></span><br><span class="line">    <span class="comment">// 将参数 arg 转发给另一个函数 foo()</span></span><br><span class="line">    <span class="built_in">foo</span>(std::forward&lt;T&gt;(arg)); <span class="comment">// 完美转发</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">foo</span><span class="params">(<span class="type">int</span>&amp; x)</span> </span>&#123; </span><br><span class="line">	cout &lt;&lt; <span class="string">&quot;left value&quot;</span> &lt;&lt;endl;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">foo</span><span class="params">(<span class="type">int</span>&amp;&amp; x)</span> </span>&#123; </span><br><span class="line">	cout &lt;&lt; <span class="string">&quot;right value&quot;</span> &lt;&lt;endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> x = <span class="number">42</span>;</span><br><span class="line">    <span class="built_in">wrapper</span>(x); <span class="comment">// 传递左值</span></span><br><span class="line">    <span class="built_in">wrapper</span>(<span class="number">42</span>); <span class="comment">// 传递右值</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><code>wrapper</code> 函数模板通过 <code>std::forward</code> 将参数 <code>arg</code> 完美转发给 <code>foo</code> 函数。无论 <code>arg</code> 是左值还是右值，都可以在 <code>foo</code> 中保持其原始的属性，并且正确地调用对应的 <code>foo</code> 函数重载。</p>
-<p>运行结果：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">42</span>: left value</span><br><span class="line"><span class="number">42</span>: right value</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/04/05/%E6%8C%87%E9%92%88%E5%92%8C%E5%BC%95%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="stars zhang">
-      <meta itemprop="description" content="永远迎着光走">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="stars">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/04/05/%E6%8C%87%E9%92%88%E5%92%8C%E5%BC%95%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB/" class="post-title-link" itemprop="url">指针和引用的区别</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2024-04-05 18:15:10 / 修改时间：18:49:25" itemprop="dateCreated datePublished" datetime="2024-04-05T18:15:10+08:00">2024-04-05</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <ol>
-<li>定义</li>
-</ol>
-<p>（1）指针是一个变量，其值为另一个变量的地址，指向内存的一个存储单元。是一个对象实体</p>
-<p>（2）而引用的本质是给变量起别名，允许通过这个别名去直接操纵和修改对象本身的属性。引用跟原来的变量实质上是同一个东西。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">5</span>;</span><br><span class="line"><span class="comment">//指针</span></span><br><span class="line"><span class="type">int</span>* p = &amp;a;</span><br><span class="line"><span class="comment">//引用</span></span><br><span class="line"><span class="type">int</span>&amp; b = a;</span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>空指针与无效引用</li>
-</ol>
-<p>（1）指针可以为空，表示它不指向任何有效的内存地址。在指针没有被初始化时，它的值通常是未定义的，为了避免错误，可以将其初始化为 <code>nullptr</code> 或 <code>NULL</code>。</p>
-<p>（2）引用不能为空，它必须在声明时被初始化，并且始终指向某个对象。试图将引用声明为 null 或者空值会导致编译错误。</p>
-<ol start="3">
-<li>初始化</li>
-</ol>
-<p>（1）指针需要进行初始化，可以使用取地址符号 <code>&amp;</code> 来获取一个变量的地址，也可以将另一个指针赋值给它。</p>
-<p>（2）引用在声明时必须初始化，而且一旦初始化后，不能被重新绑定到其他变量。</p>
-<ol start="4">
-<li>运算符</li>
-</ol>
-<p>（1）指针可以通过解引用 <code>*</code> 运算符来访问所指向的对象，也可以使用箭头 <code>-&gt;</code> 运算符来访问成员，例如：<code>p-&gt;member</code>。</p>
-<p>（2）引用则不需要解引用操作符，因为它们在使用时就是被解引用的。例如：<code>b.member</code>。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/03/27/%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="stars zhang">
-      <meta itemprop="description" content="永远迎着光走">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="stars">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/03/27/%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5/" class="post-title-link" itemprop="url">线程同步</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-03-27 13:12:33" itemprop="dateCreated datePublished" datetime="2024-03-27T13:12:33+08:00">2024-03-27</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-04-08 13:25:01" itemprop="dateModified" datetime="2024-04-08T13:25:01+08:00">2024-04-08</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>进程有自己的独立地址空间，因此<strong>进程之间重点关注通信</strong>。而对于线程来说，除了线程栈外其他数据都是共享的，如果同时读写数据可能造成数据不一致甚至程序崩溃的后果，因此<strong>线程之间重点关注同步</strong>。</p>
-<p>线程同步是指在多线程编程中控制多个线程之间的执行顺序或共享资源访问的过程。在多线程环境中，由于线程的并发执行，可能会导致数据竞争、资源冲突等问题。</p>
-<h1 id="1-竞争条件"><a href="#1-竞争条件" class="headerlink" title="1. 竞争条件"></a>1. 竞争条件</h1><p>在多线程编程中，<strong>竞争</strong>（Race condition）是指两个或多个线程对共享资源的访问产生的不确定性行为。竞争条件通常发生在多个线程同时访问共享资源时，其中至少一个线程试图修改这些资源的值。在多线程并发场景下指令执行的先后顺序由内核决定，同一个线程内部指令按照先后顺序执行，但不同线程之间的指令执行先后顺序是不一定的。如果执行结果依赖于不同线程执行的先后顺序，那么就会形成<strong>“竞争条件”</strong>，产生非预期的计算结果，导致程序崩溃等问题。</p>
-<p>最常见的解决竞争条件的方式是<strong>原子操作</strong>，其次便是<strong>线程同步</strong>。</p>
-<p>原子操作是指不可被中断的操作，在执行过程中不会被其他线程或进程干扰，要么全部执行成功，要么全部不执行，不会出现部分执行的情况。原子操作通常是基本的、不可分割的操作单元。</p>
-<p>原子操作通常由硬件或者操作系统提供支持，C++11引入了std::atomic模板类来支持原子操作。</p>
-<h1 id="2-线程同步"><a href="#2-线程同步" class="headerlink" title="2. 线程同步"></a>2. 线程同步</h1><p>常见的线程同步的方式有四种：互斥锁、读写锁、条件变量和信号量</p>
-<h2 id="2-1-互斥锁"><a href="#2-1-互斥锁" class="headerlink" title="2.1 互斥锁"></a>2.1 互斥锁</h2><p>互斥锁（又名互斥量）强调的是资源之间的访问互斥：每个线程在对共享资源操作前都会尝试先加锁，加锁成功才能操作，操作结束之后解锁。</p>
-<p>某个线程对互斥量加锁后，其他线程必须等待该线程释放锁才能继续访问共享资源。如果释放互斥锁时有多个线程阻塞，所有在该互斥锁上的阻塞线程都会变成可运行状态。第一个变成运行状态的线程可以对互斥量加锁，其余线程将会看到互斥量依然被锁住，只能回去再次等待它重新变为可用。</p>
-<p>mutex是睡眠等待（sleep waiting）类型的锁，<strong>当线程抢互斥锁失败的时候，线程会陷入休眠</strong>。优点就是节省CPU资源，缺点就是休眠唤醒会消耗一点时间。</p>
-<p>互斥锁的接口通常包括 <code>mutex_init()</code>、<code>mutex_lock()</code>、<code>mutex_unlock()</code> 和 <code>mutex_destroy()</code>。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;pthread.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 初始化互斥锁</span></span><br><span class="line"><span class="type">pthread_mutex_t</span> mutex;</span><br><span class="line">pthread_mutex_init(&amp;mutex, <span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 加锁</span></span><br><span class="line">pthread_mutex_lock(&amp;mutex);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 解锁</span></span><br><span class="line">pthread_mutex_unlock(&amp;mutex);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 销毁互斥锁</span></span><br><span class="line">pthread_mutex_destroy(&amp;mutex);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="2-2-读写锁"><a href="#2-2-读写锁" class="headerlink" title="2.2 读写锁"></a>2.2 读写锁</h2><p>读写锁和互斥量类似，是另一种实现线程同步的方式，但是它将操作分为读、写两种方式，可以多个线程同时占用读模式，但只允许一个线程写入。</p>
-<ul>
-<li>写独占：写锁占用时，其他线程加读锁或者写锁时都会阻塞（并非失败）</li>
-<li>读共享：读锁占用时，其他线程加写锁时会阻塞，加读锁会成功</li>
-</ul>
-<p>读写锁有两种策略：</p>
-<ul>
-<li>强读同步：读锁优先，只要写锁没有占用那么就可以加读锁</li>
-<li>强写同步：写锁优先，只能等到所有正在等待或者执行的写锁执行完成后才能加读锁</li>
-</ul>
-<p>大部分读写锁的实现都采用的是“强写同步”策略，对尝试加锁的操作进行排队，如果前面已经有尝试加写被锁阻塞住的话，后续加读锁也都会被阻塞住（尽管当前时刻是读锁占用的状态）。这样做的目的主要是为了避免“写饥饿”，在“多读少写”的情况下防止数据修改延迟过高。</p>
-<p>读写锁的接口通常包括 <code>rwlock_init()</code>、<code>rwlock_rdlock()</code>、<code>rwlock_wrlock()</code>、<code>rwlock_unlock()</code> 和 <code>rwlock_destroy()</code></p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;pthread.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 初始化读写锁</span></span><br><span class="line"><span class="type">pthread_rwlock_t</span> rwlock;</span><br><span class="line">pthread_rwlock_init(&amp;rwlock, <span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 读取加锁</span></span><br><span class="line">pthread_rwlock_rdlock(&amp;rwlock);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 写入加锁</span></span><br><span class="line">pthread_rwlock_wrlock(&amp;rwlock);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 解锁</span></span><br><span class="line">pthread_rwlock_unlock(&amp;rwlock);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 销毁读写锁</span></span><br><span class="line">pthread_rwlock_destroy(&amp;rwlock);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h2 id="2-3-条件变量"><a href="#2-3-条件变量" class="headerlink" title="2.3 条件变量"></a>2.3 条件变量</h2><p>严格意义上来说，条件变量的主要作用不是处理线程同步, 而是进行线程的阻塞。如果在多线程程序中只使用条件变量无法实现线程的同步, 必须要配合互斥锁来使用。</p>
-<p>线程可以等待某个条件变量的发生，如果条件不满足，则线程会阻塞等待，并在条件满足时被唤醒。</p>
-<p>条件变量的接口通常包括 <code>cond_init()</code>、<code>cond_wait()</code>、<code>cond_signal()</code> 和 <code>cond_broadcast()</code>。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;pthread.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 初始化条件变量和关联的互斥锁</span></span><br><span class="line"><span class="type">pthread_cond_t</span> cond = PTHREAD_COND_INITIALIZER;</span><br><span class="line"><span class="type">pthread_mutex_t</span> mutex = PTHREAD_MUTEX_INITIALIZER;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 等待条件满足</span></span><br><span class="line">pthread_mutex_lock(&amp;mutex);</span><br><span class="line">pthread_cond_wait(&amp;cond, &amp;mutex);</span><br><span class="line">pthread_mutex_unlock(&amp;mutex);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 发送信号通知条件满足</span></span><br><span class="line">pthread_cond_signal(&amp;cond);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 广播通知条件满足</span></span><br><span class="line">pthread_cond_broadcast(&amp;cond);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h2 id="2-4-信号量"><a href="#2-4-信号量" class="headerlink" title="2.4 信号量"></a>2.4 信号量</h2><p>信号量是一种更为通用的同步原语，用来控制多个线程对共享资源的访问。</p>
-<p>信号量本质上是一个非负的整数计数器，表示可用资源的数量。当资源被占用时，计数器减少；当资源释放时，计数器增加。</p>
-<p>信号量提供了两种操作：P操作（等待信号量）和V操作（释放信号量），用于控制资源的访问和释放，也被称为PV原子操作：</p>
-<ul>
-<li>P操作：即信号量sem减一，若sem小于等于0则P操作被阻塞，直到sem变量大于0为止</li>
-<li>V操作：即信号量sem加一</li>
-</ul>
-<p>信号量的接口通常包括 <code>sem_init()</code>、<code>sem_wait()</code>、<code>sem_post()</code> 和 <code>sem_destroy()</code>。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;semaphore.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 初始化信号量</span></span><br><span class="line"><span class="type">sem_t</span> semaphore;</span><br><span class="line">sem_init(&amp;semaphore, <span class="number">0</span>, <span class="number">1</span>); <span class="comment">// 初始值为1，表示有一个资源可用</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 等待信号量</span></span><br><span class="line">sem_wait(&amp;semaphore);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 发送信号量</span></span><br><span class="line">sem_post(&amp;semaphore);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 销毁信号量</span></span><br><span class="line">sem_destroy(&amp;semaphore);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h1 id="3-C-示例"><a href="#3-C-示例" class="headerlink" title="3. C++示例"></a>3. C++示例</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;thread&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;mutex&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;shared_mutex&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;condition_variable&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;semaphore.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span> <span class="comment">// 用于 sleep 函数</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 共享资源</span></span><br><span class="line"><span class="type">int</span> shared_data = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 互斥锁</span></span><br><span class="line">mutex mtx;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 读写锁</span></span><br><span class="line">shared_mutex rw_mtx;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 条件变量</span></span><br><span class="line">condition_variable cond_var;</span><br><span class="line"><span class="type">bool</span> ready = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 信号量</span></span><br><span class="line"><span class="type">sem_t</span> semaphore;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 互斥锁示例</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">mutex_example</span><span class="params">(<span class="type">int</span> id)</span> </span>&#123;</span><br><span class="line">    mtx.<span class="built_in">lock</span>();</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;Thread &quot;</span> &lt;&lt; id &lt;&lt; <span class="string">&quot; is accessing shared resource with mutex. Shared data: &quot;</span> &lt;&lt; shared_data &lt;&lt; endl;</span><br><span class="line">    shared_data++;</span><br><span class="line">    mtx.<span class="built_in">unlock</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 读写锁示例</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">rw_lock_example</span><span class="params">(<span class="type">int</span> id)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (id % <span class="number">2</span> == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="comment">// 读操作</span></span><br><span class="line">        <span class="function">shared_lock&lt;shared_mutex&gt; <span class="title">lock</span><span class="params">(rw_mtx)</span></span>;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;Thread &quot;</span> &lt;&lt; id &lt;&lt; <span class="string">&quot; is reading shared resource with read-write lock. Shared data: &quot;</span> &lt;&lt; shared_data &lt;&lt; endl;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// 写操作</span></span><br><span class="line">        unique_lock&lt;shared_mutex&gt; <span class="built_in">lock</span>(rw_mtx);</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;Thread &quot;</span> &lt;&lt; id &lt;&lt; <span class="string">&quot; is writing shared resource with read-write lock. Shared data: &quot;</span> &lt;&lt; shared_data &lt;&lt; endl;</span><br><span class="line">        shared_data++;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 条件变量示例</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">cond_var_example</span><span class="params">(<span class="type">int</span> id)</span> </span>&#123;</span><br><span class="line">    <span class="function">unique_lock&lt;mutex&gt; <span class="title">lock</span><span class="params">(mtx)</span></span>;</span><br><span class="line">    cond_var.<span class="built_in">wait</span>(lock, []&#123; <span class="keyword">return</span> ready; &#125;);</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;Thread &quot;</span> &lt;&lt; id &lt;&lt; <span class="string">&quot; is accessing shared resource with condition variable. Shared data: &quot;</span> &lt;&lt; shared_data &lt;&lt; endl;</span><br><span class="line">    shared_data++;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 信号量示例</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">semaphore_example</span><span class="params">(<span class="type">int</span> id)</span> </span>&#123;</span><br><span class="line">    <span class="built_in">sem_wait</span>(&amp;semaphore);</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;Thread &quot;</span> &lt;&lt; id &lt;&lt; <span class="string">&quot; is accessing shared resource with semaphore. Shared data: &quot;</span> &lt;&lt; shared_data &lt;&lt; endl;</span><br><span class="line">    shared_data++;</span><br><span class="line">    <span class="built_in">sem_post</span>(&amp;semaphore);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 初始化信号量</span></span><br><span class="line">    <span class="built_in">sem_init</span>(&amp;semaphore, <span class="number">0</span>, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 创建线程</span></span><br><span class="line">    <span class="function">thread <span class="title">t1</span><span class="params">(mutex_example, <span class="number">1</span>)</span></span>;</span><br><span class="line">    <span class="function">thread <span class="title">t2</span><span class="params">(mutex_example, <span class="number">2</span>)</span></span>;</span><br><span class="line">    <span class="function">thread <span class="title">t3</span><span class="params">(rw_lock_example, <span class="number">3</span>)</span></span>;</span><br><span class="line">    <span class="function">thread <span class="title">t4</span><span class="params">(rw_lock_example, <span class="number">4</span>)</span></span>;</span><br><span class="line">    <span class="function">thread <span class="title">t5</span><span class="params">(cond_var_example, <span class="number">5</span>)</span></span>;</span><br><span class="line">    <span class="function">thread <span class="title">t6</span><span class="params">(cond_var_example, <span class="number">6</span>)</span></span>;</span><br><span class="line">    <span class="function">thread <span class="title">t7</span><span class="params">(semaphore_example, <span class="number">7</span>)</span></span>;</span><br><span class="line">    <span class="function">thread <span class="title">t8</span><span class="params">(semaphore_example, <span class="number">8</span>)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 通知条件变量</span></span><br><span class="line">    <span class="built_in">sleep</span>(<span class="number">1</span>);</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function">lock_guard&lt;mutex&gt; <span class="title">lock</span><span class="params">(mtx)</span></span>;</span><br><span class="line">        ready = <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    cond_var.<span class="built_in">notify_all</span>();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 等待线程结束</span></span><br><span class="line">    t1.<span class="built_in">join</span>();</span><br><span class="line">    t2.<span class="built_in">join</span>();</span><br><span class="line">    t3.<span class="built_in">join</span>();</span><br><span class="line">    t4.<span class="built_in">join</span>();</span><br><span class="line">    t5.<span class="built_in">join</span>();</span><br><span class="line">    t6.<span class="built_in">join</span>();</span><br><span class="line">    t7.<span class="built_in">join</span>();</span><br><span class="line">    t8.<span class="built_in">join</span>();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 销毁信号量</span></span><br><span class="line">    <span class="built_in">sem_destroy</span>(&amp;semaphore);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h1 id="4-死锁"><a href="#4-死锁" class="headerlink" title="4. 死锁"></a>4. 死锁</h1><p>死锁（Deadlock）是指两个或多个进程(线程)在互相等待对方持有的资源而无法继续执行的情况。在死锁状态下，每个进程都在等待某个资源被释放，而该资源被其他进程所持有，导致所有进程都无法继续执行。</p>
-<p>死锁发生的<strong>主要原因</strong>通常是由于多个进程同时持有某些资源，并且每个进程都在等待其他进程释放它所需要的资源。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1403,20 +1359,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-count">23</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-count">16</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
