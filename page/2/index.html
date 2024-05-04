@@ -860,10 +860,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2024-04-05 18:15:10 / 修改时间：18:49:25" itemprop="dateCreated datePublished" datetime="2024-04-05T18:15:10+08:00">2024-04-05</time>
+              <time title="创建时间：2024-04-05 18:15:10" itemprop="dateCreated datePublished" datetime="2024-04-05T18:15:10+08:00">2024-04-05</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-05-04 16:24:49" itemprop="dateModified" datetime="2024-05-04T16:24:49+08:00">2024-05-04</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -885,28 +891,40 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <ol>
-<li>定义</li>
-</ol>
-<p>（1）指针是一个变量，其值为另一个变量的地址，指向内存的一个存储单元。是一个对象实体</p>
+          <h4 id="一、区别"><a href="#一、区别" class="headerlink" title="一、区别"></a>一、区别</h4><h5 id="1-1-定义"><a href="#1-1-定义" class="headerlink" title="1.1 定义"></a>1.1 定义</h5><p>（1）指针是一个变量，其值为另一个变量的地址，指向内存的一个存储单元。是一个对象实体</p>
 <p>（2）而引用的本质是给变量起别名，允许通过这个别名去直接操纵和修改对象本身的属性。引用跟原来的变量实质上是同一个东西。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">5</span>;</span><br><span class="line"><span class="comment">//指针</span></span><br><span class="line"><span class="type">int</span>* p = &amp;a;</span><br><span class="line"><span class="comment">//引用</span></span><br><span class="line"><span class="type">int</span>&amp; b = a;</span><br></pre></td></tr></table></figure>
 
-<ol start="2">
-<li>空指针与无效引用</li>
-</ol>
-<p>（1）指针可以为空，表示它不指向任何有效的内存地址。在指针没有被初始化时，它的值通常是未定义的，为了避免错误，可以将其初始化为 <code>nullptr</code> 或 <code>NULL</code>。</p>
+<h5 id="1-2-空指针与无效引用"><a href="#1-2-空指针与无效引用" class="headerlink" title="1.2 空指针与无效引用"></a>1.2 空指针与无效引用</h5><p>（1）指针可以为空，表示它不指向任何有效的内存地址。在指针没有被初始化时，它的值通常是未定义的，为了避免错误，可以将其初始化为 <code>nullptr</code> 或 <code>NULL</code>。</p>
 <p>（2）引用不能为空，它必须在声明时被初始化，并且始终指向某个对象。试图将引用声明为 null 或者空值会导致编译错误。</p>
-<ol start="3">
-<li>初始化</li>
-</ol>
-<p>（1）指针需要进行初始化，可以使用取地址符号 <code>&amp;</code> 来获取一个变量的地址，也可以将另一个指针赋值给它。</p>
+<h5 id="1-3-初始化"><a href="#1-3-初始化" class="headerlink" title="1.3 初始化"></a>1.3 初始化</h5><p>（1）指针需要进行初始化，可以使用取地址符号 <code>&amp;</code> 来获取一个变量的地址，也可以将另一个指针赋值给它。</p>
 <p>（2）引用在声明时必须初始化，而且一旦初始化后，不能被重新绑定到其他变量。</p>
 <ol start="4">
 <li>运算符</li>
 </ol>
 <p>（1）指针可以通过解引用 <code>*</code> 运算符来访问所指向的对象，也可以使用箭头 <code>-&gt;</code> 运算符来访问成员，例如：<code>p-&gt;member</code>。</p>
 <p>（2）引用则不需要解引用操作符，因为它们在使用时就是被解引用的。例如：<code>b.member</code>。</p>
+<h4 id="二、指针常量、常量指针、引用"><a href="#二、指针常量、常量指针、引用" class="headerlink" title="二、指针常量、常量指针、引用"></a>二、指针常量、常量指针、引用</h4><ol>
+<li>指针常量：如int* const p，表示一个指向整数类型的指针常量。</li>
+</ol>
+<ul>
+<li><code>int*</code>：表示指向整数类型的指针。这意味着 <code>p</code> 是一个指针，可以存储整数类型变量的地址。</li>
+<li><code>const</code>：表示常量，这里用于修饰指针。<code>const</code> 关键字使得指针变量成为一个常量，即<strong>指针的值（地址）不能被修改，但是可以通过 <code>p</code> 修改它所指向的整数值。</strong></li>
+</ul>
+<ol start="2">
+<li>常量指针：如const int* p，表示一个指向整数常量的指针。</li>
+</ol>
+<ul>
+<li><code>const</code>：表示常量，这里用于修饰整数类型。<code>const</code> 关键字使得指针所指向的整数值为常量，即<strong>不能通过 <code>p</code> 修改它所指向的整数值。</strong></li>
+<li><code>int*</code>：表示指向整数类型的指针。这意味着 <code>p</code> 是一个指针，可以更改指针的指向，让其指向其他值。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">int x = 10;</span><br><span class="line">int y = 20;</span><br><span class="line"></span><br><span class="line">int* const p1 = &amp;x;  // p 是一个指向整数类型的指针常量，指向 x 的地址</span><br><span class="line">*p1 = 15;            // 合法，修改了 p 指向的整数变量 x 的值</span><br><span class="line">// p1 = &amp;y;         // 不合法，试图修改 p 的值（地址），但 p 是一个常量，其值不能修改</span><br><span class="line"></span><br><span class="line">const int z = 20;</span><br><span class="line">const int* p2 = &amp;x;  // p 是一个指向常量整数类型的指针，指向 x 的地址</span><br><span class="line">// *p2 = 15;         // 不合法，试图通过 p 修改其所指向的整数值，但整数值是常量，不能修改</span><br><span class="line">p2 = &amp;z;             // 合法，修改 p 指向的地址，但是 p 仍然指向一个整数类型的常量</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li><strong>引用的本质在c++内部实现是一个指针常量.</strong> 即可以通过引用修改原变量值，但引用不能更改绑定其他变量。</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">10</span>;</span><br><span class="line"><span class="type">int</span>&amp; b = a;</span><br><span class="line"><span class="comment">//等价于</span></span><br><span class="line"><span class="type">int</span>* <span class="type">const</span> b = &amp;a;</span><br></pre></td></tr></table></figure>
+
 
       
     </div>
