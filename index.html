@@ -162,6 +162,255 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/05/04/strlen%E5%92%8Csizeof/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="stars zhang">
+      <meta itemprop="description" content="永远迎着光走">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="stars">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/05/04/strlen%E5%92%8Csizeof/" class="post-title-link" itemprop="url">strlen和sizeof</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-05-04 22:11:35 / 修改时间：22:28:28" itemprop="dateCreated datePublished" datetime="2024-05-04T22:11:35+08:00">2024-05-04</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <ol>
+<li>sizeof是运算符，在编译时便得到结果；strlen是&lt;string.h&gt;库里的函数。</li>
+<li><code>strlen</code> 函数用于计算以空字符 <code>\0</code> 结尾的字符串的长度，即<strong>字符串中的字符数（不包括空字符 <code>\0</code>）</strong>；</li>
+</ol>
+<p><code>sizeof</code> 操作符用于<strong>获取数据类型或对象在内存中的大小，单位为字节，对于数组，返回的是整个数组的大小。</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="type">const</span> <span class="type">char</span>* tmp = <span class="string">&quot;stars&quot;</span>;</span><br><span class="line">    <span class="type">char</span> str[] = <span class="string">&quot;stars&quot;</span>;</span><br><span class="line">    <span class="type">char</span> arr[<span class="number">10</span>] = <span class="string">&quot;spiderman&quot;</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, <span class="keyword">sizeof</span>(tmp));<span class="comment">//8，计算的是char*的大小，64为系统中char*为8</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, <span class="built_in">strlen</span>(tmp));<span class="comment">//4，字符数</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, <span class="keyword">sizeof</span>(str));<span class="comment">//5,计算的是数组大小，即“stars\0”共五个元素，每个元素占1字节</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, <span class="built_in">strlen</span>(str));<span class="comment">//4,字符数</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, <span class="keyword">sizeof</span>(arr));<span class="comment">//10,数组大小1*10</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, <span class="built_in">strlen</span>(arr));<span class="comment">//9，字符数</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/05/04/new-delete%E5%92%8Cmalloc-free/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="stars zhang">
+      <meta itemprop="description" content="永远迎着光走">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="stars">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/05/04/new-delete%E5%92%8Cmalloc-free/" class="post-title-link" itemprop="url">new/delete和malloc/free</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-05-04 21:14:01 / 修改时间：22:31:48" itemprop="dateCreated datePublished" datetime="2024-05-04T21:14:01+08:00">2024-05-04</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h4 id="一、区别"><a href="#一、区别" class="headerlink" title="一、区别"></a>一、区别</h4><ol>
+<li><strong>类型安全性：</strong><ul>
+<li><code>new/delete</code> 是 C++ 中的操作符，它们能够调用对象的构造函数和析构函数，并且在动态分配内存时会自动计算所需的空间大小，因此是类型安全的。</li>
+<li><code>malloc/free</code> 是 C 语言中的函数，它们只是分配和释放内存块，不会调用任何构造函数或析构函数，也不会进行类型检查。因此，在 C++ 中使用 <code>malloc/free</code> 可能会导致内存泄漏或未定义的行为。</li>
+</ul>
+</li>
+<li><strong>大小指定：</strong><ul>
+<li><code>new</code> 操作符根据指定的类型<strong>自动计算所需的内存大小</strong>，因此不需要显式指定分配的大小。</li>
+<li><code>malloc</code> 函数<strong>需要显式指定要分配的内存块的大小</strong>，它接受一个参数来指定所需的字节数。</li>
+</ul>
+</li>
+<li><strong>返回类型：</strong><ul>
+<li><code>new</code> 操作符返回一个指向动态分配的对象的指针，<strong>类型为所分配对象的类型</strong>。</li>
+<li><code>malloc</code> 函数返回一个指向动态分配的内存块的指针，<strong>类型为 <code>void**</code>，</strong>需要进行显式的类型转换**。</li>
+</ul>
+</li>
+<li><strong>构造和析构函数的调用：</strong><ul>
+<li><code>new</code> 操作符在分配内存后会调用对象的构造函数，用于初始化对象。</li>
+<li><code>delete</code> 操作符在释放内存前会调用对象的析构函数，用于清理对象。</li>
+<li><code>malloc/free</code> 不会调用任何构造或析构函数，它们只是分配和释放内存块。</li>
+</ul>
+</li>
+<li><strong>异常处理：</strong><ul>
+<li><code>new</code> 操作符在分配失败时会抛出 <code>std::bad_alloc</code> 异常。</li>
+<li><code>malloc</code> 函数在分配失败时返回 <code>NULL</code> 指针，需要手动检查分配是否成功。</li>
+</ul>
+</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">//动态分配了一个整数对象，并将其初始化为 5，然后将返回的指针赋值给指针变量 p1</span><br><span class="line">int* p1 = new int(5);</span><br><span class="line">delete p1;</span><br><span class="line"></span><br><span class="line">//动态分配了一个大小为 sizeof(int) 字节的内存块，并将返回的指针强制转换为整型指针类型，然后将其赋值给指针变量 p2</span><br><span class="line">int* p2 = (int*)malloc(sizeof(int));</span><br><span class="line">free p2;</span><br></pre></td></tr></table></figure>
+
+<h4 id="二、new和delete的实现原理"><a href="#二、new和delete的实现原理" class="headerlink" title="二、new和delete的实现原理"></a>二、new和delete的实现原理</h4><ol>
+<li>分配内存</li>
+</ol>
+<p>​        在使用 <code>new</code> 运算符来创建一个对象时，编译器会调用一个名为 <code>operator new</code> 的函数来分配内存。这个函数负责从堆中分配足够大小的内存来存储对象，并返回一个指向该内存的指针。如果分配失败，<code>operator new</code> 可能会抛出 <code>std::bad_alloc</code> 异常</p>
+<ol start="2">
+<li>构造对象</li>
+</ol>
+<p>​         分配内存后，编译器会调用对应的构造函数来初始化对象。这确保了对象的状态是有效的，并且任何必要的资源（如动态分配的内存或文件句柄）都已经被正确初始化。</p>
+<ol start="3">
+<li>返回指针</li>
+</ol>
+<p>​         一旦对象被正确地构造，<code>new</code> 运算符将返回一个指向新分配的内存的指针。这个指针可以用于访问对象的成员变量和方法。</p>
+<ol start="4">
+<li>释放内存</li>
+</ol>
+<p>​         当使用 <code>delete</code> 运算符来释放对象时，编译器会调用一个名为 <code>operator delete</code> 的函数。这个函数负责释放之前分配的内存，并且在必要时调用对象的析构函数来清理资源。</p>
+<h4 id="三、调用free会发生什么"><a href="#三、调用free会发生什么" class="headerlink" title="三、调用free会发生什么"></a>三、调用free会发生什么</h4><ol>
+<li><strong>标记内存块为可用：</strong> 调用 <code>free</code> 函数会将动态分配的内存块标记为可用。这意味着该内存块现在可以被系统重新分配给其他程序或进程使用。<strong>但是，该内存块的内容不会被清除或修改</strong>，因此在释放后的内存块中仍然可能包含之前存储的数据。</li>
+<li><strong>释放内存块：</strong> 被释放的内存块会被添加到系统的内存空闲列表中，以便以后的内存分配请求可以使用它。</li>
+<li><strong>合并相邻的空闲内存块：</strong> 在释放内存块后，系统可能会检查相邻的空闲内存块，并尝试将它们合并成一个更大的内存块。这有助于减少内存碎片化，并提高内存的利用率。</li>
+<li><strong>返回给操作系统（部分情况下）：</strong> 在某些操作系统中，当大块内存被释放时，系统可能会将该内存块返回给操作系统，以便它可以被重新分配给其他程序或进程使用。但是，这并不是所有操作系统都会立即执行的操作，具体取决于操作系统的内存管理策略和实现。</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/05/04/%E5%A0%86%E5%92%8C%E6%A0%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="stars zhang">
+      <meta itemprop="description" content="永远迎着光走">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="stars">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/05/04/%E5%A0%86%E5%92%8C%E6%A0%88/" class="post-title-link" itemprop="url">堆和栈</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-05-04 16:35:24 / 修改时间：20:52:18" itemprop="dateCreated datePublished" datetime="2024-05-04T16:35:24+08:00">2024-05-04</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <ol>
+<li><strong>栈（Stack）：</strong><ul>
+<li>栈用于存储函数的局部变量、函数参数以及函数调用所需要的上下文信息。</li>
+<li>栈内存由系统自动分配和释放，由编译器管理。当一个函数被调用时，其所需的局部变量和参数被存储在栈上，当函数执行完毕时，这些变量的内存空间会被自动释放。</li>
+<li>栈的大小有限，通常较小，它们的大小在程序运行时是固定的，栈顶和栈底是预设好的，栈向栈底扩展。</li>
+<li>栈上的<strong>内存分配和释放速度比较快</strong>，不会有碎片。</li>
+</ul>
+</li>
+<li><strong>堆（Heap）：</strong><ul>
+<li>堆是用于动态内存分配的区域，用于存储程序运行时需要动态分配的数据，例如使用 <code>malloc()</code>、<code>calloc()</code> 或 <code>new</code> 等函数动态分配的内存。</li>
+<li>堆内存的分配和释放由程序员手动管理。程序员需要显式地分配内存并在不需要使用时手动释放内存，否则会产生内存泄漏。</li>
+<li><strong>堆的大小通常比栈大得多</strong>，大小受操作系统的限制，通常由操作系统的虚拟内存大小决定，堆向高地址扩展是不连续的内存区域，大小可灵活调整。</li>
+<li>由于堆上的内存分配是动态的，需要维护额外的信息来跟踪已分配和未分配的内存块，因此<strong>堆上的内存分配和释放速度相对较慢，</strong>会产生内存碎片。</li>
+</ul>
+</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2024/05/04/%E7%BB%93%E6%9E%84%E4%BD%93%E5%86%85%E5%AD%98%E5%AF%B9%E9%BD%90%E9%97%AE%E9%A2%98/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -862,315 +1111,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/04/19/static%E8%AF%A6%E8%A7%A3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="stars zhang">
-      <meta itemprop="description" content="永远迎着光走">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="stars">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/04/19/static%E8%AF%A6%E8%A7%A3/" class="post-title-link" itemprop="url">static详解</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2024-04-19 16:55:53 / 修改时间：17:46:18" itemprop="dateCreated datePublished" datetime="2024-04-19T16:55:53+08:00">2024-04-19</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><code>static</code> 是 C++ 中的关键字，用于声明静态成员变量和静态成员函数，以及在局部变量中具有持久性。</p>
-<h5 id="1-静态变量"><a href="#1-静态变量" class="headerlink" title="1. 静态变量"></a>1. 静态变量</h5><ol>
-<li><p><strong>静态局部变量</strong>：在函数内部声明的静态变量。</p>
-<p>在函数内部声明的静态变量，其生命周期<strong>跨越函数调用</strong>。它们<strong>只会在第一次函数调用时初始化</strong>，并且保留其值直到程序结束。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">foo</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="type">static</span> <span class="type">int</span> count = <span class="number">0</span>;</span><br><span class="line">    count++;</span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Count: &quot;</span> &lt;&lt; count &lt;&lt; std::endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">foo</span>(); <span class="comment">// 输出：Count: 1</span></span><br><span class="line">    <span class="built_in">foo</span>(); <span class="comment">// 输出：Count: 2</span></span><br><span class="line">    <span class="built_in">foo</span>(); <span class="comment">// 输出：Count: 3</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p><strong>静态成员变量</strong>：静态成员变量<strong>属于类，而不是类的实例</strong>。它们<strong>被所有类的对象所共享</strong>，并且在类的所有实例中只有一个副本。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MyClass</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="type">static</span> <span class="type">int</span> count;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> MyClass::count = <span class="number">0</span>; <span class="comment">// 静态成员变量在类外部进行初始化</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    MyClass obj1;</span><br><span class="line">    MyClass::count = <span class="number">5</span>; <span class="comment">// 通过类名访问静态成员变量</span></span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Count: &quot;</span> &lt;&lt; obj1.count &lt;&lt; std::endl; <span class="comment">// 输出：Count: 5，因为静态成员变量是共享的</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p><strong>静态全局变量</strong>：在函数外部声明的静态变量称为静态全局变量。它们的<strong>作用域限制在声明它们的文件内</strong>，并且在程序的整个生命周期内保留其值。</p>
-<p>说到这，顺便说说<code>extern</code>关键字。它用于<strong>声明一个变量或函数是在其他文件中定义的，而不是在当前文件中定义的</strong>。即在当前文件中声明在其他文件中定义的变量或函数，以便在当前文件中使用它们。</p>
-</li>
-</ol>
-<h5 id="2-静态函数"><a href="#2-静态函数" class="headerlink" title="2. 静态函数"></a>2. 静态函数</h5><p>静态成员函数：静态函数<strong>属于类，而不是类的实例</strong>。它们可以直接通过类名调用，而无需创建类的实例。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Math</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">static</span> <span class="type">int</span> <span class="title">add</span><span class="params">(<span class="type">int</span> a, <span class="type">int</span> b)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> a + b;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> sum = Math::<span class="built_in">add</span>(<span class="number">5</span>, <span class="number">3</span>); <span class="comment">// 直接通过类名调用静态函数</span></span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Sum: &quot;</span> &lt;&lt; sum &lt;&lt; std::endl; <span class="comment">// 输出：Sum: 8</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/04/19/const%E8%AF%A6%E8%A7%A3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="stars zhang">
-      <meta itemprop="description" content="永远迎着光走">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="stars">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/04/19/const%E8%AF%A6%E8%A7%A3/" class="post-title-link" itemprop="url">const详解</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2024-04-19 15:34:46 / 修改时间：16:52:56" itemprop="dateCreated datePublished" datetime="2024-04-19T15:34:46+08:00">2024-04-19</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h5 id="const"><a href="#const" class="headerlink" title="const"></a>const</h5><p><code>const</code> 用于定义常量、声明常量引用以及修饰成员函数。<code>const</code> 的作用是告诉编译器这个东西是不可修改的，即它的值在初始化后不能再被修改。</p>
-<p>编译器通常不为普通的const常量分配内存空间，而是将他们保存在符号表中。</p>
-<h6 id="1-定义常量"><a href="#1-定义常量" class="headerlink" title="1. 定义常量"></a>1. 定义常量</h6><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">int</span> x = <span class="number">5</span>;</span><br></pre></td></tr></table></figure>
-
-<p>定义了一个常量 <code>x</code>，其值为 5。一旦定义，就不能再修改 <code>x</code> 的值。</p>
-<h6 id="2-const和引用"><a href="#2-const和引用" class="headerlink" title="2. const和引用"></a>2. const和引用</h6><p>把<code>const</code>修饰的引用称为”常用引用“，常量引用不能直接修改所引用的对象。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">int</span> ci = <span class="number">1024</span>;<span class="comment">//ci是一个int型的常量</span></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> &amp;r1 = ci;<span class="comment">//正确，r1是一个常量引用，并且r1本身也是一个常量</span></span><br><span class="line">r1 = <span class="number">42</span>;<span class="comment">//错误，引用被const限制了，不能修改所引用对象的值了</span></span><br><span class="line"><span class="type">int</span> &amp;r2 = ci;<span class="comment">//错误，试图让一个非常量引用指向一个常量对象</span></span><br></pre></td></tr></table></figure>
-
-<h6 id="3-const和指针"><a href="#3-const和指针" class="headerlink" title="3. const和指针"></a>3. const和指针</h6><ol>
-<li><p>常量指针：指针指向的对象不可变，但指针本身的值可以改变。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> x = <span class="number">5</span>;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span>* ptr = &amp;x; <span class="comment">// ptr 是一个指向整型常量的指针，它所指向的对象不能被修改，但可以改变指针的值</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// *ptr = 10; // 错误，不能修改 ptr 所指向的对象的值</span></span><br><span class="line"><span class="type">int</span> y = <span class="number">10</span>;</span><br><span class="line">ptr = &amp;y; <span class="comment">// 可以修改指针 ptr 的值，使其指向不同的对象</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>指针常量：指针本身的值不可变，但指针所指向的对象可以改变。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> x = <span class="number">5</span>;</span><br><span class="line"><span class="type">int</span>* <span class="type">const</span> ptr = &amp;x; <span class="comment">// ptr 是一个指向整型的常量指针，它的值不能改变，但可以修改其指向的对象</span></span><br><span class="line"></span><br><span class="line">*ptr = <span class="number">10</span>; <span class="comment">// 可以修改 ptr 所指向的对象的值</span></span><br><span class="line"><span class="comment">// ptr = &amp;y; // 错误，无法修改指针 ptr 的值</span></span><br></pre></td></tr></table></figure></li>
-</ol>
-<h6 id="4-const和类对象"><a href="#4-const和类对象" class="headerlink" title="4. const和类对象"></a>4. const和类对象</h6><ol>
-<li><p>const成员变量：</p>
-<p>const 成员变量是指在类中声明为常量的数据成员。一旦被初始化，其值就不能再修改。它们只能在类的构造函数初始化列表中初始化，而不能在构造函数体中赋值。</p>
-</li>
-<li><p>const成员函数：</p>
-<p>const只能限定类的成员函数，表示该函数不会修改类的成员变量，<strong>除非成员变量被 mutable 修饰符修饰</strong>。</p>
-</li>
-</ol>
-<p>const限定后，该成员函数不允许修改类的数据成员，也不允许调用非const函数，即使该函数没有修改类的数据成员，只要没有声明成const，就不能调用。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MyClass</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">// 构造函数初始化 const 成员变量</span></span><br><span class="line">    <span class="built_in">MyClass</span>(<span class="type">int</span> x): <span class="built_in">constValue</span>(x) &#123;&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">getValue</span><span class="params">()</span> <span class="type">const</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 这是一个常量成员函数，不能修改类的成员变量</span></span><br><span class="line">        <span class="keyword">return</span> value;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">setValue</span><span class="params">(<span class="type">int</span> newValue)</span> </span>&#123;</span><br><span class="line">        value = newValue;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="type">const</span> <span class="type">int</span> constValue;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="type">const</span> MyClass <span class="title">obj</span><span class="params">(<span class="number">10</span>)</span></span>;</span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Value: &quot;</span> &lt;&lt; obj.<span class="built_in">getValue</span>() &lt;&lt; std::endl; <span class="comment">// 合法，调用常量成员函数</span></span><br><span class="line">    <span class="comment">// obj.setValue(5); // 错误，常量对象不能调用非常量成员函数</span></span><br><span class="line">    obj.constValue = <span class="number">5</span>; <span class="comment">// 错误，不能修改 const 成员变量的值</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h5 id="constexper"><a href="#constexper" class="headerlink" title="constexper"></a>constexper</h5><p><code>constexpr</code> 是 C++11 引入的关键字，用于声明“常量表达式”。</p>
-<p>常量表达式是在编译时就可以求值的表达式，即它的值可以在编译时被确定。</p>
-<p><code>constexpr</code> 可以用于变量、函数、构造函数以及类的成员函数，用于指示它们在编译时就可以被计算出来，而不是在运行时计算。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//5是一个常量表达式</span></span><br><span class="line"><span class="keyword">constexpr</span> <span class="type">int</span> x = <span class="number">5</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//square是一个constexpr函数</span></span><br><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="type">int</span> <span class="title">square</span><span class="params">(<span class="type">int</span> x)</span></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> x * x;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Circle</span> &#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">double</span> PI = <span class="number">3.14159</span>;</span><br><span class="line">    <span class="type">double</span> radius;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">constexpr</span> <span class="title">Circle</span><span class="params">(<span class="type">double</span> r)</span> : radius(r) &#123;</span>&#125;</span><br><span class="line">    <span class="function"><span class="keyword">constexpr</span> <span class="type">double</span> <span class="title">getArea</span><span class="params">()</span> <span class="type">const</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> PI * radius * radius;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<p>使用 <code>constexpr</code> 可以使得程序在编译时进行更多的优化，提高程序的性能。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/04/12/%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="stars zhang">
-      <meta itemprop="description" content="永远迎着光走">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="stars">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/04/12/%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/" class="post-title-link" itemprop="url">智能指针</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-04-12 20:43:40" itemprop="dateCreated datePublished" datetime="2024-04-12T20:43:40+08:00">2024-04-12</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-04-21 22:12:56" itemprop="dateModified" datetime="2024-04-21T22:12:56+08:00">2024-04-21</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="1-智能指针"><a href="#1-智能指针" class="headerlink" title="1. 智能指针"></a>1. 智能指针</h1><ul>
-<li>智能指针是一种用于管理动态分配的内存的工具，能够帮助避免<strong>内存泄漏</strong>和<strong>悬挂指针</strong>等问题。</li>
-<li>智能指针是C++11标准引入的一个重要特性，它们基于RAII（资源获取即初始化）原则，利用对象生命周期的概念，在对象生命周期结束时自动释放资源。</li>
-<li>智能指针实际上是一个类对象，它封装了原始指针，并在其生命周期结束时负责释放指针所指向的内存。</li>
-<li>智能指针的核心实现技术是引用计数，每使用它一次，内部引用计数加1，每析构一次内部的引用计数减1，减为0时，删除所指向的堆内存。</li>
-<li>C++11引入了三种指针：<font color="orange"><code>std::shared_ptr</code>、<code>std::unique_ptr</code>、<code>std::weak_ptr</code></font></li>
-</ul>
-<h1 id="2-std-shared-ptr"><a href="#2-std-shared-ptr" class="headerlink" title="2. std::shared_ptr"></a>2. std::shared_ptr</h1><p>共享指针，允许多个指针指向同一块内存，它使用<strong>引用计数</strong>来跟踪有多少个指针指向了该对象。并且会在最后一个指针不再指向该内存区域时自动释放资源。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;memory&gt;</span></span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="comment">// 使用make_shared创建shared_ptr</span></span><br><span class="line">	std::shared_ptr&lt;<span class="type">int</span>&gt; ptr = std::<span class="built_in">make_shared</span>&lt;<span class="type">int</span>&gt;(<span class="number">42</span>);</span><br><span class="line">    <span class="comment">//或构造函数初始化</span></span><br><span class="line">    std::<span class="built_in">shared_ptr</span>&lt;<span class="type">int</span>&gt;(<span class="keyword">new</span> <span class="built_in">int</span>(<span class="number">42</span>));</span><br><span class="line">	<span class="comment">// 拷贝复制</span></span><br><span class="line">	std::shared_ptr&lt;<span class="type">int</span>&gt; ptr2 = ptr1; <span class="comment">//引用计数+1</span></span><br><span class="line">	<span class="comment">//获取引用计数</span></span><br><span class="line">	std::cout &lt;&lt;<span class="string">&quot;引用计数：&quot;</span> &lt;&lt; ptr1.<span class="built_in">use_count</span>() &lt;&lt; std::endl;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;<span class="comment">// 当ptr1和ptr2都超出作用域时，所管理的内存会被自动释放</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><p><strong>创建shared_ptr</strong></p>
-<p>使用<code>std::make_shared</code>函数来创建<code>std::shared_ptr</code>，它会自动分配内存并构造对象，同时返回一个指向该对象的<code>std::shared_ptr</code>。</p>
-</li>
-<li><p><strong>拷贝和赋值</strong></p>
-<p>将一个<code>std::shared_ptr</code>赋值给另一个时，引用计数会增加。当所有指向该对象的<code>std::shared_ptr</code>都被销毁时，引用计数会减少。只有当引用计数为0时，资源才会被释放。</p>
-</li>
-<li><p><strong>引用计数</strong></p>
-<p><code>std::shared_ptr</code>内部维护了一个引用计数器，用于跟踪有多少个<code>std::shared_ptr</code>指向了相同的资源。可以通过<code>use_count()</code>方法获取引用计数。</p>
-</li>
-</ul>
-<h1 id="3-std-weak-ptr"><a href="#3-std-weak-ptr" class="headerlink" title="3. std::weak_ptr"></a>3. std::weak_ptr</h1><p>循环引用指的是两个或多个对象彼此之间相互引用，导致它们的引用计数永远不会变为零，从而造成内存泄漏。在使用<code>std::shared_ptr</code>时，循环引用是一个常见的问题，因为<code>std::shared_ptr</code>的引用计数机制可能导致对象永远无法被释放。如以下示例：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;memory&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">A</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    std::shared_ptr&lt;A&gt; next;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">A</span>() &#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;A 构造函数&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ~<span class="built_in">A</span>() &#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;A 析构函数&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    std::shared_ptr&lt;A&gt; a1 = std::<span class="built_in">make_shared</span>&lt;A&gt;();</span><br><span class="line">    std::shared_ptr&lt;A&gt; a2 = std::<span class="built_in">make_shared</span>&lt;A&gt;();</span><br><span class="line"></span><br><span class="line">    a1-&gt;next = a2;</span><br><span class="line">    a2-&gt;next = a1; <span class="comment">// 循环引用</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>在这个例子中，<code>a1</code>和<code>a2</code>相互引用，即<code>a1</code>的<code>next</code>指针指向<code>a2</code>，而<code>a2</code>的<code>next</code>指针又指向<code>a1</code>。这样一来，它们之间的引用计数永远不会变为零，因为彼此都在互相引用。即使在<code>main</code>函数结束时，<code>a1</code>和<code>a2</code>的引用计数也不会为零，导致<code>A</code>类对象永远无法被销毁，造成内存泄漏。</p>
-<p><code>std::weak_ptr</code>是<code>std::shared_ptr</code>的一种弱引用，它不会增加引用计数。用于解决<code>std::shared_ptr</code>的循环引用带来的内存泄漏问题。可以通过<code>lock()</code>方法获得一个<code>std::shared_ptr</code>，如果原来的<code>std::shared_ptr</code>已经被销毁，则返回一个空指针。</p>
-<p>上述示例中，可以将<code>next</code>成员改为<code>std::weak_ptr</code>类型，这样就不会导致循环引用。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;memory&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">A</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    std::weak_ptr&lt;A&gt; next; <span class="comment">// 使用weak_ptr</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">A</span>() &#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;A 构造函数&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ~<span class="built_in">A</span>() &#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;A 析构函数&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    std::shared_ptr&lt;A&gt; a1 = std::<span class="built_in">make_shared</span>&lt;A&gt;();</span><br><span class="line">    std::shared_ptr&lt;A&gt; a2 = std::<span class="built_in">make_shared</span>&lt;A&gt;();</span><br><span class="line"></span><br><span class="line">    a1-&gt;next = a2;</span><br><span class="line">    a2-&gt;next = a1; <span class="comment">// 循环引用被打破</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>在这个修改后的示例中，<code>A</code>类的<code>next</code>成员现在是<code>std::weak_ptr</code>类型，这意味着<code>a1-&gt;next</code>和<code>a2-&gt;next</code>不会增加<code>A</code>对象的引用计数。因此，即使<code>a1</code>和<code>a2</code>相互引用，它们之间的循环引用也被打破了。这样在<code>main</code>函数结束时，<code>A</code>类对象的引用计数会变为零，对象会被正确地销毁，从而避免了内存泄漏问题。</p>
-<h1 id="4-std-unique-ptr"><a href="#4-std-unique-ptr" class="headerlink" title="4. std::unique_ptr"></a>4. std::unique_ptr</h1><p><code>std::unique_ptr</code>是一种独占所有权的智能指针，它确保在其生命周期内，只有一个指针可以指向该对象。当<code>std::unique_ptr</code>被销毁时，它所管理的对象也会被自动释放。</p>
-<ul>
-<li>创建unique_ptr</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;memory&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 使用make_unique创建unique_ptr</span></span><br><span class="line">    std::unique_ptr&lt;<span class="type">int</span>&gt; ptr = std::<span class="built_in">make_unique</span>&lt;<span class="type">int</span>&gt;(<span class="number">42</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 或者使用构造函数</span></span><br><span class="line">    <span class="function">std::unique_ptr&lt;<span class="type">int</span>&gt; <span class="title">ptr2</span><span class="params">(<span class="keyword">new</span> <span class="type">int</span>(<span class="number">42</span>))</span></span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>移动语义</li>
-</ul>
-<p><code>std::unique_ptr</code>是独占所有权的，因此它不支持拷贝语义，但支持移动语义。这意味着可以通过移动操作将资源所有权从一个<code>std::unique_ptr</code>转移到另一个。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;memory&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    std::unique_ptr&lt;<span class="type">int</span>&gt; ptr1 = std::<span class="built_in">make_unique</span>&lt;<span class="type">int</span>&gt;(<span class="number">42</span>);</span><br><span class="line">    std::unique_ptr&lt;<span class="type">int</span>&gt; ptr2 = std::<span class="built_in">move</span>(ptr1); <span class="comment">// 移动所有权到ptr2</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 此时ptr1不再拥有资源，它指向nullptr</span></span><br><span class="line">    <span class="comment">// ptr2拥有资源，可以安全地使用</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>释放资源</li>
-</ul>
-<p>当<code>std::unique_ptr</code>超出作用域时，它所管理的资源会被自动释放。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;memory&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">someFunction</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    std::unique_ptr&lt;<span class="type">int</span>&gt; ptr = std::<span class="built_in">make_unique</span>&lt;<span class="type">int</span>&gt;(<span class="number">42</span>);</span><br><span class="line">    <span class="comment">// 在这里可以安全地使用ptr</span></span><br><span class="line">&#125; <span class="comment">// ptr超出作用域，所管理的内存会被自动释放</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">someFunction</span>();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>自定义删除器</li>
-</ul>
-<p><code>std::unique_ptr</code>支持自定义删除器，可以指定在释放资源时调用的函数或者函数对象。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;memory&gt;</span><br><span class="line">#include &lt;iostream&gt;</span><br><span class="line"></span><br><span class="line">void customDeleter(int* ptr) &#123;</span><br><span class="line">    std::cout &lt;&lt; &quot;自定义删除器被调用&quot; &lt;&lt; std::endl;</span><br><span class="line">    delete ptr;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main() &#123;</span><br><span class="line">    std::unique_ptr&lt;int, decltype(&amp;customDeleter)&gt; ptr(new int(42), customDeleter);</span><br><span class="line"></span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1240,7 +1180,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">27</span>
+          <span class="site-state-item-count">30</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1253,7 +1193,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-count">20</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
