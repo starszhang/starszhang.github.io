@@ -162,6 +162,304 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/05/04/%E7%BB%93%E6%9E%84%E4%BD%93%E5%86%85%E5%AD%98%E5%AF%B9%E9%BD%90%E9%97%AE%E9%A2%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="stars zhang">
+      <meta itemprop="description" content="永远迎着光走">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="stars">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/05/04/%E7%BB%93%E6%9E%84%E4%BD%93%E5%86%85%E5%AD%98%E5%AF%B9%E9%BD%90%E9%97%AE%E9%A2%98/" class="post-title-link" itemprop="url">结构体内存对齐wenti</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-05-04 15:06:23 / 修改时间：15:37:09" itemprop="dateCreated datePublished" datetime="2024-05-04T15:06:23+08:00">2024-05-04</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>在 C 语言中，结构体的对齐方式是编译器根据平台和编译器的要求进行的一种内存对齐操作，其<strong>目的是为了提高内存访问的效率和性能</strong>。对齐方式可以通过编译器的选项或者特定的编译指令来控制，但通常情况下编译器会使用默认的对齐方式。</p>
+<p>遵循的一般对齐规则：</p>
+<ul>
+<li><strong>每个成员变量的起始地址都必须是其数据类型大小的倍数</strong>，如果不能则在<strong>前一个成员后面</strong>补充字节，默认的对齐大小是4：这意味着一个 <code>int</code> 类型的变量通常会从内存地址为 0、4、8、12 等处开始，而一个 <code>double</code> 类型的变量通常会从内存地址为 0、8、16、24 等处开始。</li>
+<li><strong>结构体的总大小必须是其最大成员变量大小的倍数</strong>。</li>
+</ul>
+<p>例如下面这个例子：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">A</span>&#123;</span></span><br><span class="line">    <span class="type">int</span> a;</span><br><span class="line">    <span class="type">double</span> b;</span><br><span class="line">    <span class="type">char</span> c;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>假设a的起始地址是0x0000，则a所占的内存空间为0x0000<del>0x0003，下一个地址0x004不是double的大小8的整数倍，故补零到0x0007。则b的内存为0x0008</del>0x0010。下一个地址0x0011为c的地址。共8+8+1&#x3D;17字节，但总大小不是最大数据类型大小8的整数倍，故总大小为24。</p>
+<p>而下面的例子：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">A</span>&#123;</span></span><br><span class="line">    <span class="type">char</span> a;    </span><br><span class="line">    <span class="type">int</span> b;     </span><br><span class="line">    <span class="type">double</span> c;  </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>假设a的地址：0x0000<del>0x0001，下一个地址0x0002不是int大小4的整数倍，故b的地址：0x0004</del>0x0007，c的地址：0x0008~0x0010，共4+4+8&#x3D;16个字节，且是最大数据类型大小8的整数倍，故总大小为16。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/04/28/%E6%95%B0%E6%8D%AE%E5%BA%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="stars zhang">
+      <meta itemprop="description" content="永远迎着光走">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="stars">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/04/28/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="post-title-link" itemprop="url">数据库</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-04-28 21:46:11" itemprop="dateCreated datePublished" datetime="2024-04-28T21:46:11+08:00">2024-04-28</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/04/25/Git%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="stars zhang">
+      <meta itemprop="description" content="永远迎着光走">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="stars">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/04/25/Git%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/" class="post-title-link" itemprop="url">Git使用教程</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-04-25 12:57:42 / 修改时间：13:46:13" itemprop="dateCreated datePublished" datetime="2024-04-25T12:57:42+08:00">2024-04-25</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>Git是一个强大的版本控制系统，它用于跟踪文件的变化并协作开发代码。</p>
+<ol>
+<li><p><strong>创建新的仓库</strong>：开始使用Git，需要在项目文件夹中初始化一个新的Git仓库。进入到项目文件夹，然后</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git init</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>将文件添加到仓库</strong>：在初始化了仓库之后，可以将项目文件添加到Git仓库中以进行版本控制。</p>
+<p>使用add将修改的文件添加到暂存区：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git add &lt;file1&gt; &lt;file2&gt; ...</span><br></pre></td></tr></table></figure>
+
+<p>若是修改的文件较多，可直接使用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git add .</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>提交更改</strong>：文件添加到暂存区后，就可以使用commit将它们提交到仓库中。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git commit -m &quot;Your commit message&quot;</span><br></pre></td></tr></table></figure>
+
+<p>可以在提交信息中清晰地描述你所做的更改。</p>
+</li>
+<li><p><strong>查看状态</strong>：你可以使用以下命令来查看当前仓库的状态，包括已修改、已暂存和未跟踪的文件。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git status</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>查看提交历史</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git log</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>比较文件差异：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git diff &lt;file&gt;</span><br></pre></td></tr></table></figure>
+
+<p>显示特定文件在工作区和暂存区之间的差异。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git diff &lt;commit id&gt;</span><br></pre></td></tr></table></figure>
+
+<p>显示当前工作目录中的文件与指定提交之间的差异</p>
+</li>
+<li><p><strong>版本回退</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout &lt;commit id&gt;</span><br></pre></td></tr></table></figure>
+
+<p>将工作区和暂存区恢复到指定提交的状态。</p>
+</li>
+<li><p><strong>创建分支</strong>：分支允许你在不影响主线开发的情况下开发新功能或修复bug。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch &lt;branch-name&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>切换分支</strong>：你可以使用以下命令切换到其他分支。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout &lt;branch-name&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>合并分支</strong>：当你完成了在某个分支上的工作，并且希望将其合并到主分支时，你可以使用以下命令。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git checkout main</span><br><span class="line">git merge &lt;branch-name&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>远程仓库</strong>：Git还支持与远程仓库进行交互，例如GitHub、GitLab等。你可以使用以下命令将本地仓库与远程仓库关联。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote add origin &lt;remote-repository-url&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>推送到远程仓库</strong>：一旦你与远程仓库建立了关联，你可以将本地提交推送到远程仓库。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push -u origin main</span><br></pre></td></tr></table></figure>
+
+
+
+<p>一旦你将本地的提交推送到远程仓库，你可能会希望在本地仓库中获取远程仓库的最新内容，以便与其他团队成员的更改保持同步。你可以使用 <code>git pull</code> 命令来拉取远程仓库的内容。以下是步骤：</p>
+<ol>
+<li><p><strong>确保当前在正确的分支上</strong>：首先，确保你在想要拉取远程仓库内容的本地分支上。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout main</span><br></pre></td></tr></table></figure>
+
+<p>这里的 “main” 可以根据你的实际情况而定，确保你在想要拉取更新的目标分支上。</p>
+</li>
+<li><p><strong>执行 git pull</strong>：运行 <code>git pull</code> 命令来拉取远程仓库的最新内容并将其合并到你当前所在的分支。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git pull</span><br></pre></td></tr></table></figure>
+
+<p>这将获取远程仓库的最新提交，并尝试将其合并到你当前所在的分支中。</p>
+</li>
+</ol>
+<p>如果你希望拉取特定远程仓库的特定分支的更新，你可以在 <code>git pull</code> 命令中提供远程仓库和分支的名称。例如，如果要从名为 “origin” 的远程仓库的 “main” 分支拉取更新，可以执行以下命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git pull origin main</span><br></pre></td></tr></table></figure>
+
+<p>这将从远程仓库的 “main” 分支拉取更新，并将其合并到你当前所在的分支。</p>
+</li>
+</ol>
+<h5 id="git-checkout"><a href="#git-checkout" class="headerlink" title="git checkout"></a>git checkout</h5><p><code>git checkout</code> 命令在 Git 中有多种用途，它可以用于<strong>切换分支、创建分支、恢复文件和检出提交</strong>等操作。以下是 <code>git checkout</code> 命令的几种常见用法：</p>
+<ol>
+<li><p><strong>切换分支</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout &lt;branch-name&gt;</span><br></pre></td></tr></table></figure>
+
+<p>这会将当前工作目录切换到指定的分支。例如，要切换到名为 <code>main</code> 的分支，你可以运行：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout main</span><br></pre></td></tr></table></figure>
+
+<p>你也可以使用 <code>git switch</code> 命令来执行相同的操作。</p>
+</li>
+<li><p><strong>创建新分支并切换到该分支</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout -b &lt;new-branch-name&gt;</span><br></pre></td></tr></table></figure>
+
+<p>这会创建一个新的分支，并将当前工作目录切换到该分支。例如，要创建一个名为 <code>feature</code> 的新分支并切换到该分支，你可以运行：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout -b feature</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>恢复文件到指定状态</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout &lt;file&gt;</span><br></pre></td></tr></table></figure>
+
+<p>这会将指定文件恢复到最近一次提交时的状态。如果你在工作区中对文件做了修改，但想要撤销这些修改并恢复到最近一次提交时的状态，可以使用这个命令。例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout index.html</span><br></pre></td></tr></table></figure>
+
+<p>这会将 <code>index.html</code> 文件恢复到最近一次提交时的状态。</p>
+</li>
+<li><p><strong>检出提交</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout &lt;commit&gt;</span><br></pre></td></tr></table></figure>
+
+<p>这会将你的工作目录和暂存区都恢复到指定提交时的状态，并将 HEAD 指针移动到该提交。通常情况下，你不应该在已提交的代码上工作，因为这可能会导致丢失未提交的更改。然而，这个命令在需要检查历史提交的内容或创建分离头指针时很有用。如果你只是想查看历史提交的内容，建议使用 <code>git show &lt;commit&gt;</code> 命令，这样可以避免创建分离头指针。</p>
+</li>
+</ol>
+<h5 id="工作区和暂存区"><a href="#工作区和暂存区" class="headerlink" title="工作区和暂存区"></a>工作区和暂存区</h5><ol>
+<li><p><strong>工作区（Working Directory）</strong>：</p>
+<p>工作区指的是你正在工作的项目目录，其中包含了你编辑、添加和删除文件的所有内容。换句话说，工作区是你电脑上能够看到的项目目录，其中包含了项目的所有文件和子文件夹。当你修改项目中的文件时，这些修改只存在于工作区中，还没有被 Git 跟踪。</p>
+</li>
+<li><p><strong>暂存区（Staging Area）</strong>：</p>
+<p>暂存区是 Git 提供的一个中间区域，用于存储你想要提交的更改。当你对工作区中的文件做出修改并准备提交时，首先需要将这些修改添加到暂存区。在暂存区中，你可以检查你要提交的更改，并决定是否需要将它们提交到版本控制系统中。</p>
+<p>一旦你将更改添加到暂存区，Git 就会记录这些更改的状态，包括哪些文件已经被修改、哪些文件是新添加的，以及哪些文件已经准备好被提交到仓库中。暂存区允许你将多个文件的更改分成一系列逻辑上相关的提交。</p>
+</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2024/04/22/TCP%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B%E5%92%8C%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -187,7 +485,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2024-04-22 15:12:42 / 修改时间：15:34:04" itemprop="dateCreated datePublished" datetime="2024-04-22T15:12:42+08:00">2024-04-22</time>
+              <time title="创建时间：2024-04-22 15:12:42 / 修改时间：15:39:51" itemprop="dateCreated datePublished" datetime="2024-04-22T15:12:42+08:00">2024-04-22</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -232,7 +530,31 @@
 </ol>
 <p>完成了这个三次握手过程后，TCP连接就建立起来了，双方就可以开始通过这个连接传输数据。此时，双方都知道对方已经准备好了，并且双方也都知道对方的序列号，从而可以保证数据的可靠传输。</p>
 <p>需要注意的是，如果在这个过程中的任何一个阶段出现了问题，比如某个数据包丢失或者超时，TCP协议会尝试重新发送数据包或者触发超时重传机制，以确保连接的建立。</p>
-<h3 id="四次挥手"><a href="#四次挥手" class="headerlink" title="四次挥手"></a>四次挥手</h3>
+<h3 id="四次挥手"><a href="#四次挥手" class="headerlink" title="四次挥手"></a>四次挥手</h3><p>TCP连接的四次挥手是在通信结束时，双方关闭连接的过程。它相比于三次握手有更多的细节，因为在这个过程中，每一方都需要确保对方收到了关闭请求，并且双方都知道连接已经关闭。以下是四次挥手的详细过程：</p>
+<ol>
+<li><strong>第一次挥手（FIN）</strong>：<ul>
+<li>客户端或服务器其中一方决定关闭连接，发送一个FIN包给对方。</li>
+<li>FIN包中的FIN标志位被置为1，表示发起方已经没有数据要发送了，但仍能接收数据。</li>
+</ul>
+</li>
+<li><strong>第二次挥手（ACK）</strong>：<ul>
+<li>接收到FIN包的一方（假设为服务器）确认收到了关闭请求，发送一个ACK包作为确认。</li>
+<li>这个ACK包通常不会携带任何数据，只是简单地确认收到了FIN包。</li>
+</ul>
+</li>
+<li><strong>第三次挥手（FIN）</strong>：<ul>
+<li>确认收到关闭请求的一方（服务器）也决定关闭连接，向对方发送一个FIN包。</li>
+<li>这个FIN包告诉对方它也没有数据要发送了，但仍能接收数据。</li>
+</ul>
+</li>
+<li><strong>第四次挥手（ACK）</strong>：<ul>
+<li>收到第三次挥手的一方（假设为客户端）发送一个ACK包作为确认。</li>
+<li>这个ACK包通常不会携带任何数据，只是简单地确认收到了第三次挥手的FIN包。</li>
+</ul>
+</li>
+</ol>
+<p>完成了这个四次挥手过程后，连接就完全关闭了。双方都知道对方已经关闭了连接，不会再发送数据。这样可以确保数据的可靠传输，并且释放了双方的资源，使其可以用于其他连接。</p>
+
       
     </div>
 
@@ -849,469 +1171,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/04/08/C++%E5%A4%9A%E7%BA%BF%E7%A8%8B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="stars zhang">
-      <meta itemprop="description" content="永远迎着光走">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="stars">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/04/08/C++%E5%A4%9A%E7%BA%BF%E7%A8%8B/" class="post-title-link" itemprop="url">C++多线程</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-04-08 14:16:04" itemprop="dateCreated datePublished" datetime="2024-04-08T14:16:04+08:00">2024-04-08</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-04-10 19:06:05" itemprop="dateModified" datetime="2024-04-10T19:06:05+08:00">2024-04-10</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="互斥锁（mutex）"><a href="#互斥锁（mutex）" class="headerlink" title="互斥锁（mutex）"></a>互斥锁（mutex）</h1><p>互斥锁（Mutex）是一种同步机制，用于在多线程程序中保护共享资源，防止多个线程同时访问和修改共享资源而导致竞争条件的发生。<strong>互斥锁通过在对共享资源的访问前先获得锁来确保同一时刻只有一个线程能够访问共享资源，其他线程必须等待该线程释放锁后才能访问。</strong></p>
-<p>mutex提供了4种互斥类型：</p>
-<ul>
-<li>std::mutex：独占的互斥量，不能递归使用，不带超时功能</li>
-<li>std::recursive_mutex：递归互斥量，可重入，不带超时功能</li>
-<li>std::timed_mutex：带超时的互斥量，不能递归</li>
-<li>std::recursive_timed_mutex：带超时的互斥量，可以递归使用</li>
-</ul>
-<h2 id="1-创建和初始化互斥锁"><a href="#1-创建和初始化互斥锁" class="headerlink" title="1. 创建和初始化互斥锁"></a>1. 创建和初始化互斥锁</h2><p>在C++中，可以使用<code>std::mutex</code>类来创建和使用互斥锁。通常情况下，我们在全局范围内定义一个互斥锁对象，或者在需要保护的共享资源的类中定义一个互斥锁成员变量。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;mutex&gt;</span></span></span><br><span class="line">std::mutex mtx; <span class="comment">// 全局范围内定义一个互斥锁对象</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="2-加锁和解锁"><a href="#2-加锁和解锁" class="headerlink" title="2. 加锁和解锁"></a>2. 加锁和解锁</h2><p><strong>在访问共享资源之前，线程需要先获取互斥锁，以确保其他线程不会同时访问该资源</strong>。获取锁时，线程会阻塞，直到它成功地获得了锁为止。<strong>使用完共享资源后，线程需要释放锁，以允许其他线程访问该资源。</strong></p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mtx.<span class="built_in">lock</span>();<span class="comment">// 加锁</span></span><br><span class="line"><span class="comment">/*访问共享资源的代码*/</span></span><br><span class="line">mtx.<span class="built_in">unlock</span>();<span class="comment">// 解锁</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="3-lock-guard"><a href="#3-lock-guard" class="headerlink" title="3. lock_guard"></a>3. lock_guard</h2><p>除了<code>lock()</code>和<code>unlock()</code>方法外，还可以使用<code>std::lock_guard</code>来<strong>自动管理锁的加锁和解锁</strong>。<code>std::lock_guard</code>是一个RAII（资源获取即初始化）类型，它在创建时自动获取锁，在销毁时自动释放锁，从而避免忘记手动解锁而导致的死锁或资源泄漏。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;mutex&gt;</span></span></span><br><span class="line"></span><br><span class="line">std::mutex mtx;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">someFunction</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="function">std::lock_guard&lt;std::mutex&gt; <span class="title">guard</span><span class="params">(mtx)</span></span>; <span class="comment">// 自动加锁</span></span><br><span class="line">    <span class="comment">// 访问共享资源的代码</span></span><br><span class="line">&#125; <span class="comment">// 在 guard 超出作用域时自动解锁</span></span><br></pre></td></tr></table></figure>
-
-<p>创建一个名为 <code>guard</code> 的 <code>std::lock_guard</code> 对象，用于管理名为 <code>mtx</code> 的互斥锁。在 <code>lock</code> 对象的作用域结束时，会自动释放 <code>mtx</code> 互斥锁，即使在作用域内发生异常也会自动释放。这样做可以确保互斥锁在不再需要时被正确释放，避免了手动调用 <code>lock()</code> 和 <code>unlock()</code> 方法可能带来的错误和忘记释放锁的风险。</p>
-<h2 id="4-unique-lock"><a href="#4-unique-lock" class="headerlink" title="4. unique_lock"></a>4. unique_lock</h2><p><code>std::unique_lock</code> 也是 C++ 标准库提供的一个 RAII 类型，用于管理互斥锁的加锁和解锁，类似于 <code>std::lock_guard</code>。但与 <code>std::lock_guard</code> 不同的是，<code>std::unique_lock</code> 具有更多的灵活性和功能。它可以在<strong>创建时选择是否加锁，也可以手动释放锁，并且可以在未加锁的情况下等待条件变量</strong>。下面详细讲解 <code>std::unique_lock</code> 的用法：</p>
-<ol>
-<li>创建 <code>std::unique_lock</code> 对象</li>
-</ol>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;mutex&gt;</span></span></span><br><span class="line"></span><br><span class="line">std::mutex mtx;</span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>使用 <code>std::unique_lock</code> 自动管理锁</li>
-</ol>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">someFunction</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="function">std::unique_lock&lt;std::mutex&gt; <span class="title">lock</span><span class="params">(mtx)</span></span>; <span class="comment">// 自动加锁</span></span><br><span class="line">    <span class="comment">// 访问共享资源的代码</span></span><br><span class="line">&#125; <span class="comment">// 在 lock 超出作用域时自动解锁</span></span><br></pre></td></tr></table></figure>
-
-<ol start="3">
-<li>手动控制加锁和解锁</li>
-</ol>
-<p><code>std::unique_lock</code> 允许手动控制锁的加锁和解锁。例如：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">std::unique_lock&lt;std::mutex&gt; <span class="title">lock</span><span class="params">(mtx, std::defer_lock)</span></span>; <span class="comment">// 不加锁</span></span><br><span class="line">lock.<span class="built_in">lock</span>(); <span class="comment">// 手动加锁</span></span><br><span class="line"><span class="comment">// 访问共享资源的代码</span></span><br><span class="line">lock.<span class="built_in">unlock</span>(); <span class="comment">// 手动解锁</span></span><br></pre></td></tr></table></figure>
-
-<ol start="4">
-<li><code>std::unique_lock</code> 还可以在未加锁的情况下等待条件变量，从而避免了手动释放锁后再等待条件变量的复杂过程。</li>
-</ol>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;condition_variable&gt;</span></span></span><br><span class="line"></span><br><span class="line">std::condition_variable cv;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">someFunction</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="function">std::unique_lock&lt;std::mutex&gt; <span class="title">lock</span><span class="params">(mtx)</span></span>;</span><br><span class="line">    <span class="comment">// 等待条件变量</span></span><br><span class="line">    cv.<span class="built_in">wait</span>(lock, []&#123; <span class="comment">/* 条件函数 */</span> &#125;);</span><br><span class="line">    <span class="comment">// 条件满足后继续执行</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><code>std::unique_lock</code> 对象 <code>lock</code> 会自动加锁，然后等待条件变量 <code>cv</code>。当条件满足时，会自动解锁并继续执行。</p>
-<h1 id="原子操作-atomic"><a href="#原子操作-atomic" class="headerlink" title="原子操作-atomic"></a>原子操作-atomic</h1><p>有两个线程，一个要写数据，一个读数据，如果不加锁可能会造成读写值混乱，使用<code>std::mutex</code>可以使得执行不会导致混乱，但是<strong>每一次循环都要加锁解锁使得程序开销很大</strong>。为了提高性能，C++11提供了原子类型<code>std::atomic</code>，它<strong>提供了多线程间的原子操作</strong>。原子操作是不可分割的操作，要么完全执行，要么完全不执行，不会被其他线程中断。</p>
-<p>原子类型是封装了一个值的类型，它的访问保证不会导致数据的竞争，并且可以用于在不同的线程之间同步内存访问。从效率上来说，原子操作要比互斥量的方式效率要高</p>
-<ol>
-<li>创建 <code>std::atomic</code> 对象</li>
-</ol>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;atomic&gt;</span><br><span class="line"></span><br><span class="line">std::atomic&lt;int&gt; atomicVariable;</span><br></pre></td></tr></table></figure>
-
-<p>创建了一个名为 <code>atomicVariable</code> 的 <code>std::atomic&lt;int&gt;</code> 对象，表示一个原子的整型变量。</p>
-<ol start="2">
-<li>原子操作</li>
-</ol>
-<p><code>std::atomic</code> 提供了一系列原子操作，包括读取、写入、加法、减法等。这些操作可以保证在多线程环境中的原子性，从而避免竞争条件。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">atomicVariable.<span class="built_in">store</span>(<span class="number">10</span>); <span class="comment">// 将10存储到原子变量中</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> value = atomicVariable.<span class="built_in">load</span>(); <span class="comment">// 从原子变量中加载值</span></span><br><span class="line"></span><br><span class="line">atomicVariable.<span class="built_in">fetch_add</span>(<span class="number">5</span>); <span class="comment">// 原子地将5加到atomicVariable上</span></span><br><span class="line"></span><br><span class="line">atomicVariable.<span class="built_in">fetch_sub</span>(<span class="number">3</span>); <span class="comment">// 原子地将atomicVariable减3</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> oldValue = atomicVariable.<span class="built_in">exchange</span>(<span class="number">20</span>); <span class="comment">// 原子地将atomicVarible的值交换为 20，并返回之前的值</span></span><br></pre></td></tr></table></figure>
-
-<ol start="3">
-<li>示例</li>
-</ol>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;thread&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;atomic&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function">std::atomic&lt;<span class="type">int</span>&gt; <span class="title">counter</span><span class="params">(<span class="number">0</span>)</span></span>; <span class="comment">// 声明一个原子整型变量并初始化为 0</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">incrementCounter</span><span class="params">(<span class="type">int</span> numIncrements)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; numIncrements; ++i) &#123;</span><br><span class="line">        counter++; <span class="comment">// 原子地递增 counter 的值</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">int</span> numThreads = <span class="number">4</span>; <span class="comment">// 定义线程数量</span></span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">int</span> numIncrementsPerThread = <span class="number">1000000</span>; <span class="comment">// 每个线程递增的次数</span></span><br><span class="line"></span><br><span class="line">    std::thread threads[numThreads]; <span class="comment">// 创建线程数组</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 启动多个线程，并分别调用 incrementCounter 函数</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; numThreads; ++i) &#123;</span><br><span class="line">        threads[i] = std::<span class="built_in">thread</span>(incrementCounter, numIncrementsPerThread);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 等待所有线程执行完毕</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; numThreads; ++i) &#123;</span><br><span class="line">        threads[i].<span class="built_in">join</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Final value of counter: &quot;</span> &lt;&lt; counter.<span class="built_in">load</span>() &lt;&lt; std::endl; <span class="comment">// 输出最终的 counter 值</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>运行结果：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Final value of counter: <span class="number">4000000</span></span><br></pre></td></tr></table></figure>
-
-<h1 id="条件变量condition-varible"><a href="#条件变量condition-varible" class="headerlink" title="条件变量condition_varible"></a>条件变量condition_varible</h1><p>用于实现线程之间的<strong>条件等待</strong>和<strong>通知</strong>机制。它通常与 <code>std::mutex</code>（互斥锁）一起使用，用于在某个条件满足时唤醒等待的线程。主要包括两个动作：</p>
-<ol>
-<li>一个线程等待条件变量的条件成立而挂起(<strong>wait</strong>)</li>
-<li>另一个线程使条件成立(<strong>notify_one</strong>，<strong>notify_all</strong>)</li>
-</ol>
-<p>先来看一个示例：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;thread&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;mutex&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;condition_variable&gt;</span></span></span><br><span class="line"></span><br><span class="line">std::mutex mtx;</span><br><span class="line">std::condition_variable cv;</span><br><span class="line"><span class="type">bool</span> isReady = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">waitingThread</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="function">std::unique_lock&lt;std::mutex&gt; <span class="title">lock</span><span class="params">(mtx)</span></span>; <span class="comment">//自动上锁</span></span><br><span class="line">    <span class="keyword">while</span>(!isReady)&#123;</span><br><span class="line">        cv.<span class="built_in">wait</span>(lock);</span><br><span class="line">    &#125;</span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Condition is met, continuing...&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="function">std::thread <span class="title">t1</span><span class="params">(waitingThread)</span></span>;</span><br><span class="line">    std::this_thread::<span class="built_in">sleep_for</span>(std::chrono::<span class="built_in">seconds</span>(<span class="number">5</span>));<span class="comment">//主线程休眠5秒，模拟主线程工作</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function">std::unique_lock&lt;std::mutex&gt; <span class="title">lock</span><span class="params">(mtx)</span></span>;</span><br><span class="line">        isReady = <span class="literal">true</span>;</span><br><span class="line">    &#125;<span class="comment">// lock超出作用域时自动释放互斥锁</span></span><br><span class="line">    cv.<span class="built_in">notify_one</span>(); <span class="comment">//通知等待的线程</span></span><br><span class="line">    t1.<span class="built_in">join</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="1-等待条件的线程"><a href="#1-等待条件的线程" class="headerlink" title="1. 等待条件的线程"></a>1. 等待条件的线程</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">waitingThread</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="function">std::unique_lock&lt;std::mutex&gt; <span class="title">lock</span><span class="params">(mtx)</span></span>; <span class="comment">//自动上锁</span></span><br><span class="line">    <span class="keyword">while</span>(!isReady)&#123;</span><br><span class="line">        cv.<span class="built_in">wait</span>(lock);</span><br><span class="line">    &#125;</span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Condition is met, continuing...&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>它会执行如下步骤：</p>
-<ol>
-<li><strong>获取与条件变量相关联的互斥锁</strong>。</li>
-<li>进入 <code>while</code> 循环，检查条件是否满足。如果条件已经满足，线程会跳过等待，并继续执行后续代码。</li>
-<li>如果条件尚未满足，则<strong>调用 <code>cv.wait(lock)</code> 函数，将当前线程置于阻塞状态，并释放互斥锁</strong>。以允许其他线程访问共享资源。</li>
-<li>直到<strong>其他线程调用了与条件变量相关联的 <code>notify_one()</code> 或 <code>notify_all()</code> 函数，条件变量被通知。该线程被唤醒，并会重新获取互斥锁</strong>，继续执行whie循环，检查条件是否满足。</li>
-<li>如果条件满足，则线程会退出 <code>while</code> 循环，继续执行后续代码。</li>
-</ol>
-<h2 id="2-设置条件并通知等待的线程"><a href="#2-设置条件并通知等待的线程" class="headerlink" title="2. 设置条件并通知等待的线程"></a>2. 设置条件并通知等待的线程</h2><p>主线程负责设置条件并通知等待的线程</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">std::unique_lock&lt;std::mutex&gt; <span class="title">lock</span><span class="params">(mtx)</span></span>; <span class="comment">// 获取互斥锁</span></span><br><span class="line">isReady = <span class="literal">true</span>;</span><br><span class="line">cv.<span class="built_in">notify_one</span>(); <span class="comment">// 通知等待的线程</span></span><br></pre></td></tr></table></figure>
-
-<ol>
-<li>在修改条件之前，必须先获得与条件变量关联的互斥锁，并在修改后立即释放锁。</li>
-<li>然后，通过 <code>cv.notify_one()</code> 或 <code>cv.notify_all()</code> 来通知等待的线程条件已经发生改变。</li>
-</ol>
-<h1 id="异步任务-async、future"><a href="#异步任务-async、future" class="headerlink" title="异步任务-async、future"></a>异步任务-async、future</h1><ul>
-<li><p>已经有多线程thread了，为什么还要有async?<br>    线程毕竟是属于比较低层次的东西，有时候使用有些不便，比如希望获取线程函数的返回结果的时候，就不能直接通过 <code>thread.join()</code>得到结果，这时就必须定义一个变量，在线程函数中去给这个变量赋值，然后<code>join</code>,最后得到结果，这个过程是比较繁琐的。</p>
-</li>
-<li><p>C++11 提供了**std::async()**，用于创建异步任务，即在一个新的线程中调用线程函数，并返回一个 <code>std::future</code> 对象，这个<code>future</code>中存储了线程函数返回的结果。</p>
-</li>
-</ul>
-<p>简单示例：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;future&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;chrono&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 耗时操作函数，返回一个整数</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">timeConsumingOperation</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 模拟一个耗时操作，这里暂停 2 秒钟</span></span><br><span class="line">    std::this_thread::<span class="built_in">sleep_for</span>(std::chrono::<span class="built_in">seconds</span>(<span class="number">2</span>));</span><br><span class="line">    <span class="keyword">return</span> <span class="number">42</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 创建一个异步任务，异步执行 timeConsumingOperation 函数</span></span><br><span class="line">    std::future&lt;<span class="type">int</span>&gt; fut = std::<span class="built_in">async</span>(std::launch::async, timeConsumingOperation);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 执行其他操作</span></span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Performing other tasks...&quot;</span> &lt;&lt; std::endl;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 等待异步操作完成并获取结果</span></span><br><span class="line">    <span class="type">int</span> result = fut.<span class="built_in">get</span>();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 输出异步操作的结果</span></span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Result of asynchronous operation: &quot;</span> &lt;&lt; result &lt;&lt; std::endl;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>概括std::async()的用法：</p>
-<h2 id="1-创建异步任务并获取future-对象"><a href="#1-创建异步任务并获取future-对象" class="headerlink" title="1. 创建异步任务并获取future 对象"></a>1. 创建异步任务并获取future 对象</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;future&gt;</span></span></span><br><span class="line"></span><br><span class="line">std::future&lt;<span class="type">int</span>&gt; fut = std::<span class="built_in">async</span>(std::launch::async, func);</span><br></pre></td></tr></table></figure>
-
-<p>创建了一个异步任务，异步任务会立即在一个新线程中执行，线程调用函数<code>func()</code>，将函数的返回值赋给了<code>future</code>对象<code>fut</code>。</p>
-<h2 id="2-获取异步任务的值"><a href="#2-获取异步任务的值" class="headerlink" title="2. 获取异步任务的值"></a>2. 获取异步任务的值</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">auto result = fut.get();</span><br></pre></td></tr></table></figure>
-
-<p>需要获取异步操作的结果时，调用 <code>get()</code> 函数来获取 <code>std::future</code> 对象的值。如果异步操作还没有完成，<code>get()</code> 函数会阻塞当前线程，直到异步操作完成并返回结果。</p>
-<p>如何检查异步任务是否完成：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">bool</span> state = fut.<span class="built_in">valid</span>();</span><br></pre></td></tr></table></figure>
-
-<p>可以调用 <code>valid()</code> 函数来检查 <code>std::future</code> 对象是否有效。如果 <code>std::future</code> 对象与异步操作相关联，并且异步操作尚未完成，则 <code>valid()</code> 函数返回 <code>true</code>，否则返回 <code>false</code>。</p>
-<h2 id="3-异步执行策略"><a href="#3-异步执行策略" class="headerlink" title="3. 异步执行策略"></a>3. 异步执行策略</h2><p><code>std::async()</code> 函数提供的三种异步执行策略。它们决定了 <code>std::async()</code> 函数创建的异步任务的执行方式。</p>
-<h3 id="1-std-launch-async"><a href="#1-std-launch-async" class="headerlink" title="1. std::launch::async"></a>1. std::launch::async</h3><ul>
-<li><code>std::launch::async</code> 策略表示创建一个新的线程，在新的线程中异步执行指定的可调用对象。</li>
-<li>这意味着异步任务会立即在一个新的线程中执行，不会阻塞当前线程。</li>
-<li>使用 <code>std::launch::async</code> 策略创建的异步任务可以实现并行执行，适用于耗时的计算任务和I&#x2F;O操作等。</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">std::future&lt;<span class="type">int</span>&gt; fut = std::<span class="built_in">async</span>(std::launch::async, task);</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-std-launch-deferred"><a href="#2-std-launch-deferred" class="headerlink" title="2. std::launch::deferred"></a>2. std::launch::deferred</h3><ul>
-<li><code>std::launch::deferred</code> 策略表示延迟执行指定的可调用对象，直到调用 <code>get()</code> 函数时才在调用线程中执行。</li>
-<li>这种策略不会创建新的线程，而是在需要时延迟执行。</li>
-<li>使用 <code>std::launch::deferred</code> 策略创建的异步任务不会立即执行，直到调用 <code>get()</code> 函数时才执行，适用于延迟执行和惰性求值等场景。</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">std::future&lt;<span class="type">int</span>&gt; fut = std::<span class="built_in">async</span>(std::launch::deferred, task);</span><br></pre></td></tr></table></figure>
-
-<h3 id="3-std-launch-async-std-launch-deferred"><a href="#3-std-launch-async-std-launch-deferred" class="headerlink" title="3. std::launch::async | std::launch::deferred"></a>3. std::launch::async | std::launch::deferred</h3><ul>
-<li><code>std::launch::async | std::launch::deferred</code> 表示由实现自行选择执行策略。</li>
-<li>这种策略允许实现根据具体情况自行选择执行方式，可以在新的线程中异步执行，也可以在调用线程中延迟执行。</li>
-<li>使用 <code>std::launch::async | std::launch::deferred</code> 策略创建的异步任务有可能在新的线程中执行，也有可能在调用线程中延迟执行，具体取决于实现。</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">std::future&lt;<span class="type">int</span>&gt; fut = std::<span class="built_in">async</span>(std::launch::async | std::launch::deferred, task);</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/04/08/%E5%8D%81%E5%A4%A7%E6%8E%92%E5%BA%8F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="stars zhang">
-      <meta itemprop="description" content="永远迎着光走">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="stars">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/04/08/%E5%8D%81%E5%A4%A7%E6%8E%92%E5%BA%8F/" class="post-title-link" itemprop="url">十大排序</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-04-08 12:00:05" itemprop="dateCreated datePublished" datetime="2024-04-08T12:00:05+08:00">2024-04-08</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-04-17 18:35:50" itemprop="dateModified" datetime="2024-04-17T18:35:50+08:00">2024-04-17</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="1-选择排序"><a href="#1-选择排序" class="headerlink" title="1. 选择排序"></a>1. 选择排序</h1><p>开启n-1轮循环，每次从未排序的元素中选择最小（或最大）的元素，将其与未排序序列的第一个元素交换位置，从而逐步构建有序序列。</p>
-<p>选择排序的具体流程如下：</p>
-<ol>
-<li><strong>初始状态</strong>：将整个序列视为两部分，一部分是已排序序列，另一部分是未排序序列。</li>
-<li><strong>选择最小元素</strong>：从未排序序列中选择最小的元素，并将其与未排序序列的第一个元素交换位置。</li>
-<li><strong>扩大已排序序列</strong>：将交换后的元素视为已排序序列的一部分，未排序序列减少一个元素。</li>
-<li><strong>重复步骤2和步骤3</strong>：直到所有元素都被选择并放置到正确的位置上。</li>
-</ol>
-<p>伪代码：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">选择排序(A):</span><br><span class="line">    <span class="keyword">for</span> i from <span class="number">0</span> <span class="function">to <span class="title">length</span><span class="params">(A)</span>-2:</span></span><br><span class="line"><span class="function">        minIndex =</span> i</span><br><span class="line">        <span class="keyword">for</span> j from i+<span class="number">1</span> <span class="function">to <span class="title">length</span><span class="params">(A)</span>-1:</span></span><br><span class="line"><span class="function">            if A[j] &lt; A[minIndex]:</span></span><br><span class="line"><span class="function">                minIndex =</span> j</span><br><span class="line">        <span class="comment">// 将未排序序列中最小元素与第i个元素交换位置</span></span><br><span class="line">        <span class="built_in">swap</span>(A[i], A[minIndex])</span><br></pre></td></tr></table></figure>
-
-<p>时间复杂度为O(n^2)</p>
-<h1 id="2-冒泡排序"><a href="#2-冒泡排序" class="headerlink" title="2. 冒泡排序"></a>2. 冒泡排序</h1><p>多次遍历待排序序列，每轮连续比较相邻的元素，如果“左元素 &gt; 右元素”则交换位置，使较大的元素逐步“冒泡”到数组的末端。</p>
-<p>冒泡排序的具体流程如下：</p>
-<ol>
-<li><strong>比较相邻元素</strong>：从数组的第一个元素开始，比较相邻的两个元素，如果前一个元素比后一个元素大，则交换它们的位置，这样较大的元素就会向数组的末端移动。</li>
-<li><strong>遍历整个数组</strong>：重复步骤1，遍历整个数组，直到所有的元素都已经比较过一次。</li>
-<li><strong>缩小范围</strong>：每次遍历过程中，都会使得数组末端的一个元素排好序，因此<strong>在下一次遍历时，可以将待排序序列的范围缩小一个元素</strong>。</li>
-</ol>
-<p>伪代码：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">冒泡排序(A):</span><br><span class="line">    n = <span class="built_in">length</span>(A)</span><br><span class="line">    <span class="keyword">for</span> i from <span class="number">0</span> to n<span class="number">-1</span>:</span><br><span class="line">        <span class="keyword">for</span> j from <span class="number">0</span> to n<span class="number">-1</span>-i:</span><br><span class="line">            <span class="keyword">if</span> A[j] &gt; A[j+<span class="number">1</span>]:</span><br><span class="line">                <span class="built_in">swap</span>(A[j], A[j+<span class="number">1</span>])</span><br></pre></td></tr></table></figure>
-
-<p>时间复杂度：O(n^2)</p>
-<h1 id="3-插入排序"><a href="#3-插入排序" class="headerlink" title="3. 插入排序"></a>3. 插入排序</h1><p>插入排序（Insertion Sort）是一种简单直观的排序算法。其基本思想是<strong>将待排序的数据序列分为已排序区间和未排序区间</strong>，通过构建有序序列，对未排序的数据逐个进行插入，从而达到排序的目的。</p>
-<p>插入排序的具体思路如下：</p>
-<ol>
-<li><strong>初始状态</strong>：将第一个元素视为已排序序列，剩余的元素为未排序序列。</li>
-<li><strong>遍历未排序序列</strong>：从第二个元素开始，逐个遍历未排序序列的元素。</li>
-<li><strong>将当前元素插入已排序序列</strong>：对于每个未排序序列中的元素，将其与已排序序列中的元素逐个比较，找到合适的位置并插入。</li>
-<li><strong>移动元素</strong>：为了给当前元素腾出位置，需要将已排序序列中比当前元素大的元素依次向后移动。</li>
-<li><strong>重复步骤3和步骤4</strong>：直到所有元素都被插入到已排序序列中。</li>
-</ol>
-<p>伪代码：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">插入排序(A):</span><br><span class="line">    <span class="keyword">for</span> i from <span class="number">1</span> <span class="function">to <span class="title">length</span><span class="params">(A)</span>-1:</span></span><br><span class="line"><span class="function">        currentElement =</span> A[i]</span><br><span class="line">        j = i - <span class="number">1</span></span><br><span class="line">        <span class="keyword">while</span> j &gt;= <span class="number">0</span> <span class="keyword">and</span> A[j] &gt; currentElement:</span><br><span class="line">            A[j+<span class="number">1</span>] = A[j]</span><br><span class="line">            j = j - <span class="number">1</span></span><br><span class="line">        A[j+<span class="number">1</span>] = currentElement</span><br></pre></td></tr></table></figure>
-
-<p>时间复杂度：O(n^2)</p>
-<h1 id="4-快速排序"><a href="#4-快速排序" class="headerlink" title="4. 快速排序"></a>4. 快速排序</h1><p>快速排序（quick sort）是一种基于<strong>分治</strong>策略的排序算法。基本思想是<strong>选择一个基准元素，将序列分割成两个子序列，其中一个子序列中的所有元素小于基准元素，另一个子序列中的所有元素大于基准元素，然后对这两个子序列分别进行递归排序。</strong></p>
-<p>快速排序的具体步骤如下：</p>
-<ol>
-<li><strong>选择基准元素</strong>：从待排序序列中选择一个元素作为基准元素。通常选择序列的第一个元素、最后一个元素或者中间的元素作为基准元素。</li>
-<li><strong>分割序列</strong>：根据基准元素，将序列分割成两个子序列，其中一个子序列中的元素小于基准元素，另一个子序列中的元素大于基准元素。通常使用两个指针（左指针和右指针）来实现分割，左指针指向序列的起始位置，右指针指向序列的末尾位置，然后从左右两端向中间移动指针，交换不符合条件的元素，直到左右指针相遇。</li>
-<li><strong>递归排序</strong>：对两个子序列分别进行递归排序，直到子序列的长度为1或0。</li>
-<li><strong>合并结果</strong>：将经过排序的子序列合并成最终的有序序列。</li>
-</ol>
-<p>伪代码：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">快速排序(A, low, high):</span><br><span class="line">    <span class="keyword">if</span> low &lt; high:</span><br><span class="line">        pivotIndex = partition(A, low, high)</span><br><span class="line">        快速排序(A, low, pivotIndex - <span class="number">1</span>)</span><br><span class="line">        快速排序(A, pivotIndex + <span class="number">1</span>, high)</span><br><span class="line"></span><br><span class="line">partition(A, low, high):</span><br><span class="line">    pivot = A[low]  // 选择第一个元素作为基准元素</span><br><span class="line">    left = low + <span class="number">1</span></span><br><span class="line">    right = high</span><br><span class="line">    <span class="keyword">while</span> left &lt;= right:</span><br><span class="line">        <span class="keyword">while</span> left &lt;= right <span class="keyword">and</span> A[left] &lt;= pivot:</span><br><span class="line">            left = left + <span class="number">1</span></span><br><span class="line">        <span class="keyword">while</span> left &lt;= right <span class="keyword">and</span> A[right] &gt; pivot:</span><br><span class="line">            right = right - <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> left &lt; right:</span><br><span class="line">            swap(A[left], A[right])</span><br><span class="line">    swap(A[low], A[right])</span><br><span class="line">    <span class="keyword">return</span> right</span><br></pre></td></tr></table></figure>
-
-<p>快速排序的时间复杂度为 O(n log n)，其中 n 是待排序序列的长度。在平均情况下，快速排序的性能非常好，但是在最坏情况下（例如，当选择的基准元素总是序列中的最大或最小元素时），快速排序的时间复杂度可能会退化为 O(n^2)。</p>
-<p>空间复杂度为O(n)：在输入数组完全倒序的情况下，达到最差递归深度 n ，使用 O(n)栈帧空间。若采用<strong>尾递归优化</strong>，则复杂度为O(log n)。</p>
-<p>尾递归优化是一种编译器优化技术，用于优化递归调用的栈空间使用。在尾递归优化中，如果函数的最后一个操作是对自身的递归调用，编译器会将这种递归调用转换为循环，从而避免在调用栈上创建新的帧，节省了栈空间的使用。</p>
-<h1 id="5-归并排序"><a href="#5-归并排序" class="headerlink" title="5. 归并排序"></a>5. 归并排序</h1><p>归并排序（Merge Sort）是一种基于<strong>分治</strong>思想的排序算法。其基本思路是将待排序序列<strong>分</strong>成两个子序列，分别对这两个子序列进行递归排序，然后将两个已经排好序的子序列<strong>合</strong>并成一个有序序列。</p>
-<p>具体的算法流程：</p>
-<ol>
-<li><strong>分割序列：</strong>不断地将待排序序列划分成两个子序列，直到子序列的长度为1或0</li>
-<li><strong>递归排序</strong>：递归地对分割后的两个子序列进行排序。</li>
-<li><strong>合并序列：</strong>将两个已经排好序的子序列合并成一个有序序列。</li>
-</ol>
-<p>伪代码：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">归并排序(A):</span><br><span class="line">    <span class="keyword">if</span> length(A) &lt;= <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> A</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        middle = length(A) / <span class="number">2</span></span><br><span class="line">        left_half = 归并排序(A[<span class="number">0</span>:middle])  // 递归排序左半部分</span><br><span class="line">        right_half = 归并排序(A[middle:length(A)])  // 递归排序右半部分</span><br><span class="line">        <span class="keyword">return</span> 合并(left_half, right_half)  // 合并左右两部分并返回合并后的有序序列</span><br><span class="line"></span><br><span class="line">合并(left_half, right_half):</span><br><span class="line">    result = []</span><br><span class="line">    <span class="keyword">while</span> left_half 不为空 <span class="keyword">and</span> right_half 不为空:</span><br><span class="line">        <span class="keyword">if</span> left_half[<span class="number">0</span>] &lt;= right_half[<span class="number">0</span>]:</span><br><span class="line">            result.append(left_half[<span class="number">0</span>])</span><br><span class="line">            left_half = left_half[<span class="number">1</span>:]</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            result.append(right_half[<span class="number">0</span>])</span><br><span class="line">            right_half = right_half[<span class="number">1</span>:]</span><br><span class="line">    // 将剩余的元素追加到结果中</span><br><span class="line">    result += left_half</span><br><span class="line">    result += right_half</span><br><span class="line">    <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
-
-<p>归并排序的时间复杂度为 O(n log n)。虽然归并排序的时间复杂度较低，但是需要额外的空间来存储归并过程中产生的临时序列，因此其空间复杂度为 O(n)。</p>
-<h1 id="6-堆排序"><a href="#6-堆排序" class="headerlink" title="6. 堆排序"></a>6. 堆排序</h1><p>堆排序（Heap Sort）是一种基于堆数据结构的排序算法，其基本思想是利用堆的性质实现排序。堆是一个特殊的树形数据结构，具有以下性质：</p>
-<ol>
-<li>它是一个完全二叉树，即除了最后一层，其他层都是满的。</li>
-<li>在一个小顶堆（Min Heap）中，任意节点的值都小于或等于其子节点的值。</li>
-<li>在一个大顶堆（Max Heap）中，任意节点的值都大于或等于其子节点的值。</li>
-</ol>
-<p>将待排序的序列构建成一个大顶堆，重复从堆中取出堆顶元素，并重新构建堆，直到堆为空，最终得到即为排序好的序列。</p>
-<p>算法的流程：</p>
-<ol>
-<li><p>构建堆：</p>
-<p>​		首先需要将待排序的序列构建成一个堆。一种常见的方法是从最后一个非叶子节点开始，依次向前进行调整，保证每个节点都满足堆的性质。</p>
-<p>大顶堆的调整过程：</p>
-<ul>
-<li>从最后一个非叶子节点开始（即 n&#x2F;2-1），向前遍历到根节点。</li>
-<li>对于每个节点，如果它的子节点中有比它大的，就将其与最大的子节点进行交换，直到它没有比它大的子节点或者到达叶子节点为止。</li>
-</ul>
-</li>
-<li><p>排序：</p>
-<p>​		构建好堆之后，需要重复从堆中取出最大（或最小）的元素，并重新调整堆，直到堆为空。具体的过程如下：</p>
-<ul>
-<li>将堆顶元素（最大或最小值）与堆中的最后一个元素交换位置。</li>
-<li>从堆中移除最后一个元素（即最大或最小值）。</li>
-<li>对剩余的元素重新调整堆，使其满足堆的性质。</li>
-</ul>
-<p>重复以上步骤，直到堆为空。</p>
-</li>
-</ol>
-<h1 id="7-桶排序"><a href="#7-桶排序" class="headerlink" title="7. 桶排序"></a>7. 桶排序</h1><h1 id="8-计数排序"><a href="#8-计数排序" class="headerlink" title="8. 计数排序"></a>8. 计数排序</h1><h1 id="9-基数排序"><a href="#9-基数排序" class="headerlink" title="9. 基数排序"></a>9. 基数排序</h1><h1 id="10-希尔排序"><a href="#10-希尔排序" class="headerlink" title="10. 希尔排序"></a>10. 希尔排序</h1>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/04/08/%E6%90%9C%E7%B4%A2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="stars zhang">
-      <meta itemprop="description" content="永远迎着光走">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="stars">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/04/08/%E6%90%9C%E7%B4%A2/" class="post-title-link" itemprop="url">搜索</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2024-04-08 10:36:42 / 修改时间：11:05:47" itemprop="dateCreated datePublished" datetime="2024-04-08T10:36:42+08:00">2024-04-08</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>搜索算法用于在数据结构（例如数组、链表、树或图）中搜索一个或一组满足特定条件的元素。</p>
-<p>搜索算法可根据实现思路分为以下两类。</p>
-<ul>
-<li><strong>通过遍历数据结构来定位目标元素</strong>，例如数组、链表、树和图的遍历等。</li>
-<li><strong>利用数据组织结构或数据包含的先验信息，实现高效元素查找</strong>，例如二分查找、哈希查找和二叉搜索树查找等。</li>
-</ul>
-<h1 id="1-暴力搜索"><a href="#1-暴力搜索" class="headerlink" title="1. 暴力搜索"></a>1. 暴力搜索</h1><p>暴力搜索通过遍历数据结构的每个元素来定位目标元素。</p>
-<h2 id="1-线性搜索"><a href="#1-线性搜索" class="headerlink" title="1. 线性搜索"></a>1. 线性搜索</h2><ul>
-<li>适用于<strong>数组</strong>和<strong>链表</strong>等线性数据结构。</li>
-<li>顺序地逐个检查数据结构中的每个元素，直到找到目标元素或搜索完整个数据结构。</li>
-<li>时间复杂度为**O(n)**，其中n是数据结构中的元素数量。</li>
-</ul>
-<h2 id="2-图搜索"><a href="#2-图搜索" class="headerlink" title="2. 图搜索"></a>2. 图搜索</h2><ul>
-<li>用于在图&#x2F;树中查找特定的节点或路径，即<strong>深度优先搜索（Depth-First Search，DFS）</strong>和<strong>广度优先搜索（Breadth-First Search，BFS）</strong></li>
-<li>广度优先搜索从初始节点开始逐层搜索，由近及远地访问各个节点。</li>
-<li>深度优先搜索从初始节点开始，沿着一条路径走到头，再回溯并尝试其他路径，直到遍历完整个数据结构。</li>
-<li>时间复杂度取决于图的结构和算法的实现方式。</li>
-</ul>
-<h1 id="2-自适应搜索"><a href="#2-自适应搜索" class="headerlink" title="2. 自适应搜索"></a>2. 自适应搜索</h1><p>自适应搜索利用数据的特有属性（例如有序性）来优化搜索过程，从而更高效地定位目标元素。</p>
-<h2 id="1-二分搜索"><a href="#1-二分搜索" class="headerlink" title="1. 二分搜索"></a>1. 二分搜索</h2><ul>
-<li>仅适用于已排序的数据结构（如有序数组），通过不断将搜索范围减半来定位目标元素。</li>
-<li>时间复杂度为**O(log n)**。</li>
-</ul>
-<h2 id="2-哈希查找"><a href="#2-哈希查找" class="headerlink" title="2. 哈希查找"></a>2. <strong>哈希查找</strong></h2><ul>
-<li>利用哈希表将<strong>搜索数据</strong>和<strong>目标数据</strong>建立为<strong>键值对映射</strong>，从而实现查询操作。</li>
-<li>时间复杂度通常为**O(1)**，但在冲突较多的情况下可能会降低到O(n)。</li>
-</ul>
-<h2 id="3-树查找"><a href="#3-树查找" class="headerlink" title="3. 树查找"></a>3. 树查找</h2><ul>
-<li>通过<strong>有序的树结构</strong>和特定的查找算法（如递归或迭代）来查找目标元素。</li>
-<li>包括<strong>二叉搜索树（Binary Search Tree，BST）、平衡二叉树（Balanced Binary Tree，如AVL树、红黑树）、B树等</strong>。</li>
-<li>平均情况下的时间复杂度取决于树的高度，**通常为O(log n)**，但在最坏情况下可能为O(n)。</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1381,7 +1240,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">24</span>
+          <span class="site-state-item-count">27</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1394,7 +1253,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-count">19</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
