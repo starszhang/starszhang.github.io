@@ -162,6 +162,112 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/05/06/define%E5%AE%8F%E5%AE%9A%E4%B9%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="stars zhang">
+      <meta itemprop="description" content="永远迎着光走">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="stars">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/05/06/define%E5%AE%8F%E5%AE%9A%E4%B9%89/" class="post-title-link" itemprop="url">define宏定义</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-05-06 15:51:41 / 修改时间：16:21:23" itemprop="dateCreated datePublished" datetime="2024-05-06T15:51:41+08:00">2024-05-06</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h4 id="一、定义"><a href="#一、定义" class="headerlink" title="一、定义"></a>一、定义</h4><p>宏定义<code>#define</code>是用来进行文本替换的预处理指令。</p>
+<ol>
+<li><strong>宏名称</strong>：宏定义的名称可以是任何有效的标识符，类似于变量名或函数名，但<strong>通常会使用大写字母来表示</strong>，以便于与变量名或函数名区分开来。</li>
+<li><strong>替换文本</strong>：替换文本可以是任何合法的C、C++代码片段，可以是一个<strong>表达式</strong>、一个语句、甚至是一段复杂的代码块。替换文本中可以包含其他已经定义过的宏，也可以包含预处理运算符（如 <code>#</code>、<code>##</code> 等）来进行字符串化或拼接等操作。</li>
+</ol>
+<p>宏定义的几个常见应用包括：</p>
+<ul>
+<li><strong>定义常量</strong>：通过宏定义可以方便地定义常量，如 <code>#define PI 3.14159</code>。</li>
+<li><strong>简化代码</strong>：通过宏定义可以将一些重复的代码片段定义为宏，以减少代码量，提高可读性，比如 <code>#define MAX(x, y) ((x) &gt; (y) ? (x) : (y))</code> 用来求两个数中的最大值。</li>
+<li><strong>条件编译</strong>：宏定义还可以用于条件编译，通过定义或取消定义不同的宏，可以控制编译器在不同条件下编译不同的代码片段，实现跨平台编译等功能。</li>
+</ul>
+<h4 id="二、-define和const的区别"><a href="#二、-define和const的区别" class="headerlink" title="二、#define和const的区别"></a>二、#define和const的区别</h4><ul>
+<li><strong>define</strong>是在编译的预处理阶段起作用，而<strong>const</strong>是在编译、运行的时候起作用。</li>
+<li>安全性<ul>
+<li><strong>define</strong>只做替换，不做类型检查和计算，也不求解，容易产生错误，一般最好加上一个大括号包含住全部的内容，要不然很容易出错。</li>
+<li><strong>const</strong>常量有数据类型，编译器可以对其进行类型安全检查。</li>
+</ul>
+</li>
+<li>内存占用<ul>
+<li><strong>define</strong>只是将宏名称进行替换，在内存中会产生多分相同的备份。<strong>const</strong>在程序运行中只有一份备份，且可以执行常量折叠，能将复杂的的表达式计算出结果放入常量表</li>
+<li>宏替换发生在编译阶段之前，属于文本插入替换; <strong>const</strong>作用发生于编译过程中。</li>
+<li>宏不检查类型，const会检查数据类型。</li>
+<li>宏定义的数据没有分配内存空间，只是插入替换掉; const定义的变量只是值不能改变，但要分配内存空间。</li>
+</ul>
+</li>
+</ul>
+<h4 id="三、-define和函数的区别"><a href="#三、-define和函数的区别" class="headerlink" title="三、#define和函数的区别"></a>三、#define和函数的区别</h4><ul>
+<li>编译过程<ul>
+<li>宏在预处理阶段完成替换，之后被替换的文本参与编译，相当于直接插入了代码，运行时不存在函数调用，执行起来更快;函数调用在运行时需要跳转到具体调用函数。</li>
+</ul>
+</li>
+<li>安全性<ul>
+<li>宏定义中替换的函数不会进行参数类型检查，因此可能会导致参数类型不匹配或难以发现的错误。</li>
+<li>代码中写的函数在编译时期会进行类型检查，可以帮助检测到参数类型不匹配等错误。</li>
+</ul>
+</li>
+<li>作用域<ul>
+<li>宏定义中的替换文本会直接插入到代码中，不会创建新的作用域。因此，在宏定义中定义的变量或函数名可能会与代码中的其他变量或函数名冲突。</li>
+<li>代码中写的函数会创建一个新的作用域，函数内部的变量和函数名不会与外部的变量和函数名冲突。</li>
+</ul>
+</li>
+</ul>
+<h4 id="四、-define和typedef的区别"><a href="#四、-define和typedef的区别" class="headerlink" title="四、#define和typedef的区别"></a>四、#define和typedef的区别</h4><ul>
+<li>宏主要用于定义常量及书写复杂的内容;typedef主要用于定义类型别名。</li>
+<li>宏替换发生在编译阶段之前，属于文本插入替换; typedef是编译的一部分。</li>
+<li>宏不检查类型; typedef会检查数据类型。</li>
+<li>宏不是语句，不在在最后加分号; typedef是语句，要加分号标识结束。</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2024/05/04/strlen%E5%92%8Csizeof/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1018,103 +1124,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/04/19/Reactor%E5%92%8CProactor/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="stars zhang">
-      <meta itemprop="description" content="永远迎着光走">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="stars">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/04/19/Reactor%E5%92%8CProactor/" class="post-title-link" itemprop="url">Reactor和Proactor</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2024-04-19 19:30:26 / 修改时间：20:11:10" itemprop="dateCreated datePublished" datetime="2024-04-19T19:30:26+08:00">2024-04-19</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">网络编程</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>Reactor模式和Proactor模式是两种常见的事件处理模式，通常用于构建高性能的并发系统。它们都是在事件驱动的系统中使用的设计模式，但它们在处理事件时的方式有所不同。下面我将详细解释它们的工作原理和区别。</p>
-<h3 id="Reactor模式"><a href="#Reactor模式" class="headerlink" title="Reactor模式"></a>Reactor模式</h3><h4 id="概念："><a href="#概念：" class="headerlink" title="概念："></a>概念：</h4><p>在Reactor模式中，有一个事件循环（Event Loop），负责监听并分发事件。该循环通过轮询或者异步IO等机制监视多个输入源（如文件描述符、套接字等），当有事件发生时，调用相关的事件处理器来处理这些事件。在Reactor模式中，事件处理是同步的，即当一个事件发生时，Reactor会调用相应的事件处理器，并且一直等待处理器完成处理，然后再继续监听新的事件。</p>
-<h4 id="特点："><a href="#特点：" class="headerlink" title="特点："></a>特点：</h4><p>Reactor模式的主要特点包括：</p>
-<ol>
-<li>单线程：通常Reactor模式在单线程中运行，事件循环会按顺序处理事件。</li>
-<li>同步处理：事件处理是同步的，一个事件处理器处理完事件之后，才会继续处理下一个事件。</li>
-<li>高效：由于采用了非阻塞IO和事件驱动的方式，Reactor模式在高并发场景下表现出色。</li>
-</ol>
-<h4 id="单、多Reactor模式："><a href="#单、多Reactor模式：" class="headerlink" title="单、多Reactor模式："></a>单、多Reactor模式：</h4><p>在<strong>单Reactor模式</strong>中，只有一个事件循环负责监听和分发事件，并且事件处理是同步的，即事件处理器会在事件循环中同步执行。这种模式通常适用于轻量级的应用或者处理较少并发连接的情况。</p>
-<p>与单Reactor模式不同，<strong>多Reactor模式</strong>通过将事件处理分布到多个事件循环中来提高系统的并发能力。每个事件循环负责监听和处理一部分事件，从而降低了单个事件循环的负载，提高了系统的并发处理能力。通常采用<strong>主从Reactor模式</strong>：</p>
-<p>​	在主从Reactor模式中，通常有一个主Reactor负责监听连接请求，并且负责创建和分配子Reactor。当主Reactor接收到连接请求时，会将连接分配给某个子Reactor，然后由子Reactor负责处理该连接的事件。这样可以避免单个Reactor负载过重，并且能够充分利用多核处理器的性能。</p>
-<h4 id="回调函数"><a href="#回调函数" class="headerlink" title="回调函数"></a>回调函数</h4><p>在Reactor模式中，回调函数被广泛应用于处理事件。回调函数是一种在某个事件发生时被调用的函数，用于处理特定类型的事件。在Reactor模式中，当事件发生时，事件循环会调用相应的回调函数来处理事件，例如读取数据、写入数据、关闭连接等。</p>
-<p>具体来说，在多Reactor模式中，每个事件循环都会注册一组回调函数，用于处理不同类型的事件。当事件发生时，事件循环会根据事件的类型找到对应的回调函数，并调用它来处理事件。这样可以实现事件驱动的编程模型，将事件的处理与业务逻辑分离开来，提高了代码的可维护性和可扩展性。</p>
-<p>举个例子，假设一个Web服务器使用多Reactor模式来处理客户端连接。每个事件循环会注册一组回调函数，包括处理新连接事件、读取数据事件、写入数据事件等。当有新的客户端连接到达时，主Reactor会接收到连接请求，并将连接分配给某个子Reactor。子Reactor会调用相应的回调函数来处理该连接的读取数据事件和写入数据事件。</p>
-<h3 id="Proactor模式"><a href="#Proactor模式" class="headerlink" title="Proactor模式"></a>Proactor模式</h3><p>Proactor模式与Reactor模式有所不同。在Proactor模式中，操作（通常是IO操作）被提交给一个专门的组件，称为Proactor，然后由Proactor负责执行这些操作。当操作完成时，Proactor会通知相关的事件处理器，告诉它们操作已完成，可以进行下一步处理。与Reactor模式不同，Proactor模式中的事件处理是异步的，事件处理器不需要等待操作完成，而是在操作完成后得到通知。</p>
-<p>Proactor模式的主要特点包括：</p>
-<ol>
-<li>异步处理：事件处理是异步的，事件处理器可以继续执行其他任务，而不必等待操作完成。</li>
-<li>多线程：通常Proactor模式会使用多线程来处理IO操作，以提高系统的并发能力。</li>
-<li>高性能：通过异步IO和多线程的结合，Proactor模式可以实现高性能的并发处理。</li>
-</ol>
-<h3 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h3><ol>
-<li><strong>同步 vs. 异步</strong>：Reactor模式中事件处理是同步的，而Proactor模式中事件处理是异步的。</li>
-<li><strong>单线程 vs. 多线程</strong>：Reactor模式通常在单线程中运行，而Proactor模式通常使用多线程来处理IO操作。</li>
-<li><strong>处理方式</strong>：在Reactor模式中，事件发生后Reactor负责调用事件处理器，而在Proactor模式中，操作完成后Proactor负责通知事件处理器。</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1180,7 +1193,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">30</span>
+          <span class="site-state-item-count">31</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
