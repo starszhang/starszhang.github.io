@@ -162,6 +162,338 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/04/07/%E6%B5%85%E6%8B%B7%E8%B4%9D%E4%B8%8E%E6%B7%B1%E6%8B%B7%E8%B4%9D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="stars zhang">
+      <meta itemprop="description" content="永远迎着光走">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="stars">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/04/07/%E6%B5%85%E6%8B%B7%E8%B4%9D%E4%B8%8E%E6%B7%B1%E6%8B%B7%E8%B4%9D/" class="post-title-link" itemprop="url">浅拷贝与深拷贝</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-04-07 13:04:49" itemprop="dateCreated datePublished" datetime="2024-04-07T13:04:49+08:00">2024-04-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-05-06 19:15:46" itemprop="dateModified" datetime="2024-05-06T19:15:46+08:00">2024-05-06</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="浅拷贝"><a href="#浅拷贝" class="headerlink" title="浅拷贝"></a>浅拷贝</h1><ul>
+<li>简单的拷贝对象成员变量的值，而不拷贝对象所指向的动态分配的内存。</li>
+<li>新旧对象的指针成员指向相同内存地址的指针，共享同一块内存。</li>
+<li>如果其中一个对象销毁了这个指针指向的内存，另一个对象可能会引用已经无效的内存地址。</li>
+<li>当一个对象发生改变时，由于另一个对象与之共享同一块内存，另一个对象也会受到影响。</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ShallowCopy</span> &#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="type">int</span> *data;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">ShallowCopy</span>(<span class="type">int</span> val) &#123;</span><br><span class="line">        data = <span class="keyword">new</span> <span class="built_in">int</span>(val);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">ShallowCopy</span>(<span class="type">const</span> ShallowCopy &amp;other) &#123;</span><br><span class="line">        data = other.data; <span class="comment">// 进行浅拷贝</span></span><br><span class="line">        cout&lt;&lt;<span class="string">&quot;shallow copy&quot;</span>&lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">getData</span><span class="params">()</span> <span class="type">const</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> *data;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">setData</span><span class="params">(<span class="type">int</span> val)</span> </span>&#123;</span><br><span class="line">        *data = val;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ~<span class="built_in">ShallowCopy</span>() &#123;</span><br><span class="line">        <span class="keyword">delete</span> data;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="function">ShallowCopy <span class="title">a1</span><span class="params">(<span class="number">5</span>)</span></span>;</span><br><span class="line">    ShallowCopy a2 = a1;</span><br><span class="line"></span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;a1=&quot;</span> &lt;&lt; a1.<span class="built_in">getData</span>() &lt;&lt;<span class="string">&quot; &quot;</span></span><br><span class="line">         &lt;&lt; <span class="string">&quot;a2=&quot;</span> &lt;&lt; a2.<span class="built_in">getData</span>() &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    a1.<span class="built_in">setData</span>(<span class="number">10</span>);</span><br><span class="line"></span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;a1=&quot;</span> &lt;&lt; a1.<span class="built_in">getData</span>() &lt;&lt;<span class="string">&quot; &quot;</span></span><br><span class="line">         &lt;&lt; <span class="string">&quot;a2=&quot;</span> &lt;&lt; a2.<span class="built_in">getData</span>() &lt;&lt; endl;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>输出结果：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">shallow copy</span><br><span class="line">a1=<span class="number">5</span> a2=<span class="number">5</span></span><br><span class="line">a1=<span class="number">10</span> a2=<span class="number">10</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="深拷贝"><a href="#深拷贝" class="headerlink" title="深拷贝"></a>深拷贝</h1><ul>
+<li>不仅拷贝对象本身，还拷贝对象所指向的动态分配的内存，以确保拷贝后的对象和原对象指向的内存是独立的。</li>
+<li>深拷贝会为新的对象分配一块新的内存，并将原对象所指向的内存的内容复制到新分配的内存中，从而使得新旧对象完全独立，互不影响。</li>
+<li>即使两个对象有相同的值，它们也各自拥有一份独立的内存副本，彼此互不影响。</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">DeepCopy</span> &#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="type">int</span> *data;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">DeepCopy</span>(<span class="type">int</span> val) &#123;</span><br><span class="line">        data = <span class="keyword">new</span> <span class="built_in">int</span>(val);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">DeepCopy</span>(<span class="type">const</span> DeepCopy &amp;other) &#123;</span><br><span class="line">        data = <span class="keyword">new</span> <span class="type">int</span>;</span><br><span class="line">        *data = *(other.data); <span class="comment">// 进行深拷贝</span></span><br><span class="line">        cout&lt;&lt;<span class="string">&quot;deep copy&quot;</span>&lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">getData</span><span class="params">()</span> <span class="type">const</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> *data;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">setData</span><span class="params">(<span class="type">int</span> val)</span> </span>&#123;</span><br><span class="line">        *data = val;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ~<span class="built_in">DeepCopy</span>() &#123;</span><br><span class="line">        <span class="keyword">delete</span> data;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="function">DeepCopy <span class="title">b1</span><span class="params">(<span class="number">5</span>)</span></span>;</span><br><span class="line">    <span class="function">DeepCopy <span class="title">b2</span><span class="params">(b1)</span></span>;</span><br><span class="line"></span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;b1=&quot;</span> &lt;&lt; b1.<span class="built_in">getData</span>() &lt;&lt;<span class="string">&quot; &quot;</span></span><br><span class="line">         &lt;&lt; <span class="string">&quot;b2=&quot;</span> &lt;&lt; b2.<span class="built_in">getData</span>() &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    b1.<span class="built_in">setData</span>(<span class="number">10</span>);</span><br><span class="line"></span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;b1=&quot;</span> &lt;&lt; b1.<span class="built_in">getData</span>() &lt;&lt;<span class="string">&quot; &quot;</span></span><br><span class="line">         &lt;&lt; <span class="string">&quot;b2=&quot;</span> &lt;&lt; b2.<span class="built_in">getData</span>() &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>输出结果：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">deep copy</span><br><span class="line">b1=<span class="number">5</span> b2=<span class="number">5</span></span><br><span class="line">b1=<span class="number">10</span> b2=<span class="number">5</span></span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/04/07/%E5%B7%A6%E5%8F%B3%E5%80%BC%E5%BC%95%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="stars zhang">
+      <meta itemprop="description" content="永远迎着光走">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="stars">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/04/07/%E5%B7%A6%E5%8F%B3%E5%80%BC%E5%BC%95%E7%94%A8/" class="post-title-link" itemprop="url">左右值引用</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-04-07 12:32:40" itemprop="dateCreated datePublished" datetime="2024-04-07T12:32:40+08:00">2024-04-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-04-10 10:13:53" itemprop="dateModified" datetime="2024-04-10T10:13:53+08:00">2024-04-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="1-左值、右值"><a href="#1-左值、右值" class="headerlink" title="1. 左值、右值"></a>1. 左值、右值</h1><h2 id="左值："><a href="#左值：" class="headerlink" title="左值："></a>左值：</h2><ul>
+<li>表达式结束后依然存在的<strong>持久性对象</strong>或者函数，可以被取地址。</li>
+<li>左值是可以被标识符引用的表达式，它们代表着内存中的一个位置。例如，变量、数组元素、通过引用或指针访问的对象、具有名称的对象等都是左值。</li>
+<li>左值在赋值操作符左侧出现，可以接受赋值操作。</li>
+</ul>
+<h2 id="右值："><a href="#右值：" class="headerlink" title="右值："></a>右值：</h2><ul>
+<li>表达式结束后就消失的<strong>临时对象</strong>，通常不能被取地址。</li>
+<li>右值是不具有持久性的临时对象或者表达式的结果，不能被直接引用。例如，字面常量、临时对象、未命名的临时对象、返回临时对象的函数调用等都是右值。</li>
+<li>右值通常出现在赋值操作符右侧，用于提供值给赋值操作。</li>
+</ul>
+<h1 id="2-左值引用、右值引用"><a href="#2-左值引用、右值引用" class="headerlink" title="2. 左值引用、右值引用"></a>2. 左值引用、右值引用</h1><h2 id="左值引用"><a href="#左值引用" class="headerlink" title="左值引用"></a>左值引用</h2><ul>
+<li>左值引用是通过使用 <code>&amp;</code> 符号声明的引用类型。它绑定到左值，并且可以延长左值的生命周期，使得左值可以在函数调用等情况下被修改。</li>
+<li>左值引用不能绑定到右值。</li>
+<li>左值引用常用于函数参数传递、函数返回值和操作符重载等场景，可以实现有效的引用语义和避免不必要的拷贝。</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">5</span>;</span><br><span class="line"><span class="type">int</span> &amp;b = a; <span class="comment">// b是左值引用</span></span><br><span class="line">b = <span class="number">4</span>;</span><br><span class="line"><span class="type">int</span> &amp;c = <span class="number">10</span>; <span class="comment">// error，10无法取地址，无法进行引用</span></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> &amp;d = <span class="number">10</span>; <span class="comment">// ok，因为是常引用，引用常量数字，这个常量数字会存储在内存中，可以取地址</span></span><br></pre></td></tr></table></figure>
+
+<p>可以得出结论：对于左值引用，等号右边的值必须可以取地址，如果不能取地址，则会编译失败，或者可以使用const引用形式，但这样就只能通过引用来读取输出，不能修改数组，因为是常量引用。</p>
+<h2 id="右值引用"><a href="#右值引用" class="headerlink" title="右值引用"></a>右值引用</h2><ul>
+<li>右值引用是通过使用 <code>&amp;&amp;</code> 符号声明的引用类型。它主要用于绑定到临时对象或者即将销毁的对象，允许移动语义的使用。</li>
+<li>右值引用可以绑定到右值，但不能绑定到左值。</li>
+<li>右值引用的引入使得可以实现移动语义，即将资源从一个对象“移动”到另一个对象，而不是进行昂贵的拷贝操作。这在处理临时对象时尤为有用，能够提高性能。</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">A</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">A</span>() &#123;&#125; <span class="comment">// 默认构造函数</span></span><br><span class="line">    <span class="built_in">A</span>(<span class="type">const</span> A&amp; other) &#123;&#125; <span class="comment">// 拷贝构造函数</span></span><br><span class="line">    <span class="built_in">A</span>(A&amp;&amp; other) &#123;&#125; <span class="comment">// 移动构造函数</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function">A <span class="title">createA</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">A</span>(); <span class="comment">// 返回一个临时对象</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    A a1 = <span class="built_in">createA</span>(); <span class="comment">// 调用移动构造函数，避免了拷贝</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>std::move函数：把一个左值强制转换成一个右值 。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">4</span>;</span><br><span class="line"><span class="type">int</span> &amp;&amp;b = a; <span class="comment">// error, a是左值</span></span><br><span class="line"><span class="type">int</span> &amp;&amp;c = std::<span class="built_in">move</span>(a); <span class="comment">// ok</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="3-移动语义"><a href="#3-移动语义" class="headerlink" title="3. 移动语义"></a>3. 移动语义</h1><ul>
+<li>利用右值引用允许在对象间转移资源的所有权，而不是传统的拷贝。</li>
+<li>这种转移资源的操作比拷贝操作更高效，特别是对于动态分配的内存或者其他资源。</li>
+<li>移动语义的引入是为了解决传统的拷贝操作在处理临时对象时可能造成性能开销的问题。</li>
+<li>移动语义的核心概念在于，当一个对象被标记为将要被销毁（右值），它的资源可以被安全地“窃取”到另一个对象，而不是简单地复制。这意味着移动操作将对象的资源所有权从一个对象转移到另一个对象，而不会发生资源的复制或者额外的分配。</li>
+</ul>
+<h3 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h3><ol>
+<li>避免不必要的拷贝操作</li>
+<li>实现资源管理的高效转移</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Resource</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Resource</span>() &#123;&#125;</span><br><span class="line">    <span class="comment">// 移动构造函数</span></span><br><span class="line">    <span class="built_in">Resource</span>(Resource&amp;&amp; other) &#123;</span><br><span class="line">        <span class="comment">// 窃取资源</span></span><br><span class="line">        <span class="keyword">this</span>-&gt;data = other.data;</span><br><span class="line">        other.data = <span class="literal">nullptr</span>; <span class="comment">// 将原始对象置为空，避免资源重复释放</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="type">int</span>* data;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Resource res1;</span><br><span class="line">    Resource res2 = std::<span class="built_in">move</span>(res1); <span class="comment">// 调用移动构造函数</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="4-完美转发"><a href="#4-完美转发" class="headerlink" title="4. 完美转发"></a>4. 完美转发</h1><ul>
+<li>允许将参数传递到另一个函数，并保留原始参数的值类别（左值或右值）和const修饰符。</li>
+<li>目标是在保留参数类型的同时，将参数转发给其他函数，实现通用性更强的函数包装或者委托。</li>
+<li>完美转发的关键是使用了<strong>右值引用</strong>和<strong>模板参数</strong>推导。通过使用 <code>std::forward</code> 函数模板，可以在传递参数时保留参数的值类别，确保参数被按原样传递。这种机制在实现泛型编程时尤为有用，可以减少代码的重复和增加可读性。</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">wrapper</span><span class="params">(T&amp;&amp; arg)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// arg 是右值引用或者左值引用，依据传递的实参类型决定</span></span><br><span class="line">    <span class="comment">// 将参数 arg 转发给另一个函数 foo()</span></span><br><span class="line">    <span class="built_in">foo</span>(std::forward&lt;T&gt;(arg)); <span class="comment">// 完美转发</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">foo</span><span class="params">(<span class="type">int</span>&amp; x)</span> </span>&#123; </span><br><span class="line">	cout &lt;&lt; <span class="string">&quot;left value&quot;</span> &lt;&lt;endl;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">foo</span><span class="params">(<span class="type">int</span>&amp;&amp; x)</span> </span>&#123; </span><br><span class="line">	cout &lt;&lt; <span class="string">&quot;right value&quot;</span> &lt;&lt;endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> x = <span class="number">42</span>;</span><br><span class="line">    <span class="built_in">wrapper</span>(x); <span class="comment">// 传递左值</span></span><br><span class="line">    <span class="built_in">wrapper</span>(<span class="number">42</span>); <span class="comment">// 传递右值</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>wrapper</code> 函数模板通过 <code>std::forward</code> 将参数 <code>arg</code> 完美转发给 <code>foo</code> 函数。无论 <code>arg</code> 是左值还是右值，都可以在 <code>foo</code> 中保持其原始的属性，并且正确地调用对应的 <code>foo</code> 函数重载。</p>
+<p>运行结果：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">42</span>: left value</span><br><span class="line"><span class="number">42</span>: right value</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/04/05/%E6%8C%87%E9%92%88%E5%92%8C%E5%BC%95%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="stars zhang">
+      <meta itemprop="description" content="永远迎着光走">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="stars">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/04/05/%E6%8C%87%E9%92%88%E5%92%8C%E5%BC%95%E7%94%A8/" class="post-title-link" itemprop="url">指针和引用</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-04-05 15:24:45" itemprop="dateCreated datePublished" datetime="2024-04-05T15:24:45+08:00">2024-04-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-05-06 15:40:28" itemprop="dateModified" datetime="2024-05-06T15:40:28+08:00">2024-05-06</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h4 id="一、区别"><a href="#一、区别" class="headerlink" title="一、区别"></a>一、区别</h4><h5 id="1-1-定义"><a href="#1-1-定义" class="headerlink" title="1.1 定义"></a>1.1 定义</h5><p>（1）指针是一个变量，其值为另一个变量的地址，指向内存的一个存储单元。是一个对象实体</p>
+<p>（2）而引用的本质是给变量起别名，允许通过这个别名去直接操纵和修改对象本身的属性。引用跟原来的变量实质上是同一个东西。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">5</span>;</span><br><span class="line"><span class="comment">//指针</span></span><br><span class="line"><span class="type">int</span>* p = &amp;a;</span><br><span class="line"><span class="comment">//引用</span></span><br><span class="line"><span class="type">int</span>&amp; b = a;</span><br></pre></td></tr></table></figure>
+
+<h5 id="1-2-空指针与无效引用"><a href="#1-2-空指针与无效引用" class="headerlink" title="1.2 空指针与无效引用"></a>1.2 空指针与无效引用</h5><p>（1）指针可以为空，表示它不指向任何有效的内存地址。在指针没有被初始化时，它的值通常是未定义的，为了避免错误，可以将其初始化为 <code>nullptr</code> 或 <code>NULL</code>。</p>
+<p>（2）引用不能为空，它必须在声明时被初始化，并且始终指向某个对象。试图将引用声明为 null 或者空值会导致编译错误。</p>
+<h5 id="1-3-初始化"><a href="#1-3-初始化" class="headerlink" title="1.3 初始化"></a>1.3 初始化</h5><p>（1）指针需要进行初始化，可以使用取地址符号 <code>&amp;</code> 来获取一个变量的地址，也可以将另一个指针赋值给它。</p>
+<p>（2）引用在声明时必须初始化，而且一旦初始化后，不能被重新绑定到其他变量。</p>
+<ol start="4">
+<li>运算符</li>
+</ol>
+<p>（1）指针可以通过解引用 <code>*</code> 运算符来访问所指向的对象，也可以使用箭头 <code>-&gt;</code> 运算符来访问成员，例如：<code>p-&gt;member</code>。</p>
+<p>（2）引用则不需要解引用操作符，因为它们在使用时就是被解引用的。例如：<code>b.member</code>。</p>
+<h4 id="二、指针常量、常量指针、引用"><a href="#二、指针常量、常量指针、引用" class="headerlink" title="二、指针常量、常量指针、引用"></a>二、指针常量、常量指针、引用</h4><ol>
+<li><p>指针常量：表示这个指针是一个常量，指针的值不可修改。</p>
+<p>如 <code>int* const p</code>，表示一个指向整数类型的指针常量。</p>
+</li>
+</ol>
+<ul>
+<li><code>int*</code>：表示指向整数类型的指针。这意味着 <code>p</code> 是一个指针，可以存储整数类型变量的地址。</li>
+<li><code>const</code>：表示常量，这里用于修饰指针。<code>const</code> 关键字使得指针变量成为一个常量，即<strong>指针的值（地址）不能被修改，但是可以通过 <code>p</code> 修改它所指向的整数值。</strong></li>
+</ul>
+<ol start="2">
+<li><p>常量指针：表示该指针指向的值是一个常量，不可修改。</p>
+<p>如 <code>const int* p</code>，表示一个指向整数常量的指针。</p>
+</li>
+</ol>
+<ul>
+<li><code>const</code>：表示常量，这里用于修饰整数类型。<code>const</code> 关键字使得指针所指向的整数值为常量，即<strong>不能通过 <code>p</code> 修改它所指向的整数值。</strong></li>
+<li><code>int*</code>：表示指向整数类型的指针。这意味着 <code>p</code> 是一个指针，<strong>可以更改指针的指向，让其指向其他值</strong>。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">int x = 10;</span><br><span class="line">int y = 20;</span><br><span class="line"></span><br><span class="line">int* const p1 = &amp;x;  // p 是一个指向整数类型的指针常量，指向 x 的地址</span><br><span class="line">*p1 = 15;            // 合法，修改了 p 指向的整数变量 x 的值</span><br><span class="line">// p1 = &amp;y;         // 不合法，试图修改 p 的值（地址），但 p 是一个常量，其值不能修改</span><br><span class="line"></span><br><span class="line">const int z = 20;</span><br><span class="line">const int* p2 = &amp;x;  // p 是一个指向常量整数类型的指针，指向 x 的地址</span><br><span class="line">// *p2 = 15;         // 不合法，试图通过 p 修改其所指向的整数值，但整数值是常量，不能修改</span><br><span class="line">p2 = &amp;z;             // 合法，修改 p 指向的地址，但是 p 仍然指向一个整数类型的常量</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li><strong>引用的本质在c++内部实现是一个指针常量.</strong> 即可以通过引用修改原变量值，但引用不能更改绑定其他变量。</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">10</span>;</span><br><span class="line"><span class="type">int</span>&amp; b = a;</span><br><span class="line"><span class="comment">//等价于</span></span><br><span class="line"><span class="type">int</span>* <span class="type">const</span> b = &amp;a;</span><br></pre></td></tr></table></figure>
+
+<h4 id="三、区分下列指针类型"><a href="#三、区分下列指针类型" class="headerlink" title="三、区分下列指针类型"></a>三、区分下列指针类型</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> *p[<span class="number">10</span>]</span><br></pre></td></tr></table></figure>
+
+<p>表示指针数组，是一个大小为10的数组，数组元素为int *类型的指针。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> (*p)[<span class="number">10</span>]</span><br></pre></td></tr></table></figure>
+
+<p>表示一个数组指针，该指针指向一个大小为10，元素类型为int的数组首地址。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> *<span class="title function_">p</span><span class="params">(<span class="type">int</span>)</span></span><br></pre></td></tr></table></figure>
+
+<p>表示一个函数声明，函数返回值类型为int*，函数名为p，传入参数类型为int</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> (*p)(<span class="type">int</span>)</span><br></pre></td></tr></table></figure>
+
+<p>表示一个函数指针，即p是一个指向函数的指针，该函数接受一个int类型的参数，且返回值为int</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2024/03/27/%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1084,429 +1416,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/03/18/%E6%96%87%E4%BB%B6IO/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="stars zhang">
-      <meta itemprop="description" content="永远迎着光走">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="stars">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/03/18/%E6%96%87%E4%BB%B6IO/" class="post-title-link" itemprop="url">文件IO</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-03-18 15:38:24" itemprop="dateCreated datePublished" datetime="2024-03-18T15:38:24+08:00">2024-03-18</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-04-14 12:57:02" itemprop="dateModified" datetime="2024-04-14T12:57:02+08:00">2024-04-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="1-文件描述符"><a href="#1-文件描述符" class="headerlink" title="1. 文件描述符"></a>1. 文件描述符</h1><p>Linux系统中一切皆文件，所有打开的文件都通过文件描述符进行索引。文件描述符是一个非负整数，当打开或创建文件时，内核向该进程返回一个文件描述符用于指代该文件。</p>
-<p>Linux内核对所有打开的文件都维护了一个文件描述符表，用于存储文件描述符。且在文件描述符表中已经默认分配了三个文件描述符：0是标准输入stdin，1是标准输出stdout，2是标准错误stderr。故打开或创建的文件描述符大于或等于3。</p>
-<p><img src="/.com//Blog\source_posts\文件IO\进程描述符表.png" alt="进程描述符表"></p>
-<h1 id="2-open-close"><a href="#2-open-close" class="headerlink" title="2. open&#x2F;close"></a>2. open&#x2F;close</h1><h2 id="2-1-open函数"><a href="#2-1-open函数" class="headerlink" title="2.1 open函数"></a>2.1 open函数</h2><p>通过open函数可以打开或创建一个文件，返回的文件描述符一定是该进程尚未使用的最小描述符，大于等于3。</p>
-<p><strong>函数原型：</strong></p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"><span class="comment">// 打开一个已经存在的磁盘文件</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">open</span><span class="params">(<span class="type">const</span> <span class="type">char</span> *path, <span class="type">int</span> flags)</span>;</span><br><span class="line"><span class="comment">// 打开磁盘文件, 如果文件不存在, 就会自动创建</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">open</span><span class="params">(<span class="type">const</span> <span class="type">char</span> *path, <span class="type">int</span> flags, <span class="type">mode_t</span> mode)</span>;</span><br></pre></td></tr></table></figure>
-
-<p><strong>参数：</strong></p>
-<ul>
-<li><p><strong>path</strong>：要打开的文件的路径名。</p>
-</li>
-<li><p><strong>flags</strong>：打开文件的方式和选项，它是一个位掩码，可以通过按位或运算组合多个选项。常见选项包括：</p>
-<ul>
-<li><strong>O_RDONLY</strong> —— 以只读方式打开文件</li>
-<li><strong>O_WRONLY</strong> —— 以只写方式打开文件</li>
-<li><strong>O_RDWR</strong> —— 以读写方式打开文件</li>
-<li>可选属性：（和以上属性一起使用）<ul>
-<li><strong>O_APPEND</strong> —— 新数据追加到文件的尾部</li>
-<li><strong>O_CREAT</strong> —— 如果文件不存在，则创建该文件</li>
-<li><strong>O_TRUNC</strong>—— 如果文件存在且以写入方式打开，则清空文件内容</li>
-<li><strong>O_EXCL</strong> —— 检测文件是否存在, 必须要和 O_CREAT 一起使用, 不能单独使用：O_CREAT | O_EXCL检测到文件不存在, 创建新文件；检测到文件已存在, 创建失败, 函数直接返回-1</li>
-</ul>
-</li>
-<li><strong>O_NONBLOCK</strong> ——对于设备文件，以O_NONBLOCK方式打开可以做非阻塞I&#x2F;O</li>
-</ul>
-</li>
-<li><p><strong>mode</strong>：表示文件的权限掩码，指定新建文件的权限，<strong>仅在<code>O_CREAT</code>选项被指定时有效</strong>。</p>
-<ul>
-<li>文件权限掩码是一个八进制数，每一位分别代表了不同的权限。</li>
-<li>一般情况下，文件权限掩码可以分为三组：用户权限、组权限和其他用户权限。每组权限又包括读（R）、写（W）和执行（X）权限。</li>
-<li><strong>读（R）：4、写（W）：2、执行（X）：1</strong></li>
-<li>例如：<ul>
-<li><code>rwxrwxrwx</code>：全部权限，八进制数值为777。</li>
-<li><code>rw-r--r--</code>：所有者可读写，其他用户只读，八进制数值为644。</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<p><strong>返回值：</strong></p>
-<ul>
-<li>成功：返回一个非负整数，表示文件描述符。</li>
-<li>失败：返回 <code>-1</code>，并设置 <code>errno</code> 来指示错误类型。</li>
-</ul>
-<h2 id="2-2-close函数"><a href="#2-2-close函数" class="headerlink" title="2.2 close函数"></a>2.2 close函数</h2><p>通过close函数关闭一个打开文件，释放打开时分配的文件描述符。close()原型：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unisted&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">close</span><span class="params">(<span class="type">int</span> fd)</span></span><br></pre></td></tr></table></figure>
-
-<p>参数：</p>
-<ul>
-<li><strong>fd</strong>：要关闭的文件描述符。</li>
-</ul>
-<p>返回值：</p>
-<ul>
-<li>成功：返回0。</li>
-<li>失败：返回-1，并设置 <code>errno</code> 来指示错误类型。</li>
-</ul>
-<h2 id="2-3-文件操作"><a href="#2-3-文件操作" class="headerlink" title="2.3 文件操作"></a>2.3 文件操作</h2><p>打开已有文件：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> fd = open(<span class="string">&quot;abc.txt&quot;</span>, O_RDWR);</span><br></pre></td></tr></table></figure>
-
-<p>创建新文件：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> fd = open(<span class="string">&quot;./new.txt&quot;</span>, O_CREAT|O_RDWR, <span class="number">0664</span>);</span><br></pre></td></tr></table></figure>
-
-<h1 id="3-read-write"><a href="#3-read-write" class="headerlink" title="3. read&#x2F;write"></a>3. read&#x2F;write</h1><h2 id="3-1-read函数"><a href="#3-1-read函数" class="headerlink" title="3.1 read函数"></a>3.1 read函数</h2><p>用于从打开的文件中读数据</p>
-<p><strong>函数原型：</strong></p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unisted.h&gt;</span></span></span><br><span class="line"><span class="type">ssize_t</span> <span class="title function_">read</span><span class="params">(<span class="type">int</span> fd, <span class="type">void</span> *buf, <span class="type">size_t</span> count)</span>;</span><br></pre></td></tr></table></figure>
-
-<p><strong>参数:</strong></p>
-<ul>
-<li><strong>fd</strong>: 要读取的文件描述符</li>
-<li><strong>buf</strong>: 指向存放读取数据的缓冲区的指针。</li>
-<li><strong>count</strong>: 要读取的字节数</li>
-</ul>
-<p><strong>返回值：</strong> 返回值的数据类型是 <code>ssize_t</code>，表示带符号的整型，这样既可以返回正的字节数、0（表<br>示到达文件末尾）也可以返回负值-1（表示出错） 。</p>
-<ul>
-<li>成功：返回读取的字节数，可能小于 <code>count</code>，因为可能在读取count个字节之前已到达文件末尾。</li>
-<li>文件结束(EOF)：返回 <code>0</code>，表示已读取到文件末尾。</li>
-<li>失败：返回 <code>-1</code>，并设置 <code>errno</code> 来指示错误类型。</li>
-</ul>
-<p><strong>什么是缓冲区：</strong></p>
-<ul>
-<li><p>缓冲区（Buffer）是指在计算机中用于临时存储数据的一段内存区域。在程序中，缓冲区通常用于临时存放数据，以便稍后进行处理或传输。缓冲区的使用可以提高数据的读写效率，减少频繁的IO操作，特别是在涉及大量数据的情况下。</p>
-</li>
-<li><p>在文件IO操作中，缓冲区通常用于存储要读取或写入的数据。当调用 <code>read()</code> 系统调用从文件中读取数据时，数据首先被读取到缓冲区中，然后程序可以从缓冲区中获取数据进行进一步处理。类似地，当调用 <code>write()</code> 系统调用向文件中写入数据时，数据首先被写入到缓冲区中，然后由系统决定何时将缓冲区中的数据写入到文件中。</p>
-</li>
-</ul>
-<h2 id="3-2-write函数"><a href="#3-2-write函数" class="headerlink" title="3.2 write函数"></a>3.2 write函数</h2><p>用于将数据从用户空间写入到已打开文件中</p>
-<p><strong>函数原型：</strong></p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unisted.h&gt;</span></span></span><br><span class="line"><span class="type">ssize_t</span> <span class="title function_">write</span><span class="params">(<span class="type">int</span> fd, <span class="type">const</span> <span class="type">void</span> *buf, <span class="type">size_t</span> count)</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>参数：</strong></p>
-<ul>
-<li>fd：要写入的文件描述符。</li>
-<li>buf：指向要写入数据的缓冲区的指针。</li>
-<li>count：往磁盘文件中写入的字节数，一般是buf的长度sizeof(buf)。</li>
-</ul>
-<p><strong>返回值：</strong></p>
-<ul>
-<li>成功：返回写入的字节数，可以小于 <code>count</code>。</li>
-<li>失败：返回 <code>-1</code>，并设置 <code>errno</code> 来指示错误类型。</li>
-</ul>
-<h2 id="3-3-示例"><a href="#3-3-示例" class="headerlink" title="3.3 示例"></a>3.3 示例</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;errno.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> fd = <span class="built_in">open</span>(<span class="string">&quot;example.txt&quot;</span>, O_WRONLY | O_CREAT | O_TRUNC, <span class="number">0644</span>);</span><br><span class="line">    <span class="keyword">if</span> (fd == <span class="number">-1</span>) &#123;</span><br><span class="line">        <span class="built_in">perror</span>(<span class="string">&quot;open&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="type">const</span> <span class="type">char</span> *data = <span class="string">&quot;Hello, World!\n&quot;</span>;</span><br><span class="line">    <span class="type">ssize_t</span> bytes_written = <span class="built_in">write</span>(fd, data, <span class="built_in">strlen</span>(data));</span><br><span class="line">    <span class="keyword">if</span> (bytes_written == <span class="number">-1</span>) &#123;</span><br><span class="line">        <span class="built_in">perror</span>(<span class="string">&quot;write&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">close</span>(fd);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h1 id="4-阻塞和非阻塞"><a href="#4-阻塞和非阻塞" class="headerlink" title="4. 阻塞和非阻塞"></a>4. 阻塞和非阻塞</h1><p>阻塞和非阻塞是指，程序在执行某种操作时的行为方式。</p>
-<ul>
-<li><p>阻塞（Blocking）：</p>
-<p>​        在阻塞模式下，当程序执行某个操作时，如果该操作无法立即完成，程序将一直等待，直到操作完成为止。</p>
-</li>
-<li><p>非阻塞（Non-blocking）：</p>
-<p>​        在非阻塞模式下，当程序执行某个操作时，如果该操作无法立即完成，程序将立即返回而不会等待。程序可以继续执行其他任务，不会因为某个操作的未完成而被阻塞。</p>
-</li>
-</ul>
-<p> 使用非阻塞 I&#x2F;O 可以使得一个进程能够同时处理多个连接而不会被阻塞。当一个套接字上没有数据可读或者没有数据可写时，程序不会等待，而是立即返回，这样可以更有效地利用 CPU 时间。</p>
-<p>非阻塞 I&#x2F;O 结合事件驱动模型（如 epoll）可以实现异步 I&#x2F;O。通过 epoll 等机制，程序可以注册对多个文件描述符的监听，一旦有事件发生，程序立即得到通知，而不需要轮询或阻塞等待。</p>
-<h1 id="5-fcntl函数"><a href="#5-fcntl函数" class="headerlink" title="5. fcntl函数"></a>5. fcntl函数</h1><p>fcntl()可以修改一个已打开文件的属性，可以重新设置读、写、追加、非阻塞等标志，而不必重新open文件 。</p>
-<p><strong>函数原型：</strong></p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">fcntl</span><span class="params">(<span class="type">int</span> fd, <span class="type">int</span> cmd, ... <span class="comment">/* arg */</span> )</span>;</span><br></pre></td></tr></table></figure>
-
-<p>参数<code>fd</code>表示已打开的文件描述符，<code>cmd</code> 是控制命令，指定了要对文件进行的操作，<code>arg</code> 是与控制命令相关的参数，类型和意义取决于具体的命令。</p>
-<p><strong>常用命令：</strong></p>
-<ul>
-<li><p><code>F_DUPFD</code>：</p>
-<ul>
-<li><p>复制文件描述符，创建一个新的文件描述符，其值大于或等于第三个参数（指定的最小文件描述符值）。</p>
-</li>
-<li><pre><code class="c">fcntl(fd, F_DUPFD, newfd)
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- `F_GETFL`：</span><br><span class="line"></span><br><span class="line">  - 获取文件状态标志（file status flags）。</span><br><span class="line"></span><br><span class="line">  - ```</span><br><span class="line">    fcntl(fd, F_GETFL)</span><br></pre></td></tr></table></figure>
-</code></pre>
-</li>
-</ul>
-</li>
-<li><p><code>F_SETFL</code>：</p>
-<ul>
-<li><p>设置文件状态标志为flags。</p>
-</li>
-<li><pre><code>fcntl(fd, F_SETFL, flags)
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- `F_GETFD`：</span><br><span class="line"></span><br><span class="line">  - 获取文件描述符标志（file descriptor flags）。</span><br><span class="line"></span><br><span class="line">  - ```</span><br><span class="line">    fcntl(fd, F_GETFD)</span><br></pre></td></tr></table></figure>
-</code></pre>
-</li>
-</ul>
-</li>
-<li><p><code>F_SETFD</code>：</p>
-<ul>
-<li><p>设置文件描述符标志为flags。</p>
-</li>
-<li><pre><code>fcntl(fd, F_SETFD, flags)
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- `F_GETLK`：</span><br><span class="line"></span><br><span class="line">  - 获取文件锁信息，并将锁信息写入提供的结构体 `lock` 中。</span><br><span class="line"></span><br><span class="line">  - ```</span><br><span class="line">    fcntl(fd, F_GETLK, &amp;lock)</span><br></pre></td></tr></table></figure>
-</code></pre>
-</li>
-</ul>
-</li>
-<li><p><code>F_SETLK</code>：</p>
-<ul>
-<li><p>设置文件锁，如果无法获取锁，则调用失败。</p>
-</li>
-<li><pre><code>fcntl(fd, F_SETLK, &amp;lock)
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- `F_SETLKW`：</span><br><span class="line"></span><br><span class="line">  - 设置文件锁，并在必要时阻塞。</span><br><span class="line"></span><br><span class="line">  - ```</span><br><span class="line">    fcntl(fd, F_SETLKW, &amp;lock)</span><br></pre></td></tr></table></figure>
-</code></pre>
-</li>
-</ul>
-</li>
-</ul>
-<p>将文件设置为非阻塞：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fcntl(fd, F_SETFL, fcntl(fd, F_GETFL) | O_NONBLOCK)</span><br></pre></td></tr></table></figure>
-
-<h1 id="6-Iseek函数"><a href="#6-Iseek函数" class="headerlink" title="6. Iseek函数"></a>6. Iseek函数</h1><p>用于移动文件的指针。</p>
-<p>每一个打开文件都有一个与其相关联的”当前文件偏移量“，即文件指针指向的位置，作用在于控制文件的读写位置</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unisted.h&gt;</span></span></span><br><span class="line"><span class="type">off_t</span> <span class="title function_">lseek</span><span class="params">(<span class="type">int</span> fd, <span class="type">off_t</span> offset, <span class="type">int</span> whence)</span>;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><p>参数：</p>
-<ul>
-<li>fd：所操纵文件的描述符</li>
-<li>offset：偏移量，需要与whence搭配使用</li>
-<li>whence：通过该参数指定函数功能<ul>
-<li>SEEK_SET：从文件头部开始偏移 offset 个字节</li>
-<li>SEEK_CUR: 从当前文件指针的位置向后偏移offset个字节</li>
-<li>SEEK_END: 从文件尾部向后偏移offset个字节</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>返回值：成功则返回新的文件偏移量(文件头部到当前位置的偏移量)，失败则返回-1</p>
-</li>
-<li><pre><code class="c">lseek(fd, 0, SEEK_SET); //将文件指针移动到头部
-lseek(fd, 0, SEEK_CUR); //得到当前文件指针的位置
-lseek(fd, 0, SEEK_END); //得到文件的总大小
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"># 7. 复制与重定向</span><br><span class="line"></span><br><span class="line">## 7.1 dup函数</span><br><span class="line"></span><br><span class="line">dup函数的作用是复制一个现有的文件描述符，使多个文件描述符指向同一个文件。函数原型：</span><br><span class="line"></span><br><span class="line">```c</span><br><span class="line">#include &lt;unisted.h&gt;</span><br><span class="line">int dup(int oldfd);</span><br></pre></td></tr></table></figure>
-</code></pre>
-</li>
-</ul>
-<p>参数oldfd是被复制的文件描述符</p>
-<p>函数调用成功后返回新的文件描述符，且是当前可用文件描述符中的最小数值；调用失败则返回-1</p>
-<p>被复制出的新文件描述符是独立于旧的文件描述符的，二者没有连带关系。也就是说当旧的文件描述符被关闭了，复制出的新文件描述符还是可以继续使用的。</p>
-<h2 id="7-2-dup2函数"><a href="#7-2-dup2函数" class="headerlink" title="7.2 dup2函数"></a>7.2 dup2函数</h2><p>dup2函数可以进行文件描述符的复制，也可以进行文件描述符的重定向。重定向指的是断开文件描述符和当前文件的关联关系，与新的文件建立关联关系。</p>
-<p>函数原型：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unisted.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">dup2</span><span class="params">(<span class="type">int</span> oldfd, <span class="type">int</span> newfd)</span>;</span><br></pre></td></tr></table></figure>
-
-<p>作用是复制参数 <code>oldfd</code> 所指向的文件描述符，创建一个新的文件描述符，新的文件描述符的值是参数 <code>newfd</code>。如果 <code>newfd</code> 已经是一个打开的文件描述符，<code>dup2()</code> 会先关闭它。</p>
-<p><code>dup2()</code> 调用成功返回新的文件描述符，该文件描述符与 <code>newfd</code> 相同；调用失败则返回-1</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/03/18/%E8%99%9A%E6%8B%9F%E5%9C%B0%E5%9D%80%E7%A9%BA%E9%97%B4/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="stars zhang">
-      <meta itemprop="description" content="永远迎着光走">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="stars">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/03/18/%E8%99%9A%E6%8B%9F%E5%9C%B0%E5%9D%80%E7%A9%BA%E9%97%B4/" class="post-title-link" itemprop="url">虚拟地址空间</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2024-03-18 11:03:21 / 修改时间：20:11:38" itemprop="dateCreated datePublished" datetime="2024-03-18T11:03:21+08:00">2024-03-18</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">操作系统</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="1-概念"><a href="#1-概念" class="headerlink" title="1. 概念"></a>1. 概念</h1><p>虚拟地址空间是指一个进程所使用的地址范围，但这些地址并不直接对应于物理内存中的位置，而是通过CPU中的内存管理单元MMU将虚拟地址空间映射到物理内存上。</p>
-<p>虚拟地址空间的大小由操作系统决定，32位操作系统虚拟地址空间的大小为 2的32字节，也就是4G，64位的操作系统虚拟地址空间大小为2的64 字节。</p>
-<p>当我们运行磁盘上一个可执行程序, 就会得到一个进程，内核会给每一个运行的进程创建一块属于自己的虚拟地址空间，并将应用程序数据装载到虚拟地址空间对应的地址上。</p>
-<h2 id="1-1-为什么使用虚拟内存"><a href="#1-1-为什么使用虚拟内存" class="headerlink" title="1.1 为什么使用虚拟内存"></a>1.1 为什么使用虚拟内存</h2><p>对于直接操纵物理内存的单片机来说，同时运行多个程序是不可能的。虚拟地址的存在是为了解决多程序并发执行时的内存管理和隔离问题，它带来了以下几个重要的好处和必要性：</p>
-<ol>
-<li><strong>内存隔离</strong>：虚拟地址允许每个进程拥有自己独立的地址空间，使得每个进程认为自己在使用整个系统的全部内存，从而实现了进程之间的内存隔离。这意味着一个进程无法直接访问另一个进程的内存，增强了系统的安全性和稳定性。</li>
-<li>内存管理：通过虚拟地址空间，操作系统可以更灵活地管理内存，例如采用虚拟内存技术将部分数据存储在磁盘上，从而扩展可用内存大小。此外，还能使操作系统更容易地进行内存分配和释放，从而降低了内存管理的复杂性。</li>
-</ol>
-<h1 id="2-虚拟地址到物理地址的映射"><a href="#2-虚拟地址到物理地址的映射" class="headerlink" title="2. 虚拟地址到物理地址的映射"></a>2. 虚拟地址到物理地址的映射</h1><h2 id="2-1-分页"><a href="#2-1-分页" class="headerlink" title="2.1 分页"></a>2.1 分页</h2><p>页表是最常见的地址转换方式。虚拟地址被划分为固定大小的页（linux中每页为4KB），每个页都有对应的页表条目。页表记录了虚拟地址到物理地址的映射关系。当CPU发出一个内存访问请求时，MMU会根据页表将虚拟地址翻译成物理地址。</p>
-<h2 id="2-2-分段"><a href="#2-2-分段" class="headerlink" title="2.2 分段"></a>2.2 分段</h2><p>虚拟地址被划分为逻辑段，每个逻辑段有对应的段描述符，记录了段的起始地址和长度等信息。CPU根据段描述符将虚拟地址转换成线性地址，然后再通过页表将线性地址映射到物理地址。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/03/18/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E4%B8%8E%E9%9D%A2%E5%90%91%E8%BF%87%E7%A8%8B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="stars zhang">
-      <meta itemprop="description" content="永远迎着光走">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="stars">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/03/18/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E4%B8%8E%E9%9D%A2%E5%90%91%E8%BF%87%E7%A8%8B/" class="post-title-link" itemprop="url">面向对象与面向过程的区别</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2024-03-18 10:28:48 / 修改时间：10:57:01" itemprop="dateCreated datePublished" datetime="2024-03-18T10:28:48+08:00">2024-03-18</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">编程</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="1-面向过程"><a href="#1-面向过程" class="headerlink" title="1. 面向过程"></a>1. 面向过程</h1><p><strong>面向过程</strong>是一种以事件为中心的编程思想，按照从上到下的步骤解决问题，通过编写函数来实现每一步的操作，最终依次调用完成程序的运行。</p>
-<h1 id="2-面向对象"><a href="#2-面向对象" class="headerlink" title="2. 面向对象"></a>2. 面向对象</h1><p>简单问题采用面向过程的思想来解决时直接有效，但当问题的规模变得更大、更繁琐时就显得远远不够。<strong>面向对象</strong>是一种基于面向过程的编程思想，是向现实世界模型的自然延伸，是一种“万物皆对象”的编程思想。面向对象把事物抽象成对象的概念，给对象赋一些属性和方法，然后让每个对象去执行自己的方法。</p>
-<p>即以对象为中心，以消息为驱动。</p>
-<h1 id="3-优缺点"><a href="#3-优缺点" class="headerlink" title="3. 优缺点"></a>3. 优缺点</h1><h2 id="面向过程"><a href="#面向过程" class="headerlink" title="面向过程"></a>面向过程</h2><p>优点：效率高，面向过程强调代码的短小精悍，善于结合数据结构来开发高效率的程序。</p>
-<p>缺点：代码重用性低，扩展能力差，后期维护难度比较大。</p>
-<h2 id="面向对象"><a href="#面向对象" class="headerlink" title="面向对象"></a>面向对象</h2><p>优点：基于封装、继承和多态的特性，具有易扩展，代码复用率高，易维护等特点，可以设计低耦合的系统。</p>
-<p>缺点：开销大，性能低。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1576,7 +1485,7 @@ lseek(fd, 0, SEEK_END); //得到文件的总大小
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-count">34</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1589,7 +1498,7 @@ lseek(fd, 0, SEEK_END); //得到文件的总大小
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-count">19</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
