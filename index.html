@@ -620,7 +620,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-05-06 17:51:14" itemprop="dateModified" datetime="2024-05-06T17:51:14+08:00">2024-05-06</time>
+                <time title="修改时间：2024-05-08 18:15:12" itemprop="dateModified" datetime="2024-05-08T18:15:12+08:00">2024-05-08</time>
               </span>
 
           
@@ -665,11 +665,16 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">//动态分配了一个整数对象，并将其初始化为 5，然后将返回的指针赋值给指针变量 p1</span><br><span class="line">int* p1 = new int(5);</span><br><span class="line">delete p1;</span><br><span class="line"></span><br><span class="line">//动态分配了一个大小为 sizeof(int) 字节的内存块，并将返回的指针强制转换为整型指针类型，然后将其赋值给指针变量 p2</span><br><span class="line">int* p2 = (int*)malloc(sizeof(int));</span><br><span class="line">free p2;</span><br></pre></td></tr></table></figure>
 
 <h4 id="二、new和delete的实现原理"><a href="#二、new和delete的实现原理" class="headerlink" title="二、new和delete的实现原理"></a>二、new和delete的实现原理</h4><ol>
-<li>分配内存</li>
-</ol>
-<p>​        在使用 <code>new</code> 运算符来创建一个对象时，编译器会调用一个名为 <code>operator new</code> 的函数来分配内存。这个函数负责从堆中分配足够大小的内存来存储对象，并返回一个指向该内存的指针。如果分配失败，<code>operator new</code> 可能会抛出 <code>std::bad_alloc</code> 异常</p>
-<ol start="2">
-<li>构造对象</li>
+<li><p>分配内存</p>
+</li>
+<li><p>在使用 <code>new</code> 运算符来创建一个对象时，编译器会调用一个名为 <code>operator new</code> 的函数来分配内存。这个函数负责从堆中分配足够大的、原始的、未命名的内存空间。</p>
+</li>
+<li><p>然后，编译器运行相应的构造函数，为这段内存传入初始值。</p>
+</li>
+<li><p>对象被分配了空间并构造完成，返回一个指向该对象的指针。如果分配失败，<code>operator new</code> 函数抛出 <code>std::bad_alloc</code> 异常</p>
+</li>
+<li><p>构造对象</p>
+</li>
 </ol>
 <p>​         分配内存后，编译器会调用对应的构造函数来初始化对象。这确保了对象的状态是有效的，并且任何必要的资源（如动态分配的内存或文件句柄）都已经被正确初始化。</p>
 <ol start="3">
