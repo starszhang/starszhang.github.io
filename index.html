@@ -162,6 +162,100 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/05/31/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="stars zhang">
+      <meta itemprop="description" content="永远迎着光走">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="stars">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/05/31/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" class="post-title-link" itemprop="url">设计模式</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-05-31 22:19:21 / 修改时间：23:20:44" itemprop="dateCreated datePublished" datetime="2024-05-31T22:19:21+08:00">2024-05-31</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="1-单例模式"><a href="#1-单例模式" class="headerlink" title="1. 单例模式"></a>1. 单例模式</h3><p>属于<strong>创建型模式</strong>，确保<strong>一个类只有一个实例</strong>，<strong>并提供一个全局访问点来访问该实例</strong>。单例模式常用于需要全局控制资源或共享资源的情况下，例如日志记录、配置管理、线程池等。</p>
+<p>根据单例对象的创建时机分为饿汉模式和懒汉模式：</p>
+<h4 id="1-1-饿汉模式"><a href="#1-1-饿汉模式" class="headerlink" title="1.1 饿汉模式"></a>1.1 饿汉模式</h4><p>在定义类的时候就创建了单例对象实例。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 饿汉式单例</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Singleton</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">// 禁用拷贝构造、赋值操作</span></span><br><span class="line">    <span class="built_in">Singleton</span>(<span class="type">const</span> Singleton&amp;) = <span class="keyword">delete</span>;</span><br><span class="line">    Singleton&amp; <span class="keyword">operator</span>=(<span class="type">const</span> Singleton&amp;) = <span class="keyword">delete</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 静态方法获取实例</span></span><br><span class="line">    <span class="function"><span class="type">static</span> Singleton* <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">doSomething</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;Doing something&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="comment">// 外部禁用构造函数</span></span><br><span class="line">    <span class="built_in">Singleton</span>() = <span class="keyword">default</span>;</span><br><span class="line">   </span><br><span class="line">    <span class="comment">// 静态实例</span></span><br><span class="line">    <span class="type">static</span> Singleton* instance;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 初始化静态实例</span></span><br><span class="line">Singleton* Singleton::instance = <span class="keyword">new</span> <span class="built_in">Singleton</span>();</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Singleton* sl = Singleton::<span class="built_in">getInstance</span>();</span><br><span class="line">    singleton-&gt;<span class="built_in">doSomething</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="1-2-懒汉模式"><a href="#1-2-懒汉模式" class="headerlink" title="1.2 懒汉模式"></a>1.2 懒汉模式</h4><p>在第一次使用时才创建实例。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;mutex&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 懒汉式单例</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Singleton</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">// 静态方法获取实例</span></span><br><span class="line">    <span class="function"><span class="type">static</span> Singleton* <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 双重检查锁定（Double-Checked Locking）</span></span><br><span class="line">        <span class="keyword">if</span> (instance == <span class="literal">nullptr</span>) &#123;</span><br><span class="line">            <span class="function">std::lock_guard&lt;std::mutex&gt; <span class="title">lock</span><span class="params">(mtx)</span></span>;</span><br><span class="line">            <span class="keyword">if</span> (instance == <span class="literal">nullptr</span>) &#123;</span><br><span class="line">                instance = <span class="keyword">new</span> <span class="built_in">Singleton</span>();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">doSomething</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;Doing something&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line">   </span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="comment">// 私有构造函数</span></span><br><span class="line">    <span class="built_in">Singleton</span>() = <span class="keyword">default</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 禁止拷贝构造、赋值操作</span></span><br><span class="line">    <span class="built_in">Singleton</span>(<span class="type">const</span> Singleton&amp;) = <span class="keyword">delete</span>;</span><br><span class="line">    Singleton&amp; <span class="keyword">operator</span>=(<span class="type">const</span> Singleton&amp;) = <span class="keyword">delete</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="type">static</span> Singleton* instance;</span><br><span class="line">    <span class="type">static</span> std::mutex mtx;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 初始化静态成员</span></span><br><span class="line">Singleton* Singleton::instance = <span class="literal">nullptr</span>;</span><br><span class="line">std::mutex Singleton::mtx;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Singleton* singleton = Singleton::<span class="built_in">getInstance</span>();</span><br><span class="line">    singleton-&gt;<span class="built_in">doSomething</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="1-3-优缺点、适用场景"><a href="#1-3-优缺点、适用场景" class="headerlink" title="1.3 优缺点、适用场景"></a>1.3 优缺点、适用场景</h4><p><strong>优点</strong></p>
+<ol>
+<li><strong>唯一实例</strong>：确保一个类只有一个实例，节省资源。</li>
+<li><strong>全局访问</strong>：提供全局访问点，方便访问。</li>
+<li><strong>控制实例化</strong>：控制实例化过程，避免频繁创建和销毁对象。</li>
+</ol>
+<p><strong>缺点</strong></p>
+<ol>
+<li><strong>并发问题</strong>：在多线程环境下，懒汉式单例可能会引起线程安全问题，需要额外处理。</li>
+<li><strong>可测试性差</strong>：单例模式使得类难以进行单元测试，因为依赖于全局状态。</li>
+<li><strong>隐藏依赖</strong>：使用单例模式可能隐藏类间的依赖关系，增加代码的复杂性。</li>
+</ol>
+<p><strong>适用场景</strong></p>
+<ul>
+<li>需要控制实例数目的类，节省系统资源。</li>
+<li>需要提供一个全局访问点的场景，例如配置管理、日志管理、资源管理等。</li>
+</ul>
+<h3 id="2-工厂模式"><a href="#2-工厂模式" class="headerlink" title="2. 工厂模式"></a>2. 工厂模式</h3><p>属于<strong>创建型模式</strong>，<strong>定义一个创建对象的接口，让子类决定实例化哪一个类</strong>。工厂模式将对象的创建过程封装起来，使得客户端不需要知道具体创建的细节，从而提高系统的可扩展性和维护性。</p>
+<p>工厂模式主要分为<strong>简单工厂模式</strong>、<strong>工厂方法模式</strong>、<strong>抽象工厂模式</strong>。</p>
+<h4 id="2-1-简单工厂模式"><a href="#2-1-简单工厂模式" class="headerlink" title="2.1 简单工厂模式"></a>2.1 简单工厂模式</h4><p>使用一个工厂类来创建对象，工厂类包含一个创建方法，根据传入的参数来决定实例化哪一个类。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;memory&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 产品接口</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Product</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">use</span><span class="params">()</span> </span>= <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">virtual</span> ~<span class="built_in">Product</span>() = <span class="keyword">default</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 具体产品A</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ProductA</span> : <span class="keyword">public</span> Product &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">use</span><span class="params">()</span> <span class="keyword">override</span> </span>&#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;Using ProductA&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 具体产品B</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ProductB</span> : <span class="keyword">public</span> Product &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">use</span><span class="params">()</span> <span class="keyword">override</span> </span>&#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;Using ProductB&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 简单工厂类</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">SimpleFactory</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">enum</span> <span class="title class_">ProductType</span> &#123; TYPE_A, TYPE_B &#125;;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="type">static</span> std::unique_ptr&lt;Product&gt; <span class="title">createProduct</span><span class="params">(ProductType type)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">switch</span> (type) &#123;</span><br><span class="line">            <span class="keyword">case</span> TYPE_A: <span class="keyword">return</span> std::<span class="built_in">make_unique</span>&lt;ProductA&gt;();</span><br><span class="line">            <span class="keyword">case</span> TYPE_B: <span class="keyword">return</span> std::<span class="built_in">make_unique</span>&lt;ProductB&gt;();</span><br><span class="line">            <span class="keyword">default</span>: <span class="keyword">return</span> <span class="literal">nullptr</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">auto</span> productA = SimpleFactory::<span class="built_in">createProduct</span>(SimpleFactory::TYPE_A);</span><br><span class="line">    productA-&gt;<span class="built_in">use</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">auto</span> productB = SimpleFactory::<span class="built_in">createProduct</span>(SimpleFactory::TYPE_B);</span><br><span class="line">    productB-&gt;<span class="built_in">use</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-2-工厂方法模式"><a href="#2-2-工厂方法模式" class="headerlink" title="2.2 工厂方法模式"></a>2.2 工厂方法模式</h4><p>使用一个抽象工厂接口和具体工厂类，每个具体工厂类负责创建一个具体产品对象。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;memory&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 产品接口</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Product</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">use</span><span class="params">()</span> </span>= <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">virtual</span> ~<span class="built_in">Product</span>() = <span class="keyword">default</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 具体产品A</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ProductA</span> : <span class="keyword">public</span> Product &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">use</span><span class="params">()</span> <span class="keyword">override</span> </span>&#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;Using ProductA&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 具体产品B</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ProductB</span> : <span class="keyword">public</span> Product &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">use</span><span class="params">()</span> <span class="keyword">override</span> </span>&#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;Using ProductB&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 工厂接口</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Factory</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> std::unique_ptr&lt;Product&gt; <span class="title">createProduct</span><span class="params">()</span> </span>= <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">virtual</span> ~<span class="built_in">Factory</span>() = <span class="keyword">default</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 具体工厂A</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">FactoryA</span> : <span class="keyword">public</span> Factory &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">std::unique_ptr&lt;Product&gt; <span class="title">createProduct</span><span class="params">()</span> <span class="keyword">override</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> std::<span class="built_in">make_unique</span>&lt;ProductA&gt;();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 具体工厂B</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">FactoryB</span> : <span class="keyword">public</span> Factory &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">std::unique_ptr&lt;Product&gt; <span class="title">createProduct</span><span class="params">()</span> <span class="keyword">override</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> std::<span class="built_in">make_unique</span>&lt;ProductB&gt;();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    std::unique_ptr&lt;Factory&gt; factoryA = std::<span class="built_in">make_unique</span>&lt;FactoryA&gt;();</span><br><span class="line">    <span class="keyword">auto</span> productA = factoryA-&gt;<span class="built_in">createProduct</span>();</span><br><span class="line">    productA-&gt;<span class="built_in">use</span>();</span><br><span class="line"></span><br><span class="line">    std::unique_ptr&lt;Factory&gt; factoryB = std::<span class="built_in">make_unique</span>&lt;FactoryB&gt;();</span><br><span class="line">    <span class="keyword">auto</span> productB = factoryB-&gt;<span class="built_in">createProduct</span>();</span><br><span class="line">    productB-&gt;<span class="built_in">use</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-3-抽象工厂模式"><a href="#2-3-抽象工厂模式" class="headerlink" title="2.3 抽象工厂模式"></a>2.3 抽象工厂模式</h4><p>提供一个接口用于创建相关或依赖对象的家族，而无需明确指定具体类。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;memory&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 产品A接口</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ProductA</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">use</span><span class="params">()</span> </span>= <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">virtual</span> ~<span class="built_in">ProductA</span>() = <span class="keyword">default</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 产品B接口</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ProductB</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">eat</span><span class="params">()</span> </span>= <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">virtual</span> ~<span class="built_in">ProductB</span>() = <span class="keyword">default</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 具体产品A1</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ProductA1</span> : <span class="keyword">public</span> ProductA &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">use</span><span class="params">()</span> <span class="keyword">override</span> </span>&#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;Using ProductA1&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 具体产品A2</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ProductA2</span> : <span class="keyword">public</span> ProductA &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">use</span><span class="params">()</span> <span class="keyword">override</span> </span>&#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;Using ProductA2&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 具体产品B1</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ProductB1</span> : <span class="keyword">public</span> ProductB &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">eat</span><span class="params">()</span> <span class="keyword">override</span> </span>&#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;Eating ProductB1&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 具体产品B2</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ProductB2</span> : <span class="keyword">public</span> ProductB &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">eat</span><span class="params">()</span> <span class="keyword">override</span> </span>&#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;Eating ProductB2&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 抽象工厂接口</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">AbstractFactory</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> std::unique_ptr&lt;ProductA&gt; <span class="title">createProductA</span><span class="params">()</span> </span>= <span class="number">0</span>;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> std::unique_ptr&lt;ProductB&gt; <span class="title">createProductB</span><span class="params">()</span> </span>= <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">virtual</span> ~<span class="built_in">AbstractFactory</span>() = <span class="keyword">default</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 具体工厂1</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ConcreteFactory1</span> : <span class="keyword">public</span> AbstractFactory &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">std::unique_ptr&lt;ProductA&gt; <span class="title">createProductA</span><span class="params">()</span> <span class="keyword">override</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> std::<span class="built_in">make_unique</span>&lt;ProductA1&gt;();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function">std::unique_ptr&lt;ProductB&gt; <span class="title">createProductB</span><span class="params">()</span> <span class="keyword">override</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> std::<span class="built_in">make_unique</span>&lt;ProductB1&gt;();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 具体工厂2</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ConcreteFactory2</span> : <span class="keyword">public</span> AbstractFactory &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">std::unique_ptr&lt;ProductA&gt; <span class="title">createProductA</span><span class="params">()</span> <span class="keyword">override</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> std::<span class="built_in">make_unique</span>&lt;ProductA2&gt;();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function">std::unique_ptr&lt;ProductB&gt; <span class="title">createProductB</span><span class="params">()</span> <span class="keyword">override</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> std::<span class="built_in">make_unique</span>&lt;ProductB2&gt;();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    std::unique_ptr&lt;AbstractFactory&gt; factory1 = std::<span class="built_in">make_unique</span>&lt;ConcreteFactory1&gt;();</span><br><span class="line">    <span class="keyword">auto</span> productA1 = factory1-&gt;<span class="built_in">createProductA</span>();</span><br><span class="line">    <span class="keyword">auto</span> productB1 = factory1-&gt;<span class="built_in">createProductB</span>();</span><br><span class="line">    productA1-&gt;<span class="built_in">use</span>();</span><br><span class="line">    productB1-&gt;<span class="built_in">eat</span>();</span><br><span class="line"></span><br><span class="line">    std::unique_ptr&lt;AbstractFactory&gt; factory2 = std::<span class="built_in">make_unique</span>&lt;ConcreteFactory2&gt;();</span><br><span class="line">    <span class="keyword">auto</span> productA2 = factory2-&gt;<span class="built_in">createProductA</span>();</span><br><span class="line">    <span class="keyword">auto</span> productB2 = factory2-&gt;<span class="built_in">createProductB</span>();</span><br><span class="line">    productA2-&gt;<span class="built_in">use</span>();</span><br><span class="line">    productB2-&gt;<span class="built_in">eat</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2024/05/08/C++%E4%BA%94%E5%A4%A7%E5%86%85%E5%AD%98%E5%88%86%E5%8C%BA/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -916,175 +1010,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/04/25/Git%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="stars zhang">
-      <meta itemprop="description" content="永远迎着光走">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="stars">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/04/25/Git%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/" class="post-title-link" itemprop="url">Git使用教程</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2024-04-25 12:57:42 / 修改时间：13:46:13" itemprop="dateCreated datePublished" datetime="2024-04-25T12:57:42+08:00">2024-04-25</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>Git是一个强大的版本控制系统，它用于跟踪文件的变化并协作开发代码。</p>
-<ol>
-<li><p><strong>创建新的仓库</strong>：开始使用Git，需要在项目文件夹中初始化一个新的Git仓库。进入到项目文件夹，然后</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git init</span><br></pre></td></tr></table></figure>
-</li>
-<li><p><strong>将文件添加到仓库</strong>：在初始化了仓库之后，可以将项目文件添加到Git仓库中以进行版本控制。</p>
-<p>使用add将修改的文件添加到暂存区：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git add &lt;file1&gt; &lt;file2&gt; ...</span><br></pre></td></tr></table></figure>
-
-<p>若是修改的文件较多，可直接使用</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git add .</span><br></pre></td></tr></table></figure>
-</li>
-<li><p><strong>提交更改</strong>：文件添加到暂存区后，就可以使用commit将它们提交到仓库中。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git commit -m &quot;Your commit message&quot;</span><br></pre></td></tr></table></figure>
-
-<p>可以在提交信息中清晰地描述你所做的更改。</p>
-</li>
-<li><p><strong>查看状态</strong>：你可以使用以下命令来查看当前仓库的状态，包括已修改、已暂存和未跟踪的文件。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git status</span><br></pre></td></tr></table></figure>
-</li>
-<li><p><strong>查看提交历史</strong>：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git log</span><br></pre></td></tr></table></figure>
-</li>
-<li><p><strong>比较文件差异：</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git diff &lt;file&gt;</span><br></pre></td></tr></table></figure>
-
-<p>显示特定文件在工作区和暂存区之间的差异。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git diff &lt;commit id&gt;</span><br></pre></td></tr></table></figure>
-
-<p>显示当前工作目录中的文件与指定提交之间的差异</p>
-</li>
-<li><p><strong>版本回退</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout &lt;commit id&gt;</span><br></pre></td></tr></table></figure>
-
-<p>将工作区和暂存区恢复到指定提交的状态。</p>
-</li>
-<li><p><strong>创建分支</strong>：分支允许你在不影响主线开发的情况下开发新功能或修复bug。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch &lt;branch-name&gt;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p><strong>切换分支</strong>：你可以使用以下命令切换到其他分支。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout &lt;branch-name&gt;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p><strong>合并分支</strong>：当你完成了在某个分支上的工作，并且希望将其合并到主分支时，你可以使用以下命令。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git checkout main</span><br><span class="line">git merge &lt;branch-name&gt;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p><strong>远程仓库</strong>：Git还支持与远程仓库进行交互，例如GitHub、GitLab等。你可以使用以下命令将本地仓库与远程仓库关联。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote add origin &lt;remote-repository-url&gt;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p><strong>推送到远程仓库</strong>：一旦你与远程仓库建立了关联，你可以将本地提交推送到远程仓库。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push -u origin main</span><br></pre></td></tr></table></figure>
-
-
-
-<p>一旦你将本地的提交推送到远程仓库，你可能会希望在本地仓库中获取远程仓库的最新内容，以便与其他团队成员的更改保持同步。你可以使用 <code>git pull</code> 命令来拉取远程仓库的内容。以下是步骤：</p>
-<ol>
-<li><p><strong>确保当前在正确的分支上</strong>：首先，确保你在想要拉取远程仓库内容的本地分支上。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout main</span><br></pre></td></tr></table></figure>
-
-<p>这里的 “main” 可以根据你的实际情况而定，确保你在想要拉取更新的目标分支上。</p>
-</li>
-<li><p><strong>执行 git pull</strong>：运行 <code>git pull</code> 命令来拉取远程仓库的最新内容并将其合并到你当前所在的分支。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git pull</span><br></pre></td></tr></table></figure>
-
-<p>这将获取远程仓库的最新提交，并尝试将其合并到你当前所在的分支中。</p>
-</li>
-</ol>
-<p>如果你希望拉取特定远程仓库的特定分支的更新，你可以在 <code>git pull</code> 命令中提供远程仓库和分支的名称。例如，如果要从名为 “origin” 的远程仓库的 “main” 分支拉取更新，可以执行以下命令：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git pull origin main</span><br></pre></td></tr></table></figure>
-
-<p>这将从远程仓库的 “main” 分支拉取更新，并将其合并到你当前所在的分支。</p>
-</li>
-</ol>
-<h5 id="git-checkout"><a href="#git-checkout" class="headerlink" title="git checkout"></a>git checkout</h5><p><code>git checkout</code> 命令在 Git 中有多种用途，它可以用于<strong>切换分支、创建分支、恢复文件和检出提交</strong>等操作。以下是 <code>git checkout</code> 命令的几种常见用法：</p>
-<ol>
-<li><p><strong>切换分支</strong>：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout &lt;branch-name&gt;</span><br></pre></td></tr></table></figure>
-
-<p>这会将当前工作目录切换到指定的分支。例如，要切换到名为 <code>main</code> 的分支，你可以运行：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout main</span><br></pre></td></tr></table></figure>
-
-<p>你也可以使用 <code>git switch</code> 命令来执行相同的操作。</p>
-</li>
-<li><p><strong>创建新分支并切换到该分支</strong>：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout -b &lt;new-branch-name&gt;</span><br></pre></td></tr></table></figure>
-
-<p>这会创建一个新的分支，并将当前工作目录切换到该分支。例如，要创建一个名为 <code>feature</code> 的新分支并切换到该分支，你可以运行：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout -b feature</span><br></pre></td></tr></table></figure>
-</li>
-<li><p><strong>恢复文件到指定状态</strong>：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout &lt;file&gt;</span><br></pre></td></tr></table></figure>
-
-<p>这会将指定文件恢复到最近一次提交时的状态。如果你在工作区中对文件做了修改，但想要撤销这些修改并恢复到最近一次提交时的状态，可以使用这个命令。例如：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout index.html</span><br></pre></td></tr></table></figure>
-
-<p>这会将 <code>index.html</code> 文件恢复到最近一次提交时的状态。</p>
-</li>
-<li><p><strong>检出提交</strong>：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout &lt;commit&gt;</span><br></pre></td></tr></table></figure>
-
-<p>这会将你的工作目录和暂存区都恢复到指定提交时的状态，并将 HEAD 指针移动到该提交。通常情况下，你不应该在已提交的代码上工作，因为这可能会导致丢失未提交的更改。然而，这个命令在需要检查历史提交的内容或创建分离头指针时很有用。如果你只是想查看历史提交的内容，建议使用 <code>git show &lt;commit&gt;</code> 命令，这样可以避免创建分离头指针。</p>
-</li>
-</ol>
-<h5 id="工作区和暂存区"><a href="#工作区和暂存区" class="headerlink" title="工作区和暂存区"></a>工作区和暂存区</h5><ol>
-<li><p><strong>工作区（Working Directory）</strong>：</p>
-<p>工作区指的是你正在工作的项目目录，其中包含了你编辑、添加和删除文件的所有内容。换句话说，工作区是你电脑上能够看到的项目目录，其中包含了项目的所有文件和子文件夹。当你修改项目中的文件时，这些修改只存在于工作区中，还没有被 Git 跟踪。</p>
-</li>
-<li><p><strong>暂存区（Staging Area）</strong>：</p>
-<p>暂存区是 Git 提供的一个中间区域，用于存储你想要提交的更改。当你对工作区中的文件做出修改并准备提交时，首先需要将这些修改添加到暂存区。在暂存区中，你可以检查你要提交的更改，并决定是否需要将它们提交到版本控制系统中。</p>
-<p>一旦你将更改添加到暂存区，Git 就会记录这些更改的状态，包括哪些文件已经被修改、哪些文件是新添加的，以及哪些文件已经准备好被提交到仓库中。暂存区允许你将多个文件的更改分成一系列逻辑上相关的提交。</p>
-</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1154,7 +1079,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">34</span>
+          <span class="site-state-item-count">35</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1167,7 +1092,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-count">20</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
