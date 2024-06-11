@@ -162,6 +162,167 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/04/08/%E5%8D%81%E5%A4%A7%E6%8E%92%E5%BA%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="stars zhang">
+      <meta itemprop="description" content="永远迎着光走">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="stars">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/04/08/%E5%8D%81%E5%A4%A7%E6%8E%92%E5%BA%8F/" class="post-title-link" itemprop="url">十大排序</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-04-08 12:00:05" itemprop="dateCreated datePublished" datetime="2024-04-08T12:00:05+08:00">2024-04-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-04-17 18:35:50" itemprop="dateModified" datetime="2024-04-17T18:35:50+08:00">2024-04-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="1-选择排序"><a href="#1-选择排序" class="headerlink" title="1. 选择排序"></a>1. 选择排序</h1><p>开启n-1轮循环，每次从未排序的元素中选择最小（或最大）的元素，将其与未排序序列的第一个元素交换位置，从而逐步构建有序序列。</p>
+<p>选择排序的具体流程如下：</p>
+<ol>
+<li><strong>初始状态</strong>：将整个序列视为两部分，一部分是已排序序列，另一部分是未排序序列。</li>
+<li><strong>选择最小元素</strong>：从未排序序列中选择最小的元素，并将其与未排序序列的第一个元素交换位置。</li>
+<li><strong>扩大已排序序列</strong>：将交换后的元素视为已排序序列的一部分，未排序序列减少一个元素。</li>
+<li><strong>重复步骤2和步骤3</strong>：直到所有元素都被选择并放置到正确的位置上。</li>
+</ol>
+<p>伪代码：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">选择排序(A):</span><br><span class="line">    <span class="keyword">for</span> i from <span class="number">0</span> <span class="function">to <span class="title">length</span><span class="params">(A)</span>-2:</span></span><br><span class="line"><span class="function">        minIndex =</span> i</span><br><span class="line">        <span class="keyword">for</span> j from i+<span class="number">1</span> <span class="function">to <span class="title">length</span><span class="params">(A)</span>-1:</span></span><br><span class="line"><span class="function">            if A[j] &lt; A[minIndex]:</span></span><br><span class="line"><span class="function">                minIndex =</span> j</span><br><span class="line">        <span class="comment">// 将未排序序列中最小元素与第i个元素交换位置</span></span><br><span class="line">        <span class="built_in">swap</span>(A[i], A[minIndex])</span><br></pre></td></tr></table></figure>
+
+<p>时间复杂度为O(n^2)</p>
+<h1 id="2-冒泡排序"><a href="#2-冒泡排序" class="headerlink" title="2. 冒泡排序"></a>2. 冒泡排序</h1><p>多次遍历待排序序列，每轮连续比较相邻的元素，如果“左元素 &gt; 右元素”则交换位置，使较大的元素逐步“冒泡”到数组的末端。</p>
+<p>冒泡排序的具体流程如下：</p>
+<ol>
+<li><strong>比较相邻元素</strong>：从数组的第一个元素开始，比较相邻的两个元素，如果前一个元素比后一个元素大，则交换它们的位置，这样较大的元素就会向数组的末端移动。</li>
+<li><strong>遍历整个数组</strong>：重复步骤1，遍历整个数组，直到所有的元素都已经比较过一次。</li>
+<li><strong>缩小范围</strong>：每次遍历过程中，都会使得数组末端的一个元素排好序，因此<strong>在下一次遍历时，可以将待排序序列的范围缩小一个元素</strong>。</li>
+</ol>
+<p>伪代码：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">冒泡排序(A):</span><br><span class="line">    n = <span class="built_in">length</span>(A)</span><br><span class="line">    <span class="keyword">for</span> i from <span class="number">0</span> to n<span class="number">-1</span>:</span><br><span class="line">        <span class="keyword">for</span> j from <span class="number">0</span> to n<span class="number">-1</span>-i:</span><br><span class="line">            <span class="keyword">if</span> A[j] &gt; A[j+<span class="number">1</span>]:</span><br><span class="line">                <span class="built_in">swap</span>(A[j], A[j+<span class="number">1</span>])</span><br></pre></td></tr></table></figure>
+
+<p>时间复杂度：O(n^2)</p>
+<h1 id="3-插入排序"><a href="#3-插入排序" class="headerlink" title="3. 插入排序"></a>3. 插入排序</h1><p>插入排序（Insertion Sort）是一种简单直观的排序算法。其基本思想是<strong>将待排序的数据序列分为已排序区间和未排序区间</strong>，通过构建有序序列，对未排序的数据逐个进行插入，从而达到排序的目的。</p>
+<p>插入排序的具体思路如下：</p>
+<ol>
+<li><strong>初始状态</strong>：将第一个元素视为已排序序列，剩余的元素为未排序序列。</li>
+<li><strong>遍历未排序序列</strong>：从第二个元素开始，逐个遍历未排序序列的元素。</li>
+<li><strong>将当前元素插入已排序序列</strong>：对于每个未排序序列中的元素，将其与已排序序列中的元素逐个比较，找到合适的位置并插入。</li>
+<li><strong>移动元素</strong>：为了给当前元素腾出位置，需要将已排序序列中比当前元素大的元素依次向后移动。</li>
+<li><strong>重复步骤3和步骤4</strong>：直到所有元素都被插入到已排序序列中。</li>
+</ol>
+<p>伪代码：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">插入排序(A):</span><br><span class="line">    <span class="keyword">for</span> i from <span class="number">1</span> <span class="function">to <span class="title">length</span><span class="params">(A)</span>-1:</span></span><br><span class="line"><span class="function">        currentElement =</span> A[i]</span><br><span class="line">        j = i - <span class="number">1</span></span><br><span class="line">        <span class="keyword">while</span> j &gt;= <span class="number">0</span> <span class="keyword">and</span> A[j] &gt; currentElement:</span><br><span class="line">            A[j+<span class="number">1</span>] = A[j]</span><br><span class="line">            j = j - <span class="number">1</span></span><br><span class="line">        A[j+<span class="number">1</span>] = currentElement</span><br></pre></td></tr></table></figure>
+
+<p>时间复杂度：O(n^2)</p>
+<h1 id="4-快速排序"><a href="#4-快速排序" class="headerlink" title="4. 快速排序"></a>4. 快速排序</h1><p>快速排序（quick sort）是一种基于<strong>分治</strong>策略的排序算法。基本思想是<strong>选择一个基准元素，将序列分割成两个子序列，其中一个子序列中的所有元素小于基准元素，另一个子序列中的所有元素大于基准元素，然后对这两个子序列分别进行递归排序。</strong></p>
+<p>快速排序的具体步骤如下：</p>
+<ol>
+<li><strong>选择基准元素</strong>：从待排序序列中选择一个元素作为基准元素。通常选择序列的第一个元素、最后一个元素或者中间的元素作为基准元素。</li>
+<li><strong>分割序列</strong>：根据基准元素，将序列分割成两个子序列，其中一个子序列中的元素小于基准元素，另一个子序列中的元素大于基准元素。通常使用两个指针（左指针和右指针）来实现分割，左指针指向序列的起始位置，右指针指向序列的末尾位置，然后从左右两端向中间移动指针，交换不符合条件的元素，直到左右指针相遇。</li>
+<li><strong>递归排序</strong>：对两个子序列分别进行递归排序，直到子序列的长度为1或0。</li>
+<li><strong>合并结果</strong>：将经过排序的子序列合并成最终的有序序列。</li>
+</ol>
+<p>伪代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">快速排序(A, low, high):</span><br><span class="line">    <span class="keyword">if</span> low &lt; high:</span><br><span class="line">        pivotIndex = partition(A, low, high)</span><br><span class="line">        快速排序(A, low, pivotIndex - <span class="number">1</span>)</span><br><span class="line">        快速排序(A, pivotIndex + <span class="number">1</span>, high)</span><br><span class="line"></span><br><span class="line">partition(A, low, high):</span><br><span class="line">    pivot = A[low]  // 选择第一个元素作为基准元素</span><br><span class="line">    left = low + <span class="number">1</span></span><br><span class="line">    right = high</span><br><span class="line">    <span class="keyword">while</span> left &lt;= right:</span><br><span class="line">        <span class="keyword">while</span> left &lt;= right <span class="keyword">and</span> A[left] &lt;= pivot:</span><br><span class="line">            left = left + <span class="number">1</span></span><br><span class="line">        <span class="keyword">while</span> left &lt;= right <span class="keyword">and</span> A[right] &gt; pivot:</span><br><span class="line">            right = right - <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> left &lt; right:</span><br><span class="line">            swap(A[left], A[right])</span><br><span class="line">    swap(A[low], A[right])</span><br><span class="line">    <span class="keyword">return</span> right</span><br></pre></td></tr></table></figure>
+
+<p>快速排序的时间复杂度为 O(n log n)，其中 n 是待排序序列的长度。在平均情况下，快速排序的性能非常好，但是在最坏情况下（例如，当选择的基准元素总是序列中的最大或最小元素时），快速排序的时间复杂度可能会退化为 O(n^2)。</p>
+<p>空间复杂度为O(n)：在输入数组完全倒序的情况下，达到最差递归深度 n ，使用 O(n)栈帧空间。若采用<strong>尾递归优化</strong>，则复杂度为O(log n)。</p>
+<p>尾递归优化是一种编译器优化技术，用于优化递归调用的栈空间使用。在尾递归优化中，如果函数的最后一个操作是对自身的递归调用，编译器会将这种递归调用转换为循环，从而避免在调用栈上创建新的帧，节省了栈空间的使用。</p>
+<h1 id="5-归并排序"><a href="#5-归并排序" class="headerlink" title="5. 归并排序"></a>5. 归并排序</h1><p>归并排序（Merge Sort）是一种基于<strong>分治</strong>思想的排序算法。其基本思路是将待排序序列<strong>分</strong>成两个子序列，分别对这两个子序列进行递归排序，然后将两个已经排好序的子序列<strong>合</strong>并成一个有序序列。</p>
+<p>具体的算法流程：</p>
+<ol>
+<li><strong>分割序列：</strong>不断地将待排序序列划分成两个子序列，直到子序列的长度为1或0</li>
+<li><strong>递归排序</strong>：递归地对分割后的两个子序列进行排序。</li>
+<li><strong>合并序列：</strong>将两个已经排好序的子序列合并成一个有序序列。</li>
+</ol>
+<p>伪代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">归并排序(A):</span><br><span class="line">    <span class="keyword">if</span> length(A) &lt;= <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> A</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        middle = length(A) / <span class="number">2</span></span><br><span class="line">        left_half = 归并排序(A[<span class="number">0</span>:middle])  // 递归排序左半部分</span><br><span class="line">        right_half = 归并排序(A[middle:length(A)])  // 递归排序右半部分</span><br><span class="line">        <span class="keyword">return</span> 合并(left_half, right_half)  // 合并左右两部分并返回合并后的有序序列</span><br><span class="line"></span><br><span class="line">合并(left_half, right_half):</span><br><span class="line">    result = []</span><br><span class="line">    <span class="keyword">while</span> left_half 不为空 <span class="keyword">and</span> right_half 不为空:</span><br><span class="line">        <span class="keyword">if</span> left_half[<span class="number">0</span>] &lt;= right_half[<span class="number">0</span>]:</span><br><span class="line">            result.append(left_half[<span class="number">0</span>])</span><br><span class="line">            left_half = left_half[<span class="number">1</span>:]</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            result.append(right_half[<span class="number">0</span>])</span><br><span class="line">            right_half = right_half[<span class="number">1</span>:]</span><br><span class="line">    // 将剩余的元素追加到结果中</span><br><span class="line">    result += left_half</span><br><span class="line">    result += right_half</span><br><span class="line">    <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
+
+<p>归并排序的时间复杂度为 O(n log n)。虽然归并排序的时间复杂度较低，但是需要额外的空间来存储归并过程中产生的临时序列，因此其空间复杂度为 O(n)。</p>
+<h1 id="6-堆排序"><a href="#6-堆排序" class="headerlink" title="6. 堆排序"></a>6. 堆排序</h1><p>堆排序（Heap Sort）是一种基于堆数据结构的排序算法，其基本思想是利用堆的性质实现排序。堆是一个特殊的树形数据结构，具有以下性质：</p>
+<ol>
+<li>它是一个完全二叉树，即除了最后一层，其他层都是满的。</li>
+<li>在一个小顶堆（Min Heap）中，任意节点的值都小于或等于其子节点的值。</li>
+<li>在一个大顶堆（Max Heap）中，任意节点的值都大于或等于其子节点的值。</li>
+</ol>
+<p>将待排序的序列构建成一个大顶堆，重复从堆中取出堆顶元素，并重新构建堆，直到堆为空，最终得到即为排序好的序列。</p>
+<p>算法的流程：</p>
+<ol>
+<li><p>构建堆：</p>
+<p>​		首先需要将待排序的序列构建成一个堆。一种常见的方法是从最后一个非叶子节点开始，依次向前进行调整，保证每个节点都满足堆的性质。</p>
+<p>大顶堆的调整过程：</p>
+<ul>
+<li>从最后一个非叶子节点开始（即 n&#x2F;2-1），向前遍历到根节点。</li>
+<li>对于每个节点，如果它的子节点中有比它大的，就将其与最大的子节点进行交换，直到它没有比它大的子节点或者到达叶子节点为止。</li>
+</ul>
+</li>
+<li><p>排序：</p>
+<p>​		构建好堆之后，需要重复从堆中取出最大（或最小）的元素，并重新调整堆，直到堆为空。具体的过程如下：</p>
+<ul>
+<li>将堆顶元素（最大或最小值）与堆中的最后一个元素交换位置。</li>
+<li>从堆中移除最后一个元素（即最大或最小值）。</li>
+<li>对剩余的元素重新调整堆，使其满足堆的性质。</li>
+</ul>
+<p>重复以上步骤，直到堆为空。</p>
+</li>
+</ol>
+<h1 id="7-桶排序"><a href="#7-桶排序" class="headerlink" title="7. 桶排序"></a>7. 桶排序</h1><h1 id="8-计数排序"><a href="#8-计数排序" class="headerlink" title="8. 计数排序"></a>8. 计数排序</h1><h1 id="9-基数排序"><a href="#9-基数排序" class="headerlink" title="9. 基数排序"></a>9. 基数排序</h1><h1 id="10-希尔排序"><a href="#10-希尔排序" class="headerlink" title="10. 希尔排序"></a>10. 希尔排序</h1>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2024/04/08/%E6%90%9C%E7%B4%A2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1414,87 +1575,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/03/19/%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="stars zhang">
-      <meta itemprop="description" content="永远迎着光走">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="stars">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/03/19/%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0/" class="post-title-link" itemprop="url">拷贝构造函数</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-03-19 19:06:45" itemprop="dateCreated datePublished" datetime="2024-03-19T19:06:45+08:00">2024-03-19</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-03-24 16:17:00" itemprop="dateModified" datetime="2024-03-24T16:17:00+08:00">2024-03-24</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="1-构造函数"><a href="#1-构造函数" class="headerlink" title="1. 构造函数"></a>1. 构造函数</h1><p>构造函数按类型分为<strong>普通构造函数</strong>和<strong>拷贝构造函数</strong>。如果一个类的构造函数的第一个参数是该类型的引用，则是拷贝构造函数。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">person</span>&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="type">int</span> score;</span><br><span class="line">    <span class="comment">//无参构造函数</span></span><br><span class="line">	<span class="built_in">person</span>()&#123;</span><br><span class="line">        score = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//有参构造函数</span></span><br><span class="line">    <span class="built_in">person</span>(<span class="type">int</span> score)&#123;</span><br><span class="line">        <span class="keyword">this</span>-&gt;score = score;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="comment">//拷贝构造函数</span></span><br><span class="line">    <span class="built_in">person</span>(<span class="type">const</span> person&amp; p)&#123;</span><br><span class="line">        <span class="keyword">this</span>-&gt;name = p.name;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function">string <span class="title">getName</span><span class="params">()</span></span>;</span><br><span class="line">&#125;; </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//调用有参构造函数</span></span><br><span class="line"><span class="function">person <span class="title">p1</span><span class="params">(<span class="number">100</span>)</span></span>;</span><br><span class="line"><span class="comment">//调用拷贝构造函数</span></span><br><span class="line"><span class="function">person <span class="title">p2</span><span class="params">(p1)</span></span>;</span><br><span class="line">person p3 = p1;</span><br></pre></td></tr></table></figure>
-
-<h1 id="2-构造函数调用规则"><a href="#2-构造函数调用规则" class="headerlink" title="2. 构造函数调用规则"></a>2. 构造函数调用规则</h1><p>默认情况下，C++编译器至少为一个类添加3个函数</p>
-<p>​	1．默认构造函数(<strong>无参</strong>，函数体为<strong>空</strong>)</p>
-<p>​	2．默认析构函数(无参，函数体为空)</p>
-<p>​	3．默认拷贝构造函数(<strong>对属性进行值拷贝</strong>)</p>
-<p>但当用户定义了构造函数，调用规则如下：</p>
-<ul>
-<li>如果用户定义了有参构造函数，c++则不再提供默认无参构造，但是会提供默认拷贝构造</li>
-<li>如果用户定义了拷贝构造函数，c++则不再提供默认构造函数，需要用户定义普通构造函数</li>
-</ul>
-<h1 id="3-深拷贝与浅拷贝"><a href="#3-深拷贝与浅拷贝" class="headerlink" title="3. 深拷贝与浅拷贝"></a>3. 深拷贝与浅拷贝</h1><ul>
-<li>浅拷贝：在拷贝对象时只拷贝对象的指针，而没有拷贝指针所指向的动态分配的内存内容，<strong>新旧对象都指向同一块内存</strong>。造成的结果就是<strong>当其中一个对象的析构函数被调用时，会释放该内存，从而导致另一个对象访问无效内存</strong>，从而引发问题。</li>
-<li>深拷贝：在拷贝对象时，<strong>会复制对象所指向的动态分配的内存，而不只是复制指针本身</strong>。这样做可以确保每个对象都有其自己的一份独立的内存副本。</li>
-<li>总结：浅拷贝只是简单地复制指针，导致多个对象共享同一块内存，容易出现悬空指针或者资源释放问题。深拷贝会为新对象分配内存，并将原对象的数据复制到新内存中，确保每个对象都有独立的内存空间，从而避免了悬空指针或资源释放问题。</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1564,7 +1644,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">35</span>
+          <span class="site-state-item-count">36</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1577,7 +1657,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-count">21</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

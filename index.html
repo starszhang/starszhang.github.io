@@ -162,6 +162,538 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/06/11/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%8C%83%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="stars zhang">
+      <meta itemprop="description" content="永远迎着光走">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="stars">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/06/11/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%8C%83%E5%BC%8F/" class="post-title-link" itemprop="url">数据库范式</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-06-11 10:46:53 / 修改时间：12:13:01" itemprop="dateCreated datePublished" datetime="2024-06-11T10:46:53+08:00">2024-06-11</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="一、理论讲解"><a href="#一、理论讲解" class="headerlink" title="一、理论讲解"></a>一、理论讲解</h3><p><strong>数据库范式</strong>（Database Normalization）是组织数据库结构的一种方法，<strong>以减少数据冗余和提高数据完整性</strong>。范式是数据库设计的一组规则，分为不同的层次，每个层次解决特定类型的数据问题。主要的范式包括：</p>
+<ol>
+<li>**第一范式 (1NF)**：<ul>
+<li><strong>定义</strong>：表中的所有字段都应该是原子的，即不可再分的。</li>
+<li><strong>要求</strong>：每个字段只包含一个值，消除重复的列。</li>
+<li><strong>例子</strong>：如果一个表有一个字段用逗号分隔多个值，则不符合1NF。必须将这些值分解成独立的行或列。</li>
+</ul>
+</li>
+<li>**第二范式 (2NF)**：<ul>
+<li><strong>定义</strong>：在满足1NF的基础上，消除部分依赖。</li>
+<li><strong>要求</strong>：非主键字段必须完全依赖于主键，而不是依赖于主键的一部分（即消除部分依赖）。</li>
+<li><strong>例子</strong>：如果一个表的主键由两个字段组成，而另一个字段只依赖于其中一个字段，则不符合2NF。需要将这些字段分解到不同的表中，使每个字段完全依赖于主键。</li>
+</ul>
+</li>
+<li>**第三范式 (3NF)**：<ul>
+<li><strong>定义</strong>：在满足2NF的基础上，消除传递依赖。</li>
+<li><strong>要求</strong>：非主键字段必须直接依赖于主键，而不能通过其他非主键字段间接依赖于主键（即消除传递依赖）。</li>
+<li><strong>例子</strong>：如果一个表中有字段A依赖于主键，字段B依赖于字段A，则不符合3NF。需要将字段A和B分解到不同的表中，使每个字段直接依赖于主键。</li>
+</ul>
+</li>
+<li>**巴斯-科德范式 (BCNF)**：<ul>
+<li><strong>定义</strong>：在满足3NF的基础上，处理更为严格的依赖关系。</li>
+<li><strong>要求</strong>：每个非主键字段都必须完全依赖于候选键。</li>
+<li><strong>例子</strong>：如果一个表中有多个候选键，而某个字段依赖于非主键的候选键，则需要进行进一步分解，确保所有字段都依赖于候选键。</li>
+</ul>
+</li>
+<li>**第四范式 (4NF)**：<ul>
+<li><strong>定义</strong>：在满足BCNF的基础上，消除多值依赖。</li>
+<li><strong>要求</strong>：每个字段必须依赖于主键，不允许存在多值依赖。</li>
+<li><strong>例子</strong>：如果一个表中有一个字段依赖于另一个字段的多个值，则不符合4NF。需要将这些多值依赖的字段分解到不同的表中。</li>
+</ul>
+</li>
+<li>**第五范式 (5NF)**：<ul>
+<li><strong>定义</strong>：在满足4NF的基础上，消除连接依赖。</li>
+<li><strong>要求</strong>：所有的信息都应该可以通过原子表的自然连接来重构。</li>
+<li><strong>例子</strong>：如果一个表中某些字段的组合信息依赖于另一个字段的组合信息，则不符合5NF。需要将这些字段进一步分解。</li>
+</ul>
+</li>
+</ol>
+<h3 id="二、举例讲解"><a href="#二、举例讲解" class="headerlink" title="二、举例讲解"></a>二、举例讲解</h3><p>一个学校管理系统中的表，记录学生选课信息。初始表结构如下：</p>
+<table>
+<thead>
+<tr>
+<th>StudentID</th>
+<th>StudentName</th>
+<th>CourseID</th>
+<th>CourseName</th>
+<th>Instructor</th>
+<th>Grade</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>Alice</td>
+<td>101</td>
+<td>Math</td>
+<td>Dr. Smith</td>
+<td>A</td>
+</tr>
+<tr>
+<td>1</td>
+<td>Alice</td>
+<td>102</td>
+<td>English</td>
+<td>Dr. Brown</td>
+<td>B</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Bob</td>
+<td>101</td>
+<td>Math</td>
+<td>Dr. Smith</td>
+<td>B</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Charlie</td>
+<td>103</td>
+<td>History</td>
+<td>Dr. Green</td>
+<td>A</td>
+</tr>
+</tbody></table>
+<p>我们来一步步讲解各个范式，并规范化这个表。</p>
+<h4 id="第一范式-1NF"><a href="#第一范式-1NF" class="headerlink" title="第一范式 (1NF)"></a>第一范式 (1NF)</h4><p><strong>要求</strong>：所有字段都是原子的，不可再分。</p>
+<p>初始表已经满足1NF，因为每个字段都包含单一值，不可再分。</p>
+<h4 id="第二范式-2NF"><a href="#第二范式-2NF" class="headerlink" title="第二范式 (2NF)"></a>第二范式 (2NF)</h4><p><strong>要求</strong>：在满足1NF的基础上，消除部分依赖。非主键字段必须完全依赖于主键，而不是依赖于主键的一部分。</p>
+<p>当前表的主键是 <code>StudentID</code> 和 <code>CourseID</code> 的组合。但是：</p>
+<ul>
+<li><code>StudentName</code> 只依赖于 <code>StudentID</code>。</li>
+<li><code>CourseName</code> 和 <code>Instructor</code> 只依赖于 <code>CourseID</code>。</li>
+</ul>
+<p>存在部分依赖，因此不满足2NF。我们需要将部分依赖的字段分解到不同的表中：</p>
+<p><strong>Students</strong> 表：</p>
+<table>
+<thead>
+<tr>
+<th>StudentID</th>
+<th>StudentName</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>Alice</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Bob</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Charlie</td>
+</tr>
+</tbody></table>
+<p><strong>Courses</strong> 表：</p>
+<table>
+<thead>
+<tr>
+<th>CourseID</th>
+<th>CourseName</th>
+<th>Instructor</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>101</td>
+<td>Math</td>
+<td>Dr. Smith</td>
+</tr>
+<tr>
+<td>102</td>
+<td>English</td>
+<td>Dr. Brown</td>
+</tr>
+<tr>
+<td>103</td>
+<td>History</td>
+<td>Dr. Green</td>
+</tr>
+</tbody></table>
+<p><strong>Enrollments</strong> 表（存储学生选课和成绩信息）：</p>
+<table>
+<thead>
+<tr>
+<th>StudentID</th>
+<th>CourseID</th>
+<th>Grade</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>101</td>
+<td>A</td>
+</tr>
+<tr>
+<td>1</td>
+<td>102</td>
+<td>B</td>
+</tr>
+<tr>
+<td>2</td>
+<td>101</td>
+<td>B</td>
+</tr>
+<tr>
+<td>3</td>
+<td>103</td>
+<td>A</td>
+</tr>
+</tbody></table>
+<p>现在每个表都满足2NF，因为所有非主键字段完全依赖于整个主键。</p>
+<h4 id="第三范式-3NF"><a href="#第三范式-3NF" class="headerlink" title="第三范式 (3NF)"></a>第三范式 (3NF)</h4><p><strong>要求</strong>：在满足2NF的基础上，消除传递依赖。非主键字段必须直接依赖于主键，而不能通过其他非主键字段间接依赖于主键。</p>
+<p>假设我们在 <code>Enrollments</code> 表中添加了一个冗余字段 <code>Instructor</code>，表示授课教师：</p>
+<table>
+<thead>
+<tr>
+<th>StudentID</th>
+<th>CourseID</th>
+<th>Grade</th>
+<th>Instructor</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>101</td>
+<td>A</td>
+<td>Dr. Smith</td>
+</tr>
+<tr>
+<td>1</td>
+<td>102</td>
+<td>B</td>
+<td>Dr. Brown</td>
+</tr>
+<tr>
+<td>2</td>
+<td>101</td>
+<td>B</td>
+<td>Dr. Smith</td>
+</tr>
+<tr>
+<td>3</td>
+<td>103</td>
+<td>A</td>
+<td>Dr. Green</td>
+</tr>
+</tbody></table>
+<p>在这种情况下，<code>Instructor</code> 依赖于 <code>CourseID</code>，而 <code>CourseID</code> 是主键 <code>StudentID</code> 和 <code>CourseID</code> 的一部分。由于 <code>Instructor</code> 字段通过 <code>CourseID</code> 间接依赖于主键组合 <code>StudentID</code> 和 <code>CourseID</code>，这构成了传递依赖。因此，不满足3NF。</p>
+<p>解决方法是移除 <code>Instructor</code> 字段，因为它可以从 <code>Courses</code> 表中得到：</p>
+<table>
+<thead>
+<tr>
+<th>StudentID</th>
+<th>CourseID</th>
+<th>Grade</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>101</td>
+<td>A</td>
+</tr>
+<tr>
+<td>1</td>
+<td>102</td>
+<td>B</td>
+</tr>
+<tr>
+<td>2</td>
+<td>101</td>
+<td>B</td>
+</tr>
+<tr>
+<td>3</td>
+<td>103</td>
+<td>A</td>
+</tr>
+</tbody></table>
+<h4 id="巴斯-科德范式-BCNF"><a href="#巴斯-科德范式-BCNF" class="headerlink" title="巴斯-科德范式 (BCNF)"></a>巴斯-科德范式 (BCNF)</h4><p><strong>要求</strong>：在满足3NF的基础上，处理更为严格的依赖关系。每个非主键字段都必须完全依赖于候选键。</p>
+<p>假设 <code>Courses</code> 表有以下结构：</p>
+<table>
+<thead>
+<tr>
+<th>CourseID</th>
+<th>CourseName</th>
+<th>Instructor</th>
+<th>RoomNumber</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>101</td>
+<td>Math</td>
+<td>Dr. Smith</td>
+<td>101</td>
+</tr>
+<tr>
+<td>102</td>
+<td>English</td>
+<td>Dr. Brown</td>
+<td>102</td>
+</tr>
+<tr>
+<td>103</td>
+<td>History</td>
+<td>Dr. Green</td>
+<td>103</td>
+</tr>
+</tbody></table>
+<p>如果 <code>RoomNumber</code> 依赖于 <code>Instructor</code>，则会违反BCNF。假设 Dr. Smith 总是在 Room 101 授课，那么 RoomNumber 应该依赖于 <code>Instructor</code> 而不是 <code>CourseID</code>。</p>
+<p>解决方法是分解 <code>Courses</code> 表：</p>
+<p><strong>Courses</strong> 表：</p>
+<table>
+<thead>
+<tr>
+<th>CourseID</th>
+<th>CourseName</th>
+<th>Instructor</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>101</td>
+<td>Math</td>
+<td>Dr. Smith</td>
+</tr>
+<tr>
+<td>102</td>
+<td>English</td>
+<td>Dr. Brown</td>
+</tr>
+<tr>
+<td>103</td>
+<td>History</td>
+<td>Dr. Green</td>
+</tr>
+</tbody></table>
+<p><strong>Instructors</strong> 表：</p>
+<table>
+<thead>
+<tr>
+<th>Instructor</th>
+<th>RoomNumber</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Dr. Smith</td>
+<td>101</td>
+</tr>
+<tr>
+<td>Dr. Brown</td>
+<td>102</td>
+</tr>
+<tr>
+<td>Dr. Green</td>
+<td>103</td>
+</tr>
+</tbody></table>
+<h4 id="第四范式-4NF"><a href="#第四范式-4NF" class="headerlink" title="第四范式 (4NF)"></a>第四范式 (4NF)</h4><p><strong>要求</strong>：在满足BCNF的基础上，消除多值依赖。</p>
+<p>假设我们有一个表记录学生的多种联系方式：</p>
+<table>
+<thead>
+<tr>
+<th>StudentID</th>
+<th>ContactType</th>
+<th>ContactValue</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>Email</td>
+<td><a href="mailto:&#97;&#108;&#x69;&#99;&#101;&#x40;&#x65;&#120;&#97;&#109;&#x70;&#108;&#x65;&#x2e;&#99;&#111;&#109;">&#97;&#108;&#x69;&#99;&#101;&#x40;&#x65;&#120;&#97;&#109;&#x70;&#108;&#x65;&#x2e;&#99;&#111;&#109;</a></td>
+</tr>
+<tr>
+<td>1</td>
+<td>Phone</td>
+<td>123-456-7890</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Email</td>
+<td><a href="mailto:&#x62;&#x6f;&#98;&#64;&#x65;&#120;&#x61;&#109;&#x70;&#x6c;&#101;&#46;&#99;&#x6f;&#109;">&#x62;&#x6f;&#98;&#64;&#x65;&#120;&#x61;&#109;&#x70;&#x6c;&#101;&#46;&#99;&#x6f;&#109;</a></td>
+</tr>
+<tr>
+<td>2</td>
+<td>Phone</td>
+<td>098-765-4321</td>
+</tr>
+</tbody></table>
+<p>这里，<code>ContactType</code> 和 <code>ContactValue</code> 对 <code>StudentID</code> 形成多值依赖。解决方法是分解成两个独立的表：</p>
+<p><strong>Emails</strong> 表：</p>
+<table>
+<thead>
+<tr>
+<th>StudentID</th>
+<th>Email</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td><a href="mailto:&#97;&#108;&#x69;&#x63;&#101;&#x40;&#x65;&#120;&#97;&#x6d;&#x70;&#x6c;&#101;&#x2e;&#99;&#x6f;&#x6d;">&#97;&#108;&#x69;&#x63;&#101;&#x40;&#x65;&#120;&#97;&#x6d;&#x70;&#x6c;&#101;&#x2e;&#99;&#x6f;&#x6d;</a></td>
+</tr>
+<tr>
+<td>2</td>
+<td><a href="mailto:&#98;&#111;&#x62;&#64;&#x65;&#120;&#97;&#x6d;&#x70;&#108;&#101;&#x2e;&#x63;&#111;&#109;">&#98;&#111;&#x62;&#64;&#x65;&#120;&#97;&#x6d;&#x70;&#108;&#101;&#x2e;&#x63;&#111;&#109;</a></td>
+</tr>
+</tbody></table>
+<p><strong>Phones</strong> 表：</p>
+<table>
+<thead>
+<tr>
+<th>StudentID</th>
+<th>Phone</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>123-456-7890</td>
+</tr>
+<tr>
+<td>2</td>
+<td>098-765-4321</td>
+</tr>
+</tbody></table>
+<h4 id="第五范式-5NF"><a href="#第五范式-5NF" class="headerlink" title="第五范式 (5NF)"></a>第五范式 (5NF)</h4><p><strong>要求</strong>：在满足4NF的基础上，消除连接依赖。所有信息都应该可以通过原子表的自然连接来重构。</p>
+<p>假设我们有一个表记录课程、教师和教材之间的关系：</p>
+<table>
+<thead>
+<tr>
+<th>CourseID</th>
+<th>Instructor</th>
+<th>Textbook</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>101</td>
+<td>Dr. Smith</td>
+<td>Math Book</td>
+</tr>
+<tr>
+<td>102</td>
+<td>Dr. Brown</td>
+<td>English Book</td>
+</tr>
+<tr>
+<td>103</td>
+<td>Dr. Green</td>
+<td>History Book</td>
+</tr>
+</tbody></table>
+<p>假设每个课程可能有多个教师和多本教材，这样的关系会导致复杂的连接依赖。</p>
+<p>解决方法是将关系分解为更小的表：</p>
+<p><strong>CourseInstructors</strong> 表：</p>
+<table>
+<thead>
+<tr>
+<th>CourseID</th>
+<th>Instructor</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>101</td>
+<td>Dr. Smith</td>
+</tr>
+<tr>
+<td>102</td>
+<td>Dr. Brown</td>
+</tr>
+<tr>
+<td>103</td>
+<td>Dr. Green</td>
+</tr>
+</tbody></table>
+<p><strong>CourseTextbooks</strong> 表：</p>
+<table>
+<thead>
+<tr>
+<th>CourseID</th>
+<th>Textbook</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>101</td>
+<td>Math Book</td>
+</tr>
+<tr>
+<td>102</td>
+<td>English Book</td>
+</tr>
+<tr>
+<td>103</td>
+<td>History Book</td>
+</tr>
+</tbody></table>
+<p><strong>InstructorTextbooks</strong> 表（仅在特定情况下需要，例如如果教材依赖于教师）：</p>
+<table>
+<thead>
+<tr>
+<th>Instructor</th>
+<th>Textbook</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Dr. Smith</td>
+<td>Math Book</td>
+</tr>
+<tr>
+<td>Dr. Brown</td>
+<td>English Book</td>
+</tr>
+<tr>
+<td>Dr. Green</td>
+<td>History Book</td>
+</tr>
+</tbody></table>
+<p>通过这些步骤，表结构满足了5NF。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2024/05/31/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -185,10 +717,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2024-05-31 22:19:21 / 修改时间：23:20:44" itemprop="dateCreated datePublished" datetime="2024-05-31T22:19:21+08:00">2024-05-31</time>
+              <time title="创建时间：2024-05-31 22:19:21" itemprop="dateCreated datePublished" datetime="2024-05-31T22:19:21+08:00">2024-05-31</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-06-02 22:42:57" itemprop="dateModified" datetime="2024-06-02T22:42:57+08:00">2024-06-02</time>
+              </span>
 
           
 
@@ -237,6 +775,50 @@
 <h4 id="2-3-抽象工厂模式"><a href="#2-3-抽象工厂模式" class="headerlink" title="2.3 抽象工厂模式"></a>2.3 抽象工厂模式</h4><p>提供一个接口用于创建相关或依赖对象的家族，而无需明确指定具体类。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;memory&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 产品A接口</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ProductA</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">use</span><span class="params">()</span> </span>= <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">virtual</span> ~<span class="built_in">ProductA</span>() = <span class="keyword">default</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 产品B接口</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ProductB</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">eat</span><span class="params">()</span> </span>= <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">virtual</span> ~<span class="built_in">ProductB</span>() = <span class="keyword">default</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 具体产品A1</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ProductA1</span> : <span class="keyword">public</span> ProductA &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">use</span><span class="params">()</span> <span class="keyword">override</span> </span>&#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;Using ProductA1&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 具体产品A2</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ProductA2</span> : <span class="keyword">public</span> ProductA &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">use</span><span class="params">()</span> <span class="keyword">override</span> </span>&#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;Using ProductA2&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 具体产品B1</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ProductB1</span> : <span class="keyword">public</span> ProductB &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">eat</span><span class="params">()</span> <span class="keyword">override</span> </span>&#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;Eating ProductB1&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 具体产品B2</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ProductB2</span> : <span class="keyword">public</span> ProductB &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">eat</span><span class="params">()</span> <span class="keyword">override</span> </span>&#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;Eating ProductB2&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 抽象工厂接口</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">AbstractFactory</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> std::unique_ptr&lt;ProductA&gt; <span class="title">createProductA</span><span class="params">()</span> </span>= <span class="number">0</span>;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> std::unique_ptr&lt;ProductB&gt; <span class="title">createProductB</span><span class="params">()</span> </span>= <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">virtual</span> ~<span class="built_in">AbstractFactory</span>() = <span class="keyword">default</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 具体工厂1</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ConcreteFactory1</span> : <span class="keyword">public</span> AbstractFactory &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">std::unique_ptr&lt;ProductA&gt; <span class="title">createProductA</span><span class="params">()</span> <span class="keyword">override</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> std::<span class="built_in">make_unique</span>&lt;ProductA1&gt;();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function">std::unique_ptr&lt;ProductB&gt; <span class="title">createProductB</span><span class="params">()</span> <span class="keyword">override</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> std::<span class="built_in">make_unique</span>&lt;ProductB1&gt;();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 具体工厂2</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ConcreteFactory2</span> : <span class="keyword">public</span> AbstractFactory &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">std::unique_ptr&lt;ProductA&gt; <span class="title">createProductA</span><span class="params">()</span> <span class="keyword">override</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> std::<span class="built_in">make_unique</span>&lt;ProductA2&gt;();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function">std::unique_ptr&lt;ProductB&gt; <span class="title">createProductB</span><span class="params">()</span> <span class="keyword">override</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> std::<span class="built_in">make_unique</span>&lt;ProductB2&gt;();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    std::unique_ptr&lt;AbstractFactory&gt; factory1 = std::<span class="built_in">make_unique</span>&lt;ConcreteFactory1&gt;();</span><br><span class="line">    <span class="keyword">auto</span> productA1 = factory1-&gt;<span class="built_in">createProductA</span>();</span><br><span class="line">    <span class="keyword">auto</span> productB1 = factory1-&gt;<span class="built_in">createProductB</span>();</span><br><span class="line">    productA1-&gt;<span class="built_in">use</span>();</span><br><span class="line">    productB1-&gt;<span class="built_in">eat</span>();</span><br><span class="line"></span><br><span class="line">    std::unique_ptr&lt;AbstractFactory&gt; factory2 = std::<span class="built_in">make_unique</span>&lt;ConcreteFactory2&gt;();</span><br><span class="line">    <span class="keyword">auto</span> productA2 = factory2-&gt;<span class="built_in">createProductA</span>();</span><br><span class="line">    <span class="keyword">auto</span> productB2 = factory2-&gt;<span class="built_in">createProductB</span>();</span><br><span class="line">    productA2-&gt;<span class="built_in">use</span>();</span><br><span class="line">    productB2-&gt;<span class="built_in">eat</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<h4 id="2-4-模式选择"><a href="#2-4-模式选择" class="headerlink" title="2.4 模式选择"></a>2.4 模式选择</h4><ul>
+<li><strong>简单工厂模式</strong>：适合产品种类少、创建逻辑简单、对扩展要求不高的场景。</li>
+<li><strong>工厂方法模式</strong>：适合产品种类多、创建逻辑复杂、需要较高扩展性的场景。</li>
+<li><strong>抽象工厂模式</strong>：适合需要创建一系列相关或相互依赖的产品、产品间存在依赖关系、需要较高灵活性和扩展性的场景。</li>
+</ul>
+<h4 id="2-5-优缺点、适用场景"><a href="#2-5-优缺点、适用场景" class="headerlink" title="2.5 优缺点、适用场景"></a>2.5 优缺点、适用场景</h4><p>优点：</p>
+<ol>
+<li><strong>解耦创建和使用</strong>：客户端不需要知道具体产品类的类名，只需要知道工厂接口。</li>
+<li><strong>提高可扩展性</strong>：增加新产品时，只需要添加相应的工厂和产品类，客户端代码不需要修改。</li>
+<li><strong>管理对象创建</strong>：集中管理对象的创建逻辑，使得创建过程更灵活、更易维护。</li>
+</ol>
+<p>缺点：</p>
+<ol>
+<li><strong>增加复杂度</strong>：引入额外的工厂类和接口，增加了系统的复杂度。</li>
+<li><strong>类增多</strong>：每增加一个新的产品类型，可能需要增加相应的工厂类和接口，导致类的数量增多。</li>
+</ol>
+<p>适用场景：</p>
+<ol>
+<li><strong>对象的创建需要灵活控制</strong>：例如创建对象的过程比较复杂，需要在创建时进行一些逻辑处理。</li>
+<li><strong>系统结构稳定</strong>：产品类和创建产品的工厂类比较固定，但需要经常增加新产品。</li>
+<li><strong>需要生成一系列相关的产品对象</strong>：例如在抽象工厂模式中，一个工厂可以创建多个相关的对象。</li>
+</ol>
+<h3 id="3-原型模式"><a href="#3-原型模式" class="headerlink" title="3. 原型模式"></a>3. 原型模式</h3><p>属于<strong>创建型模式</strong>，通过<strong>复制现有的实例来创建新的对象</strong>，而不是通过实例化类来创建对象。这样<strong>可以大大减少创建对象的开销</strong>，尤其是在对象创建成本较高时。原型模式的核心是提供一个接口，用于复制现有的对象。</p>
+<p>原型模式的<strong>核心是一个克隆方法</strong>，一般使用抽象基类定义 <code>clone</code> 方法，然后具体类实现该方法。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;memory&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 抽象原型类</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Prototype</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> std::unique_ptr&lt;Prototype&gt; <span class="title">clone</span><span class="params">()</span> <span class="type">const</span> </span>= <span class="number">0</span>;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">use</span><span class="params">()</span> <span class="type">const</span> </span>= <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">virtual</span> ~<span class="built_in">Prototype</span>() = <span class="keyword">default</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 具体原型类1</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ConcretePrototype1</span> : <span class="keyword">public</span> Prototype &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">std::unique_ptr&lt;Prototype&gt; <span class="title">clone</span><span class="params">()</span> <span class="type">const</span> <span class="keyword">override</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> std::<span class="built_in">make_unique</span>&lt;ConcretePrototype1&gt;(*<span class="keyword">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">use</span><span class="params">()</span> <span class="type">const</span> <span class="keyword">override</span> </span>&#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;Using ConcretePrototype1&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 具体原型类2</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ConcretePrototype2</span> : <span class="keyword">public</span> Prototype &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">std::unique_ptr&lt;Prototype&gt; <span class="title">clone</span><span class="params">()</span> <span class="type">const</span> <span class="keyword">override</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> std::<span class="built_in">make_unique</span>&lt;ConcretePrototype2&gt;(*<span class="keyword">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">use</span><span class="params">()</span> <span class="type">const</span> <span class="keyword">override</span> </span>&#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;Using ConcretePrototype2&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 创建具体原型对象</span></span><br><span class="line">    std::unique_ptr&lt;Prototype&gt; prototype1 = std::<span class="built_in">make_unique</span>&lt;ConcretePrototype1&gt;();</span><br><span class="line">    std::unique_ptr&lt;Prototype&gt; prototype2 = std::<span class="built_in">make_unique</span>&lt;ConcretePrototype2&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 克隆对象</span></span><br><span class="line">    std::unique_ptr&lt;Prototype&gt; clone1 = prototype1-&gt;<span class="built_in">clone</span>();</span><br><span class="line">    std::unique_ptr&lt;Prototype&gt; clone2 = prototype2-&gt;<span class="built_in">clone</span>();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 使用克隆的对象</span></span><br><span class="line">    clone1-&gt;<span class="built_in">use</span>();</span><br><span class="line">    clone2-&gt;<span class="built_in">use</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="优缺点及适用场景"><a href="#优缺点及适用场景" class="headerlink" title="优缺点及适用场景"></a>优缺点及适用场景</h4><p><strong>优点：</strong></p>
+<ol>
+<li><strong>性能提升</strong>：通过克隆现有对象而不是重新创建，可以提高性能，尤其是对象的创建过程比较复杂或耗时的时候。</li>
+<li><strong>动态扩展</strong>：可以在运行时动态创建对象，避免了依赖具体类。</li>
+<li><strong>简化对象创建</strong>：克隆对象的过程比通过构造函数创建对象的过程简单。</li>
+</ol>
+<p><strong>缺点：</strong></p>
+<ol>
+<li><strong>深拷贝问题</strong>：对于包含指针或引用的对象，克隆过程可能需要实现深拷贝，增加了复杂性。</li>
+<li><strong>资源管理</strong>：克隆对象时需要处理资源的复制和管理，可能导致资源泄漏问题。</li>
+<li><strong>依赖具体实现</strong>：克隆过程依赖于具体类的实现，可能会引入不必要的依赖。</li>
+</ol>
+<p><strong>适用场景：</strong></p>
+<ol>
+<li><strong>创建成本高的对象</strong>：对象的创建成本较高，通过克隆可以大大减少开销。</li>
+<li><strong>对象结构复杂</strong>：对象包含很多子对象或嵌套结构，克隆可以简化创建过程。</li>
+<li><strong>动态创建对象</strong>：需要在运行时根据已有对象动态创建新对象。</li>
+</ol>
 
       
     </div>
@@ -953,63 +1535,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/04/28/%E6%95%B0%E6%8D%AE%E5%BA%93/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="stars zhang">
-      <meta itemprop="description" content="永远迎着光走">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="stars">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/04/28/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="post-title-link" itemprop="url">数据库</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-04-28 21:46:11" itemprop="dateCreated datePublished" datetime="2024-04-28T21:46:11+08:00">2024-04-28</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1079,7 +1604,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">35</span>
+          <span class="site-state-item-count">36</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1092,7 +1617,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-count">21</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
